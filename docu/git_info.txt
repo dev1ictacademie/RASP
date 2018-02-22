@@ -1,0 +1,19 @@
+Git Methods 
+
+We work with a number of branches:
+The main branch: master - is the final working program. This has a version number for example v0.1, v0.2, making use of a tag
+The development branch: develop - is the branch where developments take place. Developers create a local branch based on this branch.
+
+In addition, a number of lateral branches can arise, for example:
+hotfixes, release and feature
+
+-hotfixes: branch for bugfixes of the current master
+-release: this is the branch where the code/application is extensively tested before it is merged with the master
+-feature: is the branch in which new functionalities are tested. In expected operation, this is merged with the develop branch
+
+Info:
+https://nvie.com/posts/a-successful-git-branching-model/
+https://www.youtube.com/watch?v=r63f51ce84A
+https://git-scm.com/docs/gittutorial
+https://www.atlassian.com/git/tutorials/setting-up-a-repository
+
