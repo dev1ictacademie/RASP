@@ -1,0 +1,17 @@
+Import Github project in Eclipse
+
+for setting up global user:
+	Open terminal
+	git config --global user.name "YOUR USERNAME"  //set username
+	git config --global user.email YOUR@EMAIL 	//set email
+	git config --list  // check global settings
+
+Clone project:
+1.Open terminal
+2.In the home dir do:
+	mkdir RASP
+	cd RASP
+3. type in : git clone https://github.com/dev1ictacademie/RASP.git
+4. Then open Eclipse and select the directory you created (RASP) as the Eclipse Workspace
+5. Create new JavaFX project with the name RASP
+6. Add library JUnit to the libraries in the Java Build Path
