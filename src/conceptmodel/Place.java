@@ -7,7 +7,7 @@ package conceptmodel;
  * seating places.
  * 
  * @author ttimmermans
- * @version 27-02-2018
+ * @version 02-03-2018
  */
 
 public enum Place {
@@ -23,24 +23,26 @@ public enum Place {
 	private int spot; // indicates the numbered workplace/seating place
 	
 	/**
-	 * Constructor
+	 * Constructor. Assign spot numbers (ICT_2 Should have spot number 2, 
+	 * ECDL_5 spot number 5 and so on).
 	 */
 	private Place() {
 		assignSpot();
 	}
 	
-	
 	/**
-	 * Assign spot by 'looking' at the digit after the underscore
+	 * Assign the spot number by 'looking' at the digits after the underscore.
+	 * Get the particular enum's name (exactly as declared), strip anything 
+	 * from this string preceding the digits after the underscore and then 
+	 * parse the remaining result as an integer.
 	 */
 	private void assignSpot() {
 		for (Place place: Place.values()) {
 
-		 	for (char ch: place.name().toCharArray()) {
-		 		if (Character.isDigit(ch)) {
-		 			
-		 		}
-		 	}
+			int underscore = place.name().indexOf("_");
+		 	spot = Integer.parseInt(place.name().substring(underscore + 1,
+		 			place.name().length()));
+			
 		}
 	}
 }
