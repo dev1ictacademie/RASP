@@ -49,4 +49,22 @@ public class Participant {
 	 */
 	private ArrayList<DateRange> enlistment;
 	
+	
+	
+	/**
+	 * Constructor for when new Participant is created by user of program.
+	 */
+	public Participant(BigInteger ID) {
+		this.ID = ID;
+		// TODO stub
+	}
+	
+	/**
+	 * Constructor for when new Participant is NOT created by user of program
+	 * but constructed by reading the values from database.
+	 *//*
+	public Participant() {
+		// TODO stub
+	}*/
+	
 }
