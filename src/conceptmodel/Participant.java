@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * programmming, web-design, ECDL or is a volunteer at the servicedesk.
  * 
  * @author ttimmermans
- * @version 02-03-2018
+ * @version 09-03-2018
  */
 
 public class Participant {
@@ -24,13 +24,11 @@ public class Participant {
 	private String username;   /* The username used by this participant to 
 	                              login to the system */
 
-	private Schedule schedule; /* A listing of DayParts the participant is 
-	                            * expected to be present (also lists past and
-	                            * future changes in this schedule) */
-	
 	private Presence presence; /* A listing of recorded DayParts and 
 	                            * associated dates the participant was actually
 	                            * present (or not when he/she was expected) */
+	
+	private ArrayList<Schedule> schedules; // The participant's schedules
 	
 	private double fee;    /* This amount indicates the volunteer fee that 
 	                        * the participant has a right to for each DAYPART
@@ -39,7 +37,6 @@ public class Participant {
 	private double travEx; /* This amount indicates the travel expenses 
 	                        * reimbursement the participant has a right to for 
 	                        * each different DAY he or she is present */
-	
 	
 	/* 
 	 * This list holds information about the date someone started or starts and
@@ -54,9 +51,20 @@ public class Participant {
 	/**
 	 * Constructor for when new Participant is created by user of program.
 	 */
-	public Participant(BigInteger ID) {
+	public Participant(BigInteger ID, String firstName, String lastName,
+			String namePrefix, String phoneNumber, String username,
+			double fee, double travEx, DateRange currentRegistration) {
+		
+		Database.saveTo(); // Save to database with appropriate query
 		this.ID = ID;
-		// TODO stub
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.namePrefix = namePrefix;
+		this.phoneNumber = phoneNumber;
+		this.username = username;
+		this.fee = fee;
+		this.travEx = travEx;
+		enlistment.add(currentRegistration);
 	}
 	
 	/**

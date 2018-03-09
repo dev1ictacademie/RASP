@@ -6,7 +6,7 @@ import java.time.LocalDate;
  * This class represents a day part AND a date.
  * 
  * @author ttimmermans
- * @version 06-03-2018
+ * @version 09-03-2018
  */
 
 public class DatedDayPart {
@@ -33,7 +33,7 @@ public class DatedDayPart {
 	}
 
 	/**
-	 * Get which part of the day this is.
+	 * Get which part of the day (morning or afternoon) this is.
 	 * @return  The dayPart
 	 */
 	public DayPart getDayPart() {

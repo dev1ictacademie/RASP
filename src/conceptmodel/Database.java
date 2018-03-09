@@ -14,8 +14,8 @@ public class Database {
 		System.out.println("Reading database...");
 	}
 	
-	public static void writeTo() {
-		System.out.println("Writing to database...");
+	public static void saveTo() {
+		System.out.println("Saving to database...");
 	}
 
 }

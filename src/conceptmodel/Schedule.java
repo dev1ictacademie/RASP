@@ -3,10 +3,12 @@ package conceptmodel;
 import java.util.HashMap;
 
 /** 
- * This class represents a schedule of a participant
+ * This class represents a schedule of a participant which is a listing of 
+ * DayParts the participant is expected to be present mapped to the place he
+ * or she has during that DayPart.
  * 
  * @author ttimmermans
- * @version 06-03-2018
+ * @version 09-03-2018
  */
 
 public class Schedule {
@@ -50,10 +52,10 @@ public class Schedule {
 	}
 	
 	/**
-	 * Remove a DayPart (with the associated Place) from this schedule.
+	 * Remove a DayPart (and it's associated Place) from this schedule.
 	 */
 	public void removeDayPart(DayPart dayPart) {
-		// TODO stub
+		schedule.remove(dayPart);
 	}
 
 }
