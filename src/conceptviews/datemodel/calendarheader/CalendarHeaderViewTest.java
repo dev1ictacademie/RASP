@@ -92,6 +92,7 @@ public class CalendarHeaderViewTest extends Application {
 		// create a table
 		TableView table = new TableView();
 		table.setPrefHeight(50);
+		
 		// fill column headers
 		for (VBox vBox : calHeaderView.createColumnHeaders()) {
 			TableColumn column = new TableColumn();
