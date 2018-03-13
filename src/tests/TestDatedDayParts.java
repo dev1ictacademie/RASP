@@ -11,22 +11,18 @@ import java.util.ArrayList;
  * Compare for example with https://www.timeanddate.com/calendar/?year=2018
  * 
  * @author ttimmermans
- * @version 09-03-2018
+ * @version 13-03-2018
  */
 
 public class TestDatedDayParts {
 	
 	public static void main(String args[]) {
 		
-		// Testing a few methods...
 		LocalDate now = LocalDate.now();
 		System.out.println("now: " + now);
-		
-		LocalDate firstDayOfThisMonth = now.withDayOfMonth(1);
-		System.out.println("firstDayOfThisMonth: " + firstDayOfThisMonth);
-		
-	 	int lengthOfThisMonth = now.lengthOfMonth();
-	 	System.out.println("lengthOfThisMonth: " + lengthOfThisMonth);
+
+	 	int lengthOfMonth = now.lengthOfMonth();
+	 	System.out.println("lengthOfMonth: " + lengthOfMonth);
 	 	
 	 	
 	 	System.out.println();
@@ -35,7 +31,7 @@ public class TestDatedDayParts {
 	 	// Test generation of DatedDayParts from THIS MONTH
 	 	ArrayList<DatedDayPart> dayPartsThisMonth = new ArrayList<>();
 	 	
-	 	for (int i = 1; i <= lengthOfThisMonth; i++) {
+	 	for (int i = 1; i <= lengthOfMonth; i++) {
 	 		LocalDate date = now.withDayOfMonth(i);
 	 		for (DayPart dayPart: DayPart.values()) {
 	 			if (dayPart.getDay().equals(date.getDayOfWeek())) {
@@ -52,25 +48,16 @@ public class TestDatedDayParts {
 	 	}
 	 	
 	 	
-	 	System.out.println();
+	 	System.out.println("\n" + "\n");
 	 	
 	 	
 	 	// Test generation of DatedDayParts from THIS WEEK
 	 	ArrayList<DatedDayPart> dayPartsThisWeek = new ArrayList<>();
 	 	
-	 	LocalDate mostRecentMonday = null;
+ 		LocalDate mostRecentMonday = 
+ 				now.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 	 	
-	 	https://stackoverflow.com/questions/9307884/retrieve-current-weeks-mondays-date#9307961
-	 	
-	 	if (now.getDayOfWeek().equals(DayOfWeek.MONDAY)) {
-	 		mostRecentMonday = now;
-	 	}
-	 	else {
-	 		mostRecentMonday = 
-	 				now.with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
-	 		
-	 		// use previousOrSame(DayOfWeek dayOfWeek) ???
-	 	}
+	 	System.out.println("mostRecentMonday: " + mostRecentMonday + "\n");
 	 	
 	 	for (int i = 0; i < 5; i++) {
 	 		LocalDate date = mostRecentMonday.plusDays(i);
