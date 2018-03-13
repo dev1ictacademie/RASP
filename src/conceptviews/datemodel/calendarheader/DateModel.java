@@ -99,5 +99,14 @@ public class DateModel {
 		}
 		return dayName;
 	}
+	public String[] dayNameList(){
+		String[] dayNames = new String[getLengthOfMonth()];
+		for(int i =0 ; i<getLengthOfMonth();i++){
+			dayNames[i] = dayOfWeek(i+1);
+		}
+
+
+		return dayNames;
+	}
 
 }

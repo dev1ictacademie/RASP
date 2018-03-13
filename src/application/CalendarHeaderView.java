@@ -83,7 +83,7 @@ public class CalendarHeaderView {
 
 	public ArrayList<VBox> createWeekColumnHeaders(){
 		ArrayList<VBox> list = new ArrayList<VBox>();
-		//TODO howto get weeks workings days except weekend days
+
 
 		return list;
 	}

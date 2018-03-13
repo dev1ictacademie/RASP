@@ -10,7 +10,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -31,7 +33,8 @@ public class CalendarHeaderView {
 
 	/**
 	 * Method creates VBox view for one day
-	 *@return VBox of one day
+	 *
+	 * @return VBox of one day
 	 */
 
 	public VBox createDayVBox(int year, int month, int day) {
@@ -42,30 +45,41 @@ public class CalendarHeaderView {
 		dayLabel.setAlignment(Pos.CENTER);
 		vb.getChildren().add(dayLabel);
 		// label that contains the day of the week
-		Label dayNameLabel = new Label(dateModel.dayOfWeek(day));
+		String dayName = dateModel.dayOfWeek(day);
+		Label dayNameLabel = new Label(dayName);
 		dayNameLabel.setPrefWidth(50);
 		dayNameLabel.setAlignment(Pos.CENTER);
 		vb.getChildren().add(dayNameLabel);
 		// labels dayparts
-		Label oLabel = new Label("o");
-		oLabel.setPrefWidth(25);
-		oLabel.setAlignment(Pos.CENTER);
-		Label mLabel = new Label("m");
-		mLabel.setPrefWidth(25);
-		mLabel.setAlignment(Pos.CENTER);
-		// HBox for two labels morning and afternoon */
-		HBox hb = new HBox();
-		hb.getChildren().add(oLabel);
-		hb.getChildren().add(mLabel);
-		// add HBox to VBox*/
-		vb.getChildren().add(hb);
 
+		if (dayName.equals("za") || dayName.equals("zo")) {
+			//TODO one cell for weekenddays no border
+			Label label = new Label();
+			label.getStyleClass().add("weekend");
+			label.setPrefWidth(25);
+			vb.getChildren().add(label);
+
+		} else {
+			Label oLabel = new Label("o");
+			oLabel.setPrefWidth(25);
+			oLabel.setAlignment(Pos.CENTER);
+			Label mLabel = new Label("m");
+			mLabel.setPrefWidth(25);
+			mLabel.setAlignment(Pos.CENTER);
+			// HBox for two labels morning and afternoon */
+			HBox hb = new HBox();
+			hb.getChildren().add(oLabel);
+			hb.getChildren().add(mLabel);
+			// add HBox to VBox*/
+			vb.getChildren().add(hb);
+		}
 		return vb;
 
 	}
 
 	/**
 	 * Makes a list of VBox-days in a month
+	 *
 	 * @return ArrayList of VBoxes for column headers
 	 */
 
@@ -80,12 +94,13 @@ public class CalendarHeaderView {
 
 	}
 
-	public ArrayList<VBox> createWeekColumnHeaders(){
+	public ArrayList<VBox> createWeekColumnHeaders() {
 		ArrayList<VBox> list = new ArrayList<VBox>();
-		//TODO howto get weeks workings days except weekend days
+		// TODO howto get weeks workings days except weekend days
 
 		return list;
 	}
+
 	/**
 	 *
 	 * @return ComboBox months
@@ -100,6 +115,7 @@ public class CalendarHeaderView {
 		return monthBox;
 
 	}
+
 	/**
 	 *
 	 * @return ComboBox years
@@ -116,4 +132,5 @@ public class CalendarHeaderView {
 		return yearBox;
 
 	}
+
 }
