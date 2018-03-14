@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -37,10 +38,13 @@ public class CalendarHeaderViewTest extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+
+		//scrollpane
+		ScrollPane scrollPane = new ScrollPane();
 		// Box to hold views
 		root = new VBox();
 		// Scene
-		Scene scene = new Scene(root, 1600, 600);
+		Scene scene = new Scene(scrollPane, 1600, 600);
 		// set this month and year to dateModel
 		dateModel = new DateModel(LocalDate.now().getYear(), LocalDate.now().getMonthValue());
 		createDataModelListeners();
@@ -51,12 +55,13 @@ public class CalendarHeaderViewTest extends Application {
 		calHeaderView = new CalendarHeaderView(dateModel);
 		root.getChildren().add(createComboBoxes());
 		root.getChildren().add(createHeaders());
+		scrollPane.setContent(root);
+
 		// set CSS
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setTitle("CalendarHeaderViewTest");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		//TODO  add scrollpane fixed size for columns
 
 	}
 
@@ -112,6 +117,7 @@ public class CalendarHeaderViewTest extends Application {
 		vbHeaders.getChildren().add(gridLabel);
 		// grid
 		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.CENTER_LEFT);
 		// set first three columns
 		grid.getColumnConstraints().add(new ColumnConstraints(40));
 		grid.getColumnConstraints().add(new ColumnConstraints(100));
