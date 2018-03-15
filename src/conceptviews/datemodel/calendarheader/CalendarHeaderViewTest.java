@@ -54,7 +54,7 @@ public class CalendarHeaderViewTest extends Application {
 		// calendar view with Boxes
 		calHeaderView = new CalendarHeaderView(dateModel);
 		root.getChildren().add(createComboBoxes());
-		root.getChildren().add(createHeaders());
+		root.getChildren().add(createGridPaneColumns());
 		scrollPane.setContent(root);
 
 		// set CSS
@@ -64,14 +64,14 @@ public class CalendarHeaderViewTest extends Application {
 		primaryStage.show();
 
 	}
-
+	//TODO getter for properties and move listeners to controller
 	public void createDataModelListeners() {
 		dateModel.yearProperty().addListener(new InvalidationListener() {
 
 			@Override
 			public void invalidated(Observable observable) {
 				vbHeaders.getChildren().clear();
-				root.getChildren().add(createHeaders());
+				root.getChildren().add(createGridPaneColumns());
 				System.out.println("yearProperty");
 			}
 		});
@@ -81,7 +81,7 @@ public class CalendarHeaderViewTest extends Application {
 			@Override
 			public void invalidated(Observable observable) {
 				vbHeaders.getChildren().clear();
-				root.getChildren().add(createHeaders());
+				root.getChildren().add(createGridPaneColumns());
 
 			}
 		});
@@ -110,7 +110,7 @@ public class CalendarHeaderViewTest extends Application {
 
 	}
 
-	private VBox createHeaders() {
+	private VBox createGridPaneColumns() {
 		// vertical box to hold headers
 		vbHeaders = new VBox();
 		Label gridLabel = new Label("GridPane");

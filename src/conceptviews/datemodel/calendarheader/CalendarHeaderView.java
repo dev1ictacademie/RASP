@@ -37,7 +37,7 @@ public class CalendarHeaderView {
 	 * @return VBox of one day
 	 */
 
-	public VBox createDayVBox(int year, int month, int day) {
+	private VBox createDayVBox(int year, int month, int day) {
 
 		VBox vb = new VBox();
 		Label dayLabel = new Label(day + "");
