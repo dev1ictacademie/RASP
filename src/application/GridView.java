@@ -116,11 +116,10 @@ public class GridView extends Application {
       int daysOfMonth = dateModel.getLengthOfMonth();
 
       ArrayList<VBox> list = viewCal.createColumnHeaders();
-      int j = 0;
-		for (int i = 0; i < list.size(); i++) {
+
+		for (int i = 0, j = 0; i < list.size(); i++, j += 2) {
 			VBox label = list.get(i);
 			grid.add(label, j + 3, 0, 2, 1);
-			j += 2;
 		}
 
       for(int i = 0; i < daysOfMonth * 2; i++){
@@ -143,7 +142,7 @@ public class GridView extends Application {
     	grid.add(txt, i + 3, 1);
 
       }// end for loop
-      
+
       scrollPane = new ScrollPane();
       scrollPane.setContent(grid);
       scrollPane.setPrefSize(1800.0, 600.0);

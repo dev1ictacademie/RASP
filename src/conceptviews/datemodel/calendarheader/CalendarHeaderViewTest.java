@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -200,11 +204,24 @@ public class CalendarHeaderViewTest extends Application {
 					pane.getStyleClass().add("weekend");
 					grid.add(pane, i + 3, row);
 				} else {
-					//TODO set validation for input ( x, a, v , z )
 					//TODO add listener to textproperty of textfields
 					TextField txt = new TextField();
 					txt.setId(" " + (row - 1));
 					txt.setPrefWidth(25);
+
+					txt.textProperty().addListener(new ChangeListener<String>() {
+
+						@Override
+						public void changed(ObservableValue<? extends String> observable, String oldValue,
+								String newValue) {
+							if(!(newValue.equals("x") || newValue.equals("z") || newValue.equals("v") || newValue.equals("a"))){
+								txt.setText("");
+							}
+
+
+						}
+					});
+
 					grid.add(txt, i + 3, row);
 				}
 
