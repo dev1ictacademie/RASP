@@ -2,6 +2,8 @@ package application;
 
 import java.util.ArrayList;
 
+import conceptviews.datemodel.calendarheader.CalendarHeaderView;
+import conceptviews.datemodel.calendarheader.DateModel;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

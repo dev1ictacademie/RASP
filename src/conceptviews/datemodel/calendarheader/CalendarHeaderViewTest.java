@@ -16,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -41,10 +42,13 @@ public class CalendarHeaderViewTest extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+
+		//scrollpane
+		ScrollPane scrollPane = new ScrollPane();
 		// Box to hold views
 		root = new VBox();
 		// Scene
-		Scene scene = new Scene(root, 1600, 600);
+		Scene scene = new Scene(scrollPane, 1600, 600);
 		// set this month and year to dateModel
 		dateModel = new DateModel(LocalDate.now().getYear(), LocalDate.now().getMonthValue());
 		createDataModelListeners();
@@ -54,23 +58,24 @@ public class CalendarHeaderViewTest extends Application {
 		// calendar view with Boxes
 		calHeaderView = new CalendarHeaderView(dateModel);
 		root.getChildren().add(createComboBoxes());
-		root.getChildren().add(createHeaders());
+		root.getChildren().add(createGridPaneColumns());
+		scrollPane.setContent(root);
+
 		// set CSS
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setTitle("CalendarHeaderViewTest");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		//TODO  add scrollpane fixed size for columns
 
 	}
-
+	//TODO getter for properties and move listeners to controller
 	public void createDataModelListeners() {
 		dateModel.yearProperty().addListener(new InvalidationListener() {
 
 			@Override
 			public void invalidated(Observable observable) {
 				vbHeaders.getChildren().clear();
-				root.getChildren().add(createHeaders());
+				root.getChildren().add(createGridPaneColumns());
 				System.out.println("yearProperty");
 			}
 		});
@@ -80,7 +85,7 @@ public class CalendarHeaderViewTest extends Application {
 			@Override
 			public void invalidated(Observable observable) {
 				vbHeaders.getChildren().clear();
-				root.getChildren().add(createHeaders());
+				root.getChildren().add(createGridPaneColumns());
 
 			}
 		});
@@ -109,13 +114,14 @@ public class CalendarHeaderViewTest extends Application {
 
 	}
 
-	private VBox createHeaders() {
+	private VBox createGridPaneColumns() {
 		// vertical box to hold headers
 		vbHeaders = new VBox();
 		Label gridLabel = new Label("GridPane");
 		vbHeaders.getChildren().add(gridLabel);
 		// grid
 		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.CENTER_LEFT);
 		// set first three columns
 		grid.getColumnConstraints().add(new ColumnConstraints(40));
 		grid.getColumnConstraints().add(new ColumnConstraints(100));
@@ -204,7 +210,6 @@ public class CalendarHeaderViewTest extends Application {
 					pane.getStyleClass().add("weekend");
 					grid.add(pane, i + 3, row);
 				} else {
-					//TODO add listener to textproperty of textfields
 					TextField txt = new TextField();
 					txt.setId(" " + (row - 1));
 					txt.setPrefWidth(25);
@@ -217,7 +222,6 @@ public class CalendarHeaderViewTest extends Application {
 							if(!(newValue.equals("x") || newValue.equals("z") || newValue.equals("v") || newValue.equals("a"))){
 								txt.setText("");
 							}
-
 
 						}
 					});

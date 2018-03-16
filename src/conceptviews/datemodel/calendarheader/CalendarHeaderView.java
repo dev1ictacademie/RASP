@@ -37,7 +37,7 @@ public class CalendarHeaderView {
 	 * @return VBox of one day
 	 */
 
-	public VBox createDayVBox(int year, int month, int day) {
+	private VBox createDayVBox(int year, int month, int day) {
 
 		VBox vb = new VBox();
 		Label dayLabel = new Label(day + "");
@@ -55,6 +55,8 @@ public class CalendarHeaderView {
 		if (dayName.equals("za") || dayName.equals("zo")) {
 			//TODO one cell for weekenddays no border
 			Label label = new Label();
+			dayLabel.setPrefWidth(25);
+			dayNameLabel.setPrefWidth(25);
 			label.getStyleClass().add("weekend");
 			label.setPrefWidth(25);
 			vb.getChildren().add(label);
