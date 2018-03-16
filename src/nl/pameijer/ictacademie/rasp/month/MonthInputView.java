@@ -1,4 +1,4 @@
-package conceptviews.datemodel.calendarheader;
+package nl.pameijer.ictacademie.rasp.month;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,6 +22,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import nl.pameijer.ictacademie.rasp.model.Model;
+import nl.pameijer.ictacademie.rasp.model.Student;
 
 /**
  * Test for how to use CalendarHeader and DateModel
@@ -29,7 +31,7 @@ import javafx.stage.Stage;
  * @author devadv
  *
  */
-public class CalendarHeaderViewTest extends Application {
+public class MonthInputView extends Application {
 
 	private CalendarHeaderView calHeaderView;
 	private VBox root;

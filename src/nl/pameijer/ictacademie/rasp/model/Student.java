@@ -1,4 +1,4 @@
-package conceptviews.datemodel.calendarheader;
+package nl.pameijer.ictacademie.rasp.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
