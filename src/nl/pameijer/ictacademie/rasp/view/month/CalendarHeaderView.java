@@ -1,4 +1,4 @@
-package nl.pameijer.ictacademie.rasp.month;
+package nl.pameijer.ictacademie.rasp.view.month;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -128,7 +128,7 @@ public class CalendarHeaderView {
 		for (int i = 0; i < 25; i++) {
 			years.add(2017 + i);
 			yearBox = new ComboBox<Integer>(years);
-			yearBox.setValue(LocalDate.now().getYear());
+			yearBox.setValue(dateModel.getYear());
 
 		}
 		return yearBox;

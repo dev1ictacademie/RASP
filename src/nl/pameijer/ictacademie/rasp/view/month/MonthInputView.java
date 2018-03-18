@@ -1,4 +1,4 @@
-package nl.pameijer.ictacademie.rasp.month;
+package nl.pameijer.ictacademie.rasp.view.month;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.model.Student;
 
 /**
- * Test for how to use CalendarHeader and DateModel
+ * monthview
  *
  * @author devadv
  *
@@ -39,11 +39,10 @@ public class MonthInputView extends Application {
 	private DateModel dateModel;
 	private Model model;
 
-
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		//scrollpane
+		// scrollpane
 		ScrollPane scrollPane = new ScrollPane();
 		// Box to hold views
 		root = new VBox();
@@ -51,7 +50,7 @@ public class MonthInputView extends Application {
 		Scene scene = new Scene(scrollPane, 1600, 600);
 		// set this month and year to dateModel
 		dateModel = new DateModel(LocalDate.now().getYear(), LocalDate.now().getMonthValue());
-		createDataModelListeners();
+
 		// Model
 		model = new Model();
 		model.loadData();
@@ -68,28 +67,24 @@ public class MonthInputView extends Application {
 		primaryStage.show();
 
 	}
-	//TODO getter for properties and move listeners to controller
-	public void createDataModelListeners() {
-		dateModel.yearProperty().addListener(new InvalidationListener() {
-
-			@Override
-			public void invalidated(Observable observable) {
-				vbHeaders.getChildren().clear();
-				root.getChildren().add(createGridPaneColumns());
-				System.out.println("yearProperty");
-			}
-		});
-
-		dateModel.monthProperty().addListener(new InvalidationListener() {
-
-			@Override
-			public void invalidated(Observable observable) {
-				vbHeaders.getChildren().clear();
-				root.getChildren().add(createGridPaneColumns());
-
-			}
-		});
-	}
+	// TODO getter for properties and move listeners to controller
+	/*
+	 * public void createDataModelListeners() {
+	 * dateModel.yearProperty().addListener(new InvalidationListener() {
+	 *
+	 * @Override public void invalidated(Observable observable) {
+	 * vbHeaders.getChildren().clear();
+	 * root.getChildren().add(createGridPaneColumns());
+	 * System.out.println("yearProperty"); } });
+	 *
+	 * dateModel.monthProperty().addListener(new InvalidationListener() {
+	 *
+	 * @Override public void invalidated(Observable observable) {
+	 * vbHeaders.getChildren().clear();
+	 * root.getChildren().add(createGridPaneColumns());
+	 *
+	 * } }); }
+	 */
 
 	public HBox createComboBoxes() {
 		// set comboboxes
@@ -170,9 +165,11 @@ public class MonthInputView extends Application {
 	public void createRowsUserTextFields(GridPane grid) {
 		int daysOfMonth = dateModel.getLengthOfMonth();
 		String[] dayNames = dateModel.dayNameList();
-		//TODO add different css setting for even rows (lightgrey)for userdata and textfield
-		//TODO method for setting bottom border for textfields from schedules/dayparts
-		//TODO method for cell layout now it is duplicate code
+		// TODO add different css setting for even rows (lightgrey)for userdata
+		// and textfield
+		// TODO method for setting bottom border for textfields from
+		// schedules/dayparts
+		// TODO method for cell layout now it is duplicate code
 		ObservableList<Student> studentList = model.getStudentList();
 		for (int row = 1; row < model.getStudentList().size(); row++) {
 			// id
@@ -213,13 +210,13 @@ public class MonthInputView extends Application {
 					TextField txt = new TextField();
 					txt.setId(" " + (row - 1));
 					txt.setPrefWidth(25);
-
 					txt.textProperty().addListener(new ChangeListener<String>() {
 
 						@Override
 						public void changed(ObservableValue<? extends String> observable, String oldValue,
 								String newValue) {
-							if(!(newValue.equals("x") || newValue.equals("z") || newValue.equals("v") || newValue.equals("a"))){
+							if (!(newValue.equals("x") || newValue.equals("z") || newValue.equals("v")
+									|| newValue.equals("a"))) {
 								txt.setText("");
 							}
 
@@ -233,9 +230,8 @@ public class MonthInputView extends Application {
 		}
 	}
 
-	public static void main(String[] args) {
-
-		launch(args);
+	public DateModel getDateModel() {
+		return dateModel;
 	}
 
 }

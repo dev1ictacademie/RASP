@@ -1,4 +1,4 @@
-package nl.pameijer.ictacademie.rasp.month;
+package nl.pameijer.ictacademie.rasp.view.month;
 
 import java.time.LocalDate;
 
