@@ -50,6 +50,12 @@ public class Model {
 		new Student("Piet", "Derksen"),
 		new Student("Klaas" , "Graaf, de")
 		);
+	}//  end method loadData
+	
+	public void loadSchedule() {
+		for(int i = 0; i < studentList.size(); i++){
+			
 		}
+	}
 
 }

@@ -20,10 +20,13 @@
 	-fx-background-color: #fff;
 	-fx-text-fill: black;
 }
+
  .weekend {
 	-fx-background-color: #1C68AC;
-	-fx-border-color: #FFF;
+	-fx-border-color: #1C68AC;
+	
 }
+
  .pane{
 	-fx-background-color: #1C68AC;
 }

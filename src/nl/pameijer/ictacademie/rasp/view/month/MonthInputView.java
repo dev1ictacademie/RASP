@@ -181,8 +181,12 @@ public class MonthInputView extends Application {
 					TextField txt = new TextField();
 					txt.setId(" " + (row - 1));
 					txt.setPrefWidth(25);
+					if(i%2 == 1){
+						txt.setStyle("-fx-background-color:white;  -fx-border-color: white white red white");
+						
+					}
 					txt.textProperty().addListener(new ChangeListener<String>() {
-
+					
 						@Override
 						public void changed(ObservableValue<? extends String> observable, String oldValue,
 								String newValue) {
