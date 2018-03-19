@@ -109,6 +109,13 @@ public class MonthInputView extends Application {
 
 	}
 
+	public void clearRefreshHeader() {
+		vbHeaders.getChildren().clear();
+		root.getChildren().add(createGridPaneColumns());
+	}
+
+	
+	
 	private VBox createGridPaneColumns() {
 		// vertical box to hold headers
 		vbHeaders = new VBox();

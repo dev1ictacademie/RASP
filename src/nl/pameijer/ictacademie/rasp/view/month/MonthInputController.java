@@ -34,15 +34,16 @@ public class MonthInputController extends Application {
 			@Override
 			public void invalidated(Observable observable) {
 				System.out.println("in controller" + observable);
-
+				monthInputView.clearRefreshHeader();
 			}
 		});
+		
 		monthProperty.addListener(new InvalidationListener() {
 
 			@Override
 			public void invalidated(Observable observable) {
 				System.out.println("in controller month" + monthProperty.getValue());
-
+				monthInputView.clearRefreshHeader();
 			}
 		});
 
