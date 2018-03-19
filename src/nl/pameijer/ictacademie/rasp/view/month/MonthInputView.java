@@ -11,6 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -38,6 +39,7 @@ public class MonthInputView extends Application {
 	private VBox vbHeaders;
 	private DateModel dateModel;
 	private Model model;
+	private Node label;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -67,24 +69,6 @@ public class MonthInputView extends Application {
 		primaryStage.show();
 
 	}
-	// TODO getter for properties and move listeners to controller
-	/*
-	 * public void createDataModelListeners() {
-	 * dateModel.yearProperty().addListener(new InvalidationListener() {
-	 *
-	 * @Override public void invalidated(Observable observable) {
-	 * vbHeaders.getChildren().clear();
-	 * root.getChildren().add(createGridPaneColumns());
-	 * System.out.println("yearProperty"); } });
-	 *
-	 * dateModel.monthProperty().addListener(new InvalidationListener() {
-	 *
-	 * @Override public void invalidated(Observable observable) {
-	 * vbHeaders.getChildren().clear();
-	 * root.getChildren().add(createGridPaneColumns());
-	 *
-	 * } }); }
-	 */
 
 	public HBox createComboBoxes() {
 		// set comboboxes
@@ -114,8 +98,8 @@ public class MonthInputView extends Application {
 		root.getChildren().add(createGridPaneColumns());
 	}
 
-	
-	
+
+
 	private VBox createGridPaneColumns() {
 		// vertical box to hold headers
 		vbHeaders = new VBox();
@@ -181,32 +165,14 @@ public class MonthInputView extends Application {
 		for (int row = 1; row < model.getStudentList().size(); row++) {
 			// id
 			Label idLabel = new Label("" + row);
-			idLabel.getStyleClass().add("userlabel");
-			GridPane.setFillWidth(idLabel, true);
-			GridPane.setFillHeight(idLabel, true);
-			idLabel.setMaxWidth(Double.MAX_VALUE);
-			idLabel.setMaxHeight(Double.MAX_VALUE);
-			idLabel.setAlignment(Pos.CENTER);
-			grid.add(idLabel, 0, row);
+			createLabels(idLabel, grid, row, 0);
 			// firstname
 			Label firstNameLabel = new Label(studentList.get(row - 1).getFName());
-			firstNameLabel.getStyleClass().add("userlabel");
-			GridPane.setFillWidth(firstNameLabel, true);
-			GridPane.setFillHeight(firstNameLabel, true);
-			firstNameLabel.setMaxWidth(Double.MAX_VALUE);
-			firstNameLabel.setMaxHeight(Double.MAX_VALUE);
-			firstNameLabel.setPadding(new Insets(0, 0, 0, 5));
+			createLabels(firstNameLabel, grid, row, 1);
 			// lastname
-			grid.add(firstNameLabel, 1, row);
 			Label lastNameLabel = new Label(studentList.get(row - 1).getLName());
-			lastNameLabel.getStyleClass().add("userlabel");
-			GridPane.setFillWidth(lastNameLabel, true);
-			GridPane.setFillHeight(lastNameLabel, true);
-			lastNameLabel.setMaxWidth(Double.MAX_VALUE);
-			lastNameLabel.setMaxHeight(Double.MAX_VALUE);
-			lastNameLabel.setPadding(new Insets(0, 0, 0, 5));
+			createLabels(lastNameLabel, grid, row, 2);
 
-			grid.add(lastNameLabel, 2, row);
 			for (int i = 0; i < daysOfMonth * 2; i++) {
 				if (dayNames[i / 2].equals("za") || dayNames[i / 2].equals("zo")) {
 					Pane pane = new Pane();
@@ -235,6 +201,17 @@ public class MonthInputView extends Application {
 
 			}
 		}
+	}// end method createRowsUserTextFields
+
+	public void createLabels(Label label, GridPane grid, int row, int col) {
+		label.getStyleClass().add("userlabel");
+		GridPane.setFillWidth(label, true);
+		GridPane.setFillHeight(label, true);
+		label.setMaxWidth(Double.MAX_VALUE);
+		label.setMaxHeight(Double.MAX_VALUE);
+		label.setAlignment(Pos.CENTER);
+		grid.add(label, col, row);
+		label.setPadding(new Insets(0, 0, 0, 5));
 	}
 
 	public DateModel getDateModel() {

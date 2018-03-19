@@ -27,7 +27,7 @@ public class MonthInputController extends Application {
 
 		setListeners();
 	}
-	//TODO activate properties listeners form MonthInputView
+
 	public void setListeners() {
 		yearProperty.addListener(new InvalidationListener() {
 
@@ -37,7 +37,7 @@ public class MonthInputController extends Application {
 				monthInputView.clearRefreshHeader();
 			}
 		});
-		
+
 		monthProperty.addListener(new InvalidationListener() {
 
 			@Override
