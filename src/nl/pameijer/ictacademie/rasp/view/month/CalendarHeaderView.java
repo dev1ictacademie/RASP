@@ -54,6 +54,7 @@ public class CalendarHeaderView {
 
 		if (dayName.equals("za") || dayName.equals("zo")) {
 			//TODO one cell for weekenddays no border
+			
 			Label label = new Label();
 			dayLabel.setPrefWidth(25);
 			dayNameLabel.setPrefWidth(25);

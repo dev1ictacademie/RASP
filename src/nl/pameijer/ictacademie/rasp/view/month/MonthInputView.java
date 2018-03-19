@@ -156,11 +156,8 @@ public class MonthInputView extends Application {
 	public void createRowsUserTextFields(GridPane grid) {
 		int daysOfMonth = dateModel.getLengthOfMonth();
 		String[] dayNames = dateModel.dayNameList();
-		// TODO add different css setting for even rows (lightgrey)for userdata
-		// and textfield
-		// TODO method for setting bottom border for textfields from
-		// schedules/dayparts
-		// TODO method for cell layout now it is duplicate code
+		// TODO add different css setting for even rows (lightgrey)for userdata and textfield
+		// TODO method for setting bottom border for textfields from schedules/dayparts
 		ObservableList<Student> studentList = model.getStudentList();
 		for (int row = 1; row < model.getStudentList().size(); row++) {
 			// id
@@ -178,7 +175,8 @@ public class MonthInputView extends Application {
 					Pane pane = new Pane();
 					pane.setPrefWidth(10);
 					pane.getStyleClass().add("weekend");
-					grid.add(pane, i + 3, row);
+					grid.add(pane, i + 3, row, 1, studentList.size());
+					//grid.add(pane, i + 3, row);
 				} else {
 					TextField txt = new TextField();
 					txt.setId(" " + (row - 1));
@@ -203,6 +201,13 @@ public class MonthInputView extends Application {
 		}
 	}// end method createRowsUserTextFields
 
+	/**
+	 * add label to gridPane
+	 * @param label
+	 * @param grid
+	 * @param row
+	 * @param col
+	 */
 	public void createLabels(Label label, GridPane grid, int row, int col) {
 		label.getStyleClass().add("userlabel");
 		GridPane.setFillWidth(label, true);
