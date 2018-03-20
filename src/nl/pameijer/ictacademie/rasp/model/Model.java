@@ -1,6 +1,9 @@
 package nl.pameijer.ictacademie.rasp.model;
 
 
+import java.time.LocalDate;
+import java.util.HashMap;
+
 import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -52,10 +55,23 @@ public class Model {
 		);
 	}//  end method loadData
 	
-	public void loadSchedule() {
-		for(int i = 0; i < studentList.size(); i++){
+	public void loadDataWithScedule(){
+		
+		HashMap<DayPart, Place> schedule = new HashMap<>();
+		schedule.put(DayPart.MONDAY_MORNING, Place.ICT_1);
+		schedule.put(DayPart.MONDAY_AFTERNOON,Place.ICT_8);
+		schedule.put(DayPart.THURSDAY_MORNING, Place.ICT_12);
+
+		HashMap<DayPart, Place> schedule1 = new HashMap<>();
+		schedule1.put(DayPart.WEDNESDAY_AFTERNOON, Place.ICT_1);
+		schedule1.put(DayPart.THURSDAY_MORNING, Place.ICT_10);
+		schedule1.put(DayPart.FRIDAY_AFTERNOON, Place.ICT_13);
+		
+		studentList.setAll(
+		new Student("Piet", "Pietersen", LocalDate.of(2018,3,19),LocalDate.of(2025,3,19), schedule));
+		new Student("Jan", "Jansen", LocalDate.of(2018,3,25),LocalDate.of(2025,3,25), schedule1);
 			
-		}
-	}
+		;
+	}//  end method loadDat
 
 }
