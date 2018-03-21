@@ -55,7 +55,7 @@ public class Model {
 		);
 	}//  end method loadData
 	
-	public void loadDataWithScedule(){
+	public void loadDataWithSchedule(){
 		
 		HashMap<DayPart, Place> schedule = new HashMap<>();
 		schedule.put(DayPart.MONDAY_MORNING, Place.ICT_1);

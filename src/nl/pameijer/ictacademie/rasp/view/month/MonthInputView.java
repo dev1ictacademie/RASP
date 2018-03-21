@@ -159,6 +159,7 @@ public class MonthInputView extends Application {
 		// TODO add different css setting for even rows (lightgrey)for userdata and textfield
 		// TODO method for setting bottom border for textfields from schedules/dayparts
 		ObservableList<Student> studentList = model.getStudentList();
+
 		for (int row = 1; row < model.getStudentList().size(); row++) {
 			// id
 			Label idLabel = new Label("" + row);
@@ -180,13 +181,17 @@ public class MonthInputView extends Application {
 				} else {
 					TextField txt = new TextField();
 					txt.setId(" " + (row - 1));
-					txt.setPrefWidth(25);
-					if(i%2 == 1){
-						txt.setStyle("-fx-background-color:white;  -fx-border-color: white white red white");
-						
-					}
-					txt.textProperty().addListener(new ChangeListener<String>() {
+					txt.setPrefWidth(30);
+					txt.setPrefHeight(30);
+					txt.getStyleClass().add("textfield");
 					
+					if(i % 2 == 1){
+						txt.setStyle("-fx-background-color: white;  -fx-border-color: lightgray lightgray red lightgray");
+
+					}
+
+					txt.textProperty().addListener(new ChangeListener<String>() {
+
 						@Override
 						public void changed(ObservableValue<? extends String> observable, String oldValue,
 								String newValue) {
@@ -199,9 +204,11 @@ public class MonthInputView extends Application {
 					});
 
 					grid.add(txt, i + 3, row);
+
 				}
 
 			}
+
 		}
 	}// end method createRowsUserTextFields
 

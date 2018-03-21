@@ -41,13 +41,13 @@ public class CalendarHeaderView {
 
 		VBox vb = new VBox();
 		Label dayLabel = new Label(day + "");
-		dayLabel.setPrefWidth(50);
+		dayLabel.setPrefWidth(60);
 		dayLabel.setAlignment(Pos.CENTER);
 		vb.getChildren().add(dayLabel);
 		// label that contains the day of the week
 		String dayName = dateModel.dayOfWeek(day);
 		Label dayNameLabel = new Label(dayName);
-		dayNameLabel.setPrefWidth(50);
+		dayNameLabel.setPrefWidth(60);
 		dayNameLabel.setAlignment(Pos.CENTER);
 		vb.getChildren().add(dayNameLabel);
 		// labels dayparts
@@ -55,18 +55,18 @@ public class CalendarHeaderView {
 		if (dayName.equals("za") || dayName.equals("zo")) {
 
 			Label label = new Label();
-			dayLabel.setPrefWidth(25);
-			dayNameLabel.setPrefWidth(25);
+			dayLabel.setPrefWidth(30);
+			dayNameLabel.setPrefWidth(30);
 			label.getStyleClass().add("weekend");
-			label.setPrefWidth(25);
+			label.setPrefWidth(30);
 			vb.getChildren().add(label);
 
 		} else {
 			Label oLabel = new Label("o");
-			oLabel.setPrefWidth(25);
+			oLabel.setPrefWidth(30);
 			oLabel.setAlignment(Pos.CENTER);
 			Label mLabel = new Label("m");
-			mLabel.setPrefWidth(25);
+			mLabel.setPrefWidth(30);
 			mLabel.setAlignment(Pos.CENTER);
 			// HBox for two labels morning and afternoon */
 			HBox hb = new HBox();
