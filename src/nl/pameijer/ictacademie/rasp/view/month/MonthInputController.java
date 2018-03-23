@@ -29,13 +29,9 @@ public class MonthInputController extends Application {
 	}
 
 	public void setListeners() {
-		yearProperty.addListener(new InvalidationListener() {
-
-			@Override
-			public void invalidated(Observable observable) {
-				System.out.println("in controller" + observable);
-				monthInputView.clearRefreshHeader();
-			}
+		yearProperty.addListener( (observable , oldvalue , newvalue) -> {
+			System.out.println(" In controller year");
+			monthInputView.clearRefreshHeader();
 		});
 
 		monthProperty.addListener(new InvalidationListener() {
