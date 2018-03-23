@@ -159,9 +159,15 @@ public class MonthInputView extends Application {
 		// TODO add different css setting for even rows (lightgrey)for userdata and textfield
 		// TODO method for setting bottom border for textfields from schedules/dayparts
 		ObservableList<Student> studentList = model.getStudentList();
+
 		for (int row = 1; row < model.getStudentList().size(); row++) {
 			// id
 			Label idLabel = new Label("" + row);
+			// set even rows of id label to a different color
+			if(row % 2 == 0){
+				idLabel.getStyleClass().add("rowColor");
+			}
+
 			createLabels(idLabel, grid, row, 0);
 			// firstname
 			Label firstNameLabel = new Label(studentList.get(row - 1).getFName());
@@ -180,13 +186,23 @@ public class MonthInputView extends Application {
 				} else {
 					TextField txt = new TextField();
 					txt.setId(" " + (row - 1));
-					txt.setPrefWidth(25);
-					if(i%2 == 1){
-						txt.setStyle("-fx-background-color:white;  -fx-border-color: white white red white");
-						
+					txt.setPrefWidth(30);
+					txt.setPrefHeight(30);
+					txt.getStyleClass().add("textfield");
+					txt.setStyle(" -fx-border-color: black black black black");
+
+					// set even rows of text fields to a different color
+					if(row % 2 == 0){
+						txt.getStyleClass().add("rowColor");
 					}
+
+					if(i % 2 == 1){
+						txt.setStyle(" -fx-border-color: black black red black");
+
+					}
+
 					txt.textProperty().addListener(new ChangeListener<String>() {
-					
+
 						@Override
 						public void changed(ObservableValue<? extends String> observable, String oldValue,
 								String newValue) {
@@ -199,9 +215,11 @@ public class MonthInputView extends Application {
 					});
 
 					grid.add(txt, i + 3, row);
+
 				}
 
 			}
+
 		}
 	}// end method createRowsUserTextFields
 
@@ -213,15 +231,31 @@ public class MonthInputView extends Application {
 	 * @param col
 	 */
 	public void createLabels(Label label, GridPane grid, int row, int col) {
-		label.getStyleClass().add("userlabel");
-		GridPane.setFillWidth(label, true);
-		GridPane.setFillHeight(label, true);
-		label.setMaxWidth(Double.MAX_VALUE);
-		label.setMaxHeight(Double.MAX_VALUE);
-		label.setAlignment(Pos.CENTER);
-		grid.add(label, col, row);
-		label.setPadding(new Insets(0, 0, 0, 5));
-	}
+		if(row % 2 == 0){
+			// set even rows of labels to a different color
+			label.getStyleClass().add("userlabel");
+			label.getStyleClass().add("rowColor");
+			GridPane.setFillWidth(label, true);
+			GridPane.setFillHeight(label, true);
+			label.setMaxWidth(Double.MAX_VALUE);
+			label.setMaxHeight(Double.MAX_VALUE);
+			label.setAlignment(Pos.CENTER);
+			grid.add(label, col, row);
+			label.setPadding(new Insets(0, 0, 0, 5));
+
+		}
+		else{
+			label.getStyleClass().add("userlabel");
+			GridPane.setFillWidth(label, true);
+			GridPane.setFillHeight(label, true);
+			label.setMaxWidth(Double.MAX_VALUE);
+			label.setMaxHeight(Double.MAX_VALUE);
+			label.setAlignment(Pos.CENTER);
+			grid.add(label, col, row);
+			label.setPadding(new Insets(0, 0, 0, 5));
+		}
+
+	}// end method createLabels
 
 	public DateModel getDateModel() {
 		return dateModel;

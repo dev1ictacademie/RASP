@@ -30,3 +30,11 @@
  .pane{
 	-fx-background-color: #1C68AC;
 }
+
+.textfield{
+	-fx-font-smoothing-type: lcd;
+}
+
+.rowColor{
+	-fx-background-color: lightgrey;
+}
