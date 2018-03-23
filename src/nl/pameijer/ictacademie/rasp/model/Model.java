@@ -60,7 +60,7 @@ public class Model {
 		HashMap<DayPart, Place> schedule = new HashMap<>();
 		schedule.put(DayPart.MONDAY_MORNING, Place.ICT_1);
 		schedule.put(DayPart.MONDAY_AFTERNOON,Place.ICT_8);
-		schedule.put(DayPart.THURSDAY_MORNING, Place.ICT_12);
+		schedule.put(DayPart.TUESDAY_AFTERNOON, Place.ECDL_5);
 
 		HashMap<DayPart, Place> schedule1 = new HashMap<>();
 		schedule1.put(DayPart.WEDNESDAY_AFTERNOON, Place.ICT_1);
@@ -68,8 +68,8 @@ public class Model {
 		schedule1.put(DayPart.FRIDAY_AFTERNOON, Place.ICT_13);
 		
 		studentList.setAll(
-		new Student("Piet", "Pietersen", LocalDate.of(2018,3,19),LocalDate.of(2025,3,19), schedule));
-		new Student("Jan", "Jansen", LocalDate.of(2018,3,25),LocalDate.of(2025,3,25), schedule1);
+		new Student("Piet", "Pietersen", LocalDate.of(2018,3,19), LocalDate.of(2025,3,19), schedule));
+		new Student("Jan", "Jansen", LocalDate.of(2018,3,25), LocalDate.MAX, schedule1);
 			
 		;
 	}//  end method loadDat

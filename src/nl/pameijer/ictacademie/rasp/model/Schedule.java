@@ -53,5 +53,35 @@ public class Schedule {
 	public LocalDate getEndDate() {
 		return endDate;
 	}
+	
+	/**
+	 * Test if a given date is within the period of this schedule.
+	 * So if true, the date should not be before the startDate of the schedule
+	 * and not after the endDate.
+	 * @return  true if this date is within this schedule, false if not
+	 */
+	public boolean isDateWithinSchedule(LocalDate date) {
+		if ( (!date.isBefore(startDate)) && (!date.isAfter(endDate)) ) {
+			return true;
+		}
+		else {
+			return false;
+		}	
+	}
+	
+	/**
+	 * Is a certain dayPart in this schedule or not? 
+	 */
+	public boolean isDayPartInSchedule(DayPart dayPart) {
+		
+		boolean dayPartFound = false;
+		
+		for (DayPart part: schedule.keySet()) {
+			if (part == dayPart) {
+				dayPartFound = true;
+			}
+		}
+		return dayPartFound;
+	}
 
 }

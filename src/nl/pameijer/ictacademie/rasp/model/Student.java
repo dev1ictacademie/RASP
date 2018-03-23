@@ -43,7 +43,30 @@ public class Student {
 	}
 	
 	/**
+	 * Is this student expected at a certain date and day part? 
+	 * @param   date    the applicable date
+	 * @param   dayPart the applicable dayPart
+	 * @return  true if student is expected to be attending at this date and
+	 *          dayPart, false if not
+	 */
+	public boolean isExpected(LocalDate date, DayPart dayPart) {
+		
+		boolean isExpected = false;
+		
+		for (Schedule schedule: schedules) {
+			if (schedule.isDateWithinSchedule(date) && 
+					schedule.isDayPartInSchedule(dayPart)) {
+				isExpected = true;
+			}
+		}
+		return isExpected;
+	}
+	
+	/**
 	 * Get the current schedule (always the last from the list).
+	 * Note (23-03-2018) THIS IS FALSE!!! consider future schedules..
+	 * Method needs to be reworked and needs to consider current date.
+	 * (currently also throws ArrayIndexOutOfBoundsException if size == 0)
 	 */
 	public Schedule getCurrentSchedule() {
 		return schedules.get(schedules.size() - 1);

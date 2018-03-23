@@ -192,6 +192,7 @@ public class MonthInputView extends Application {
 					txt.setStyle(" -fx-border-color: black black black black");
 
 					// set even rows of text fields to a different color
+					//TODO write methods for schedule for Student true or false
 					if(row % 2 == 0){
 						txt.getStyleClass().add("rowColor");
 					}

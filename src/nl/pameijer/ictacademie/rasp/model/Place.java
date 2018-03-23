@@ -40,28 +40,21 @@ public enum Place {
 	 */
 	private void assignSpot() {
 
-		for (Place place: Place.values()) {
-
-			int underscore = place.name().indexOf("_");
-		 	spot = Integer.parseInt(place.name().substring(underscore + 1,
-		 			place.name().length()));
-
-		}
+		int underscore = this.name().indexOf("_");
+	 	spot = Integer.parseInt(this.name().substring(underscore + 1,
+	 			this.name().length()));
 	}
 	
 	/**
 	 * Assign a string describing the type of this place (i.e. ICT or ECDL).
 	 * Do this by 'looking' at the string before the underscore.
 	 * Get the particular enum's name (exactly as declared) and then strip the
-	 * underscore from this string and everything thereafter.
+	 * underscore (and everything thereafter) from this string.
 	 */
 	private void assignType() {
-		for (Place place: Place.values()) {
-
-			int underscore = place.name().indexOf("_");
-			type = place.name().substring(0, underscore);
-			
-		}
+		
+			int underscore = this.name().indexOf("_");
+			type = this.name().substring(0, underscore);
 	}
 }
 
