@@ -7,7 +7,7 @@ package nl.pameijer.ictacademie.rasp.model;
  * seating places.
  * 
  * @author ttimmermans
- * @version 02-03-2018
+ * @version 23-03-2018
  */
 
 public enum Place {
@@ -21,6 +21,7 @@ public enum Place {
 	SERVICEDESK_1, SERVICEDESK_2, SERVICEDESK_3;
 	
 	private int spot; // indicates the numbered workplace/seating place
+	private String type; // a string describing the type of this place
 	
 	/**
 	 * Constructor. Assign spot numbers (ICT_2 Should have spot number 2, 
@@ -28,6 +29,7 @@ public enum Place {
 	 */
 	private Place() {
 		assignSpot();
+		assignType();
 	}
 	
 	/**
@@ -42,6 +44,21 @@ public enum Place {
 			int underscore = place.name().indexOf("_");
 		 	spot = Integer.parseInt(place.name().substring(underscore + 1,
 		 			place.name().length()));
+			
+		}
+	}
+	
+	/**
+	 * Assign a string describing the type of this place (i.e. ICT or ECDL).
+	 * Do this by 'looking' at the string before the underscore.
+	 * Get the particular enum's name (exactly as declared) and then strip the
+	 * underscore from this string and everything thereafter.
+	 */
+	private void assignType() {
+		for (Place place: Place.values()) {
+
+			int underscore = place.name().indexOf("_");
+			type = place.name().substring(0, underscore);
 			
 		}
 	}

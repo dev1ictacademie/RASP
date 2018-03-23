@@ -19,6 +19,7 @@ public class TestDatedDayParts {
 	public static void main(String args[]) {
 		
 		LocalDate now = LocalDate.now();
+		
 		System.out.println("now: " + now);
 
 	 	int lengthOfMonth = now.lengthOfMonth();
