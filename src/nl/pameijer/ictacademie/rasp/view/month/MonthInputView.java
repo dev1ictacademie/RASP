@@ -23,6 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import nl.pameijer.ictacademie.rasp.model.DayPart;
 import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.model.Student;
 
@@ -55,7 +56,7 @@ public class MonthInputView extends Application {
 
 		// Model
 		model = new Model();
-		model.loadData();
+		model.loadDataWithSchedule();
 		// calendar view with Boxes
 		calHeaderView = new CalendarHeaderView(dateModel);
 		root.getChildren().add(createComboBoxes());
@@ -160,32 +161,37 @@ public class MonthInputView extends Application {
 		// TODO method for setting bottom border for textfields from schedules/dayparts
 		ObservableList<Student> studentList = model.getStudentList();
 
-		for (int row = 1; row < model.getStudentList().size(); row++) {
+		for (int row = 0; row < model.getStudentList().size(); row++) {
+
 			// id
-			Label idLabel = new Label("" + row);
+			Label idLabel = new Label("" + (row+1) );
 			// set even rows of id label to a different color
 			if(row % 2 == 0){
 				idLabel.getStyleClass().add("rowColor");
 			}
 
-			createLabels(idLabel, grid, row, 0);
+			createLabels(idLabel, grid, row+1, 0);
 			// firstname
-			Label firstNameLabel = new Label(studentList.get(row - 1).getFName());
-			createLabels(firstNameLabel, grid, row, 1);
+			Label firstNameLabel = new Label(studentList.get(row ).getFName());
+			createLabels(firstNameLabel, grid, row+1, 1);
 			// lastname
-			Label lastNameLabel = new Label(studentList.get(row - 1).getLName());
-			createLabels(lastNameLabel, grid, row, 2);
+			Label lastNameLabel = new Label(studentList.get(row ).getLName());
+			createLabels(lastNameLabel, grid, row+1, 2);
+			int counter = 0;
+			for (int i = 0,  j = 0; i < daysOfMonth * 2; i++) {
+				if(i%2==0){
+					counter++;
+				}
 
-			for (int i = 0; i < daysOfMonth * 2; i++) {
 				if (dayNames[i / 2].equals("za") || dayNames[i / 2].equals("zo")) {
 					Pane pane = new Pane();
 					pane.setPrefWidth(10);
 					pane.getStyleClass().add("weekend");
-					grid.add(pane, i + 3, row, 1, studentList.size());
+					grid.add(pane, i + 3, row+1, 1, studentList.size());
 					//grid.add(pane, i + 3, row);
 				} else {
 					TextField txt = new TextField();
-					txt.setId(" " + (row - 1));
+					txt.setId(" " + (row+1));
 					txt.setPrefWidth(30);
 					txt.setPrefHeight(30);
 					txt.getStyleClass().add("textfield");
@@ -193,11 +199,15 @@ public class MonthInputView extends Application {
 
 					// set even rows of text fields to a different color
 					//TODO write methods for schedule for Student true or false
-					if(row % 2 == 0){
-						txt.getStyleClass().add("rowColor");
+					//there are 10 dayparts in a week so j is the value of that part
+					if(j <9){
+						j++;
+					}else {
+						j=0;
 					}
-
-					if(i % 2 == 1){
+					System.out.println(" j" + j + "DayPart: " +getDaypart(j) + "counter: " + counter);
+					if(studentList.get(row).isExpected(LocalDate.of(dateModel.getYear(), dateModel.getMonth(), counter),getDaypart(j))){
+						txt.getStyleClass().add("rowColor");
 						txt.setStyle(" -fx-border-color: black black red black");
 
 					}
@@ -215,7 +225,7 @@ public class MonthInputView extends Application {
 						}
 					});
 
-					grid.add(txt, i + 3, row);
+					grid.add(txt, i + 3, row+1);
 
 				}
 
@@ -223,6 +233,50 @@ public class MonthInputView extends Application {
 
 		}
 	}// end method createRowsUserTextFields
+
+
+
+	public DayPart getDaypart(int value){
+
+		DayPart dayPart = null;
+
+		switch (value) {
+		case 0:
+			dayPart = DayPart.MONDAY_MORNING;
+			break;
+		case 1:
+			dayPart = DayPart.MONDAY_AFTERNOON;
+			break;
+		case 2:
+			dayPart = DayPart.TUESDAY_MORNING;
+			break;
+		case 3:
+			dayPart = DayPart.TUESDAY_AFTERNOON;
+			break;
+		case 4:
+			dayPart = DayPart.WEDNESDAY_MORNING;
+			break;
+		case 5:
+			dayPart = DayPart.WEDNESDAY_AFTERNOON;
+			break;
+		case 6:
+			dayPart = DayPart.THURSDAY_MORNING;
+			break;
+		case 7:
+			dayPart = DayPart.THURSDAY_AFTERNOON;
+			break;
+		case 8:
+			dayPart = DayPart.FRIDAY_MORNING;
+			break;
+		case 9:
+			dayPart = DayPart.FRIDAY_AFTERNOON;
+		default:
+			break;
+		}
+
+
+		return dayPart;
+	}
 
 	/**
 	 * add label to gridPane

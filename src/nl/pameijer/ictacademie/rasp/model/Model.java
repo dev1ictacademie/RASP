@@ -54,9 +54,9 @@ public class Model {
 		new Student("Klaas" , "Graaf, de")
 		);
 	}//  end method loadData
-	
+
 	public void loadDataWithSchedule(){
-		
+
 		HashMap<DayPart, Place> schedule = new HashMap<>();
 		schedule.put(DayPart.MONDAY_MORNING, Place.ICT_1);
 		schedule.put(DayPart.MONDAY_AFTERNOON,Place.ICT_8);
@@ -66,12 +66,15 @@ public class Model {
 		schedule1.put(DayPart.WEDNESDAY_AFTERNOON, Place.ICT_1);
 		schedule1.put(DayPart.THURSDAY_MORNING, Place.ICT_10);
 		schedule1.put(DayPart.FRIDAY_AFTERNOON, Place.ICT_13);
-		
+
 		studentList.setAll(
-		new Student("Piet", "Pietersen", LocalDate.of(2018,3,19), LocalDate.of(2025,3,19), schedule));
-		new Student("Jan", "Jansen", LocalDate.of(2018,3,25), LocalDate.MAX, schedule1);
-			
-		;
+		new Student("Piet", "Pietersen", LocalDate.of(2018,3,3), LocalDate.MAX, schedule),
+		new Student("Ton", "Hout , van", LocalDate.of(2018,3,15), LocalDate.MAX, schedule1),
+		new Student("Jan", "Jansen", LocalDate.of(2018,3,7), LocalDate.MAX, schedule),
+		new Student("Paula", "Aardbei", LocalDate.of(2018,3,5), LocalDate.MAX, schedule1),
+		new Student("Karel", "Appel", LocalDate.of(2018,3,1), LocalDate.MAX, schedule)
+		);
+
 	}//  end method loadDat
 
 }
