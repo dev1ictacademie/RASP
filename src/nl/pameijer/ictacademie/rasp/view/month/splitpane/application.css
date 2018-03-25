@@ -1,0 +1,29 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+ .label {
+	-fx-font-style: italic ;
+	-fx-background-color:#1C68AC ; /*base color paletton.com */
+	-fx-text-fill: #fff;
+	-fx-border-color: #073E70 ;
+ }
+ .hbox {
+ 	-fx-border-color: red;
+ 	-fx-border-width: 3.0px;
+   	}
+ .vbox {
+ 	-fx-border-color: green;
+ 	-fx-border-width: 3.0px;
+ }
+
+ .userlabel{
+	-fx-font-style: normal ;
+	-fx-background-color: #fff;
+	-fx-text-fill: black;
+}
+ .weekend {
+	-fx-background-color: #1C68AC;
+	-fx-border-color: #1C68AC;
+}
+ .pane{
+	-fx-background-color: #1C68AC;
+}
