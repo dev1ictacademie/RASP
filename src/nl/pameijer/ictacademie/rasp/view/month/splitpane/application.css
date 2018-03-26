@@ -27,3 +27,7 @@
  .pane{
 	-fx-background-color: #1C68AC;
 }
+
+.textfield{
+	-fx-font-smoothing-type: lcd;
+}

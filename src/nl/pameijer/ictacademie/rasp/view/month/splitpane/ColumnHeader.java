@@ -109,7 +109,7 @@ public class ColumnHeader {
 
 			}
 
-	public void createUserColumnHeader(GridPane grid){
+	public void createStudentColumnHeader(GridPane grid){
 
 		// grid
 		// set first three columns
@@ -118,16 +118,16 @@ public class ColumnHeader {
 		grid.getColumnConstraints().add(new ColumnConstraints(150));
 
 		Label idLabel = new Label("id");
-		idLabel.setPrefHeight(50);
-		createLabels(idLabel, grid, 0, 0);
-
+		idLabel.setPrefHeight(54);
+		createLabels(idLabel, grid);
+		grid.add(idLabel, 0, 0);
 		Label firstname = new Label("Voornaam");
-		createLabels(firstname, grid, 1, 0);
-
+		createLabels(firstname, grid);
+		grid.add(firstname, 1, 0);
 		Label lastname = new Label("Achternaam");
-		createLabels(lastname, grid, 2, 0);
-
-		grid.getChildren().addAll(idLabel, firstname, lastname);
+		createLabels(lastname, grid);
+		grid.add(lastname, 2, 0);
+		
 
 	}
 	/**
@@ -137,8 +137,8 @@ public class ColumnHeader {
 	 * @param row
 	 * @param col
 	 */
-	public void createLabels(Label label, GridPane grid, int col, int row) {
-			GridPane.setConstraints(label, col, row);
+	public void createLabels(Label label, GridPane grid) {
+			
 			GridPane.setFillWidth(label, true);
 			GridPane.setFillHeight(label, true);
 			label.setMaxWidth(Double.MAX_VALUE);

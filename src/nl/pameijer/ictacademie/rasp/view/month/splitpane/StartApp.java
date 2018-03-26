@@ -17,9 +17,10 @@ public class StartApp extends Application{
 
         Controller controller = new Controller(model);
 
-		Scene scene = new Scene(controller.getView().asParent(), 1600, 600);
+		Scene scene = new Scene(controller.getView().asParent(), 1600, 800);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    primaryStage.setScene(scene);
+	    primaryStage.setResizable(false);
 	    primaryStage.show();
 
 

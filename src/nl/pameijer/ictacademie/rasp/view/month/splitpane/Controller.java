@@ -34,16 +34,22 @@ public class Controller  {
 		yearProperty.bind(dateModel.yearProperty());
 		monthProperty.bind(dateModel.monthProperty());
 		setListeners();
+		setStudents();
+		setDayTextFields();
 	}
 
 	public void setListeners(){
 		yearProperty.addListener( (observable , oldvalue , newvalue) -> {
 			System.out.println(" In controller year");
 			view.clearRefreshHeader();
+			setStudents();
+			setDayTextFields();
 		});
 		monthProperty.addListener( (observable , oldvalue , newvalue) -> {
 			System.out.println("in controller month" + monthProperty.getValue());
 			view.clearRefreshHeader();
+			setStudents();
+			setDayTextFields();
 		});
 	}
 
@@ -54,10 +60,12 @@ public class Controller  {
 		return view;
 	}
 
+	public void setStudents() {
+		view.fillStudents(model.getStudentList(), view.getGridStudents());
+	}
 
-
-
-
-
+	public void setDayTextFields() {
+		view.fillDayParts(model.getStudentList(), view.getGridDays());
+	}
 
 }
