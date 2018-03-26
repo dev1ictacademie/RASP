@@ -98,7 +98,7 @@ public class ColumnHeader {
 				VBox vbHeaders = new VBox();
 				// set columnheaders
 				ArrayList<VBox> list = vBoxDayList();
-				int col = 3;
+				int col = 0;
 				for (int i = 0; i < list.size(); i++) {
 					VBox label = list.get(i);
 					grid.add(label, col, 0, 2, 1);

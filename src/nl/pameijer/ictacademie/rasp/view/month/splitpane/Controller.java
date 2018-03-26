@@ -14,7 +14,6 @@ import nl.pameijer.ictacademie.rasp.model.Model;
  */
 public class Controller  {
 
-
 	private MonthInputView view;
 	private Model model;
 	private DateModel dateModel;
@@ -31,6 +30,7 @@ public class Controller  {
 		model.loadData();
 		//view
 		view = new MonthInputView(dateModel);
+		//FIXME sometimes loses the connection/bind
 		yearProperty.bind(dateModel.yearProperty());
 		monthProperty.bind(dateModel.monthProperty());
 		setListeners();
@@ -40,7 +40,7 @@ public class Controller  {
 
 	public void setListeners(){
 		yearProperty.addListener( (observable , oldvalue , newvalue) -> {
-			System.out.println(" In controller year");
+			System.out.println(" In controller year" +yearProperty.getValue());
 			view.clearRefreshHeader();
 			setStudents();
 			setDayTextFields();

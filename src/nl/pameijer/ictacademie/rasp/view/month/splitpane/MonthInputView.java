@@ -18,6 +18,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.model.Student;
@@ -35,16 +36,19 @@ public class MonthInputView {
 	private GridPane gridStudents;
 	private GridPane gridDays;
 	private VBox vBoxCombo;
-
+	private SplitPane splitPaneDays;
 
 	public MonthInputView(DateModel dateModel) {
 		this.dateModel = dateModel;
 		// scrollpane
 		scrollPaneStudents = new ScrollPane();
 		scrollPaneDays = new ScrollPane();
-		//splitpanes
+		// splitpanes
 		splitPane = new SplitPane();
 		splitPane.setDividerPositions(0.15f);
+		//splitpane for horizontal divider
+		//TODO implement splitpane in splitpane
+		splitPaneDays = new SplitPane();
 		// Box to hold views
 		root = new VBox();
 		vBoxStudents = new VBox();
@@ -56,37 +60,36 @@ public class MonthInputView {
 		columnHeader = new ColumnHeader(dateModel);
 		setcomboBoxes();
 		setGridPanes();
-		
-		root.getChildren().addAll(vBoxCombo ,splitPane);
+
+		root.getChildren().addAll(vBoxCombo, splitPane);
 	}
 
 	public void setcomboBoxes() {
-		//comboboxes
+		// comboboxes
 		vBoxCombo = new VBox();
 		vBoxCombo.getChildren().addAll(getMonthComboBox(), getYearComboBox());
 	}
-	public void setGridPanes(){
-		//grid for students
+
+	public void setGridPanes() {
+		// grid for students
 		gridStudents = new GridPane();
 		columnHeader.createStudentColumnHeader(gridStudents);
 		vBoxStudents.getChildren().add(gridStudents);
-		//grid for days
+		// grid for days
 		gridDays = new GridPane();
-		//gridDays.setGridLinesVisible(true);
+		// gridDays.setGridLinesVisible(true);
 		columnHeader.createColumnHeaderDays(gridDays);
 		vBoxDays.getChildren().add(gridDays);
 		splitPane.getItems().clear();
 		splitPane.setDividerPositions(0.15f);
-		//splitPane.getItems().addAll(gridStudents , gridDays);
-		splitPane.getItems().addAll(scrollPaneStudents , scrollPaneDays);
+		// splitPane.getItems().addAll(gridStudents , gridDays);
+		splitPane.getItems().addAll(scrollPaneStudents, scrollPaneDays);
 	}
-
 
 	public void clearRefreshHeader() {
 
 		gridStudents.getChildren().clear();
 		gridDays.getChildren().clear();
-		//root.getChildren().clear();
 		setGridPanes();
 
 	}
@@ -123,7 +126,7 @@ public class MonthInputView {
 		}
 		yearBox.setItems(years);
 		yearBox.setValue(dateModel.getYear());
-		yearBox.setOnAction(value ->{
+		yearBox.setOnAction(value -> {
 			int year = yearBox.getSelectionModel().getSelectedItem();
 			dateModel.setYear(year);
 			System.out.println("yearbox changed: " + year);
@@ -135,23 +138,25 @@ public class MonthInputView {
 
 	/**
 	 * Fills the grid with id, first name and last name labels
+	 * 
 	 * @param students
 	 * @param grid
 	 */
 	public void fillStudents(ObservableList<Student> students, GridPane grid) {
-		for(int i = 0; i < students.size(); i++){
+		for (int i = 0; i < students.size(); i++) {
 			Label idLabel = new Label();
+			idLabel.setPrefHeight(30);
 			idLabel.getStyleClass().add("userlabel");
 			idLabel.setText("" + (i + 1));
 			grid.add(idLabel, 0, i + 1);
 			columnHeader.createLabels(idLabel, grid);
-			//first name
+			// first name
 			Label firstName = new Label();
 			firstName.setText(students.get(i).getFName());
 			firstName.getStyleClass().add("userlabel");
 			grid.add(firstName, 1, i + 1);
 			columnHeader.createLabels(firstName, grid);
-			//last name
+			// last name
 			Label lastName = new Label();
 			lastName.setText(students.get(i).getLName());
 			lastName.getStyleClass().add("userlabel");
@@ -167,38 +172,48 @@ public class MonthInputView {
 	 * @param grid
 	 */
 	public void fillDayParts(ObservableList<Student> students, GridPane grid) {
-		for(int i = 0; i < students.size(); i++){
-			
-			for(int j = 0; j < dateModel.getLengthOfMonth() * 2; j++){
-				TextField txt = new TextField();
-				txt.setId("" + (i + 1));
-				txt.setPrefSize(30, 30);
-				txt.getStyleClass().add("textfield");
-				txt.setStyle("-fx-border-color: black black black black");
-				
-				txt.textProperty().addListener(new ChangeListener<String>() {
-	
-					@Override
-					public void changed(ObservableValue<? extends String> observable, String oldValue,
-							String newValue) {
-						if (!(newValue.equals("x") || newValue.equals("z") || newValue.equals("v")
-								|| newValue.equals("a"))) {
-							txt.setText("");
+		String[] dayNames = dateModel.dayNameList();
+		for (int row = 0; row < students.size(); row++) {
+			for (int col = 0; col < dateModel.getLengthOfMonth() * 2; col++) {
+				// weekend
+				if (dayNames[col/ 2].equals("za") || dayNames[col / 2].equals("zo")) {
+					Pane pane = new Pane();
+					pane.setPrefWidth(10);
+					pane.getStyleClass().add("weekend");
+					grid.add(pane, col, row + 1, 1, students.size());
+					// grid.add(pane, i + 3, row);
+				} else {
+					TextField txt = new TextField();
+					txt.setId("" + (row + 1));
+					
+					txt.setPrefSize(30, 30);
+					txt.getStyleClass().add("textfield");
+					txt.setStyle("-fx-border-color: black black black black");
+					
+					txt.textProperty().addListener(new ChangeListener<String>() {
+
+						@Override
+						public void changed(ObservableValue<? extends String> observable, String oldValue,
+								String newValue) {
+							if (!(newValue.equals("x") || newValue.equals("z") || newValue.equals("v")
+									|| newValue.equals("a"))) {
+								txt.setText("");
+							}
+
 						}
-	
-					}
-				});
-				System.out.println("j");
-				grid.add(txt, j, i + 1);
+					});
+					
+					grid.add(txt, col, row + 1);
+				}
+
 			}
-			
 		}
 	}// end method fillDayParts
 
 	public GridPane getGridStudents() {
 		return gridStudents;
 	}
-	
+
 	public GridPane getGridDays() {
 		return gridDays;
 	}
