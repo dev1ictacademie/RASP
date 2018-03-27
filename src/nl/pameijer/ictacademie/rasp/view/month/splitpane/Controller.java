@@ -30,7 +30,7 @@ public class Controller  {
 		model.loadData();
 		//view
 		view = new MonthInputView(dateModel);
-		//FIXME sometimes loses the connection/bind
+		//FIXME sometimes loses the connection/bind maybe garbage collected
 		yearProperty.bind(dateModel.yearProperty());
 		monthProperty.bind(dateModel.monthProperty());
 		setListeners();

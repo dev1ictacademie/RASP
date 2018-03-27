@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -26,10 +27,10 @@ import nl.pameijer.ictacademie.rasp.model.Student;
 public class MonthInputView {
 
 	private final VBox vBoxStudents;
-	private ScrollPane scrollPaneStudents;
+	private ScrollPane sStudents;
 	private DateModel dateModel;
 	private ColumnHeader columnHeader;
-	private ScrollPane scrollPaneDays;
+	private ScrollPane sDaysTextFields;
 	private VBox vBoxDays;
 	private VBox root;
 	private SplitPane splitPane;
@@ -37,26 +38,34 @@ public class MonthInputView {
 	private GridPane gridDays;
 	private VBox vBoxCombo;
 	private SplitPane splitPaneDays;
+	private ScrollPane sPaneHeader;
+	private ScrollPane sPaneDaysTextFields;
 
 	public MonthInputView(DateModel dateModel) {
 		this.dateModel = dateModel;
 		// scrollpane
-		scrollPaneStudents = new ScrollPane();
-		scrollPaneDays = new ScrollPane();
+		sStudents = new ScrollPane();
+		sDaysTextFields = new ScrollPane();
+		sPaneHeader = new ScrollPane();
+		sPaneDaysTextFields = new ScrollPane();
+		
 		// splitpanes
 		splitPane = new SplitPane();
 		splitPane.setDividerPositions(0.15f);
 		//splitpane for horizontal divider
 		//TODO implement splitpane in splitpane
 		splitPaneDays = new SplitPane();
+		splitPaneDays.setOrientation(Orientation.HORIZONTAL);
 		// Box to hold views
 		root = new VBox();
 		vBoxStudents = new VBox();
 		vBoxDays = new VBox();
-		scrollPaneStudents.setContent(vBoxStudents);
-		scrollPaneStudents.setHbarPolicy(ScrollBarPolicy.NEVER);
-		scrollPaneStudents.setMinWidth(290);
-		scrollPaneDays.setContent(vBoxDays);
+		sStudents.setContent(vBoxStudents);
+		sStudents.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		sStudents.setMinWidth(290);
+		sDaysTextFields.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		sDaysTextFields.setContent(vBoxDays);
+		sStudents.vvalueProperty().bindBidirectional(sDaysTextFields.vvalueProperty());
 		columnHeader = new ColumnHeader(dateModel);
 		setcomboBoxes();
 		setGridPanes();
@@ -69,6 +78,9 @@ public class MonthInputView {
 		vBoxCombo = new VBox();
 		vBoxCombo.getChildren().addAll(getMonthComboBox(), getYearComboBox());
 	}
+	public void setHeaders(){
+		
+	}
 
 	public void setGridPanes() {
 		// grid for students
@@ -77,13 +89,13 @@ public class MonthInputView {
 		vBoxStudents.getChildren().add(gridStudents);
 		// grid for days
 		gridDays = new GridPane();
-		// gridDays.setGridLinesVisible(true);
+
 		columnHeader.createColumnHeaderDays(gridDays);
 		vBoxDays.getChildren().add(gridDays);
 		splitPane.getItems().clear();
 		splitPane.setDividerPositions(0.15f);
 		// splitPane.getItems().addAll(gridStudents , gridDays);
-		splitPane.getItems().addAll(scrollPaneStudents, scrollPaneDays);
+		splitPane.getItems().addAll(sStudents, sDaysTextFields);
 	}
 
 	public void clearRefreshHeader() {
@@ -138,7 +150,7 @@ public class MonthInputView {
 
 	/**
 	 * Fills the grid with id, first name and last name labels
-	 * 
+	 *
 	 * @param students
 	 * @param grid
 	 */
@@ -185,11 +197,12 @@ public class MonthInputView {
 				} else {
 					TextField txt = new TextField();
 					txt.setId("" + (row + 1));
-					
+
 					txt.setPrefSize(30, 30);
 					txt.getStyleClass().add("textfield");
 					txt.setStyle("-fx-border-color: black black black black");
-					
+
+
 					txt.textProperty().addListener(new ChangeListener<String>() {
 
 						@Override
@@ -202,7 +215,7 @@ public class MonthInputView {
 
 						}
 					});
-					
+
 					grid.add(txt, col, row + 1);
 				}
 
