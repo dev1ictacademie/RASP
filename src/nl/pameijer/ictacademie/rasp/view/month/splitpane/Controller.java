@@ -2,9 +2,9 @@ package nl.pameijer.ictacademie.rasp.view.month.splitpane;
 
 import java.time.LocalDate;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import nl.pameijer.ictacademie.rasp.model.Model;
 
 /**
@@ -14,49 +14,33 @@ import nl.pameijer.ictacademie.rasp.model.Model;
  *
  *
  */
-public class Controller  {
+public class Controller extends ActionEvent {
 
 	private MonthInputView view;
 	private Model model;
 	private DateModel dateModel;
-	private SimpleIntegerProperty yearProperty = new SimpleIntegerProperty();
-	private SimpleIntegerProperty monthProperty = new SimpleIntegerProperty();
 
 
-	public Controller(Model model){
-		//this month
-		LocalDate date =  LocalDate.now();
+	public Controller(Model model) {
+		// this month
+		LocalDate date = LocalDate.now();
 		dateModel = new DateModel(date.getYear(), date.getMonthValue());
-		//model
+		// model
 		this.model = model;
-		model.loadData();
-		//view
+		model.loadDataWithSchedule();
+		// view
 		view = new MonthInputView(dateModel);
-		//FIXME sometimes loses the connection/bind maybe garbage collected
-		yearProperty.bind(dateModel.yearProperty());
+
+		// FIXME sometimes loses the connection/bind maybe garbage collected
 		MyChangeListener myChangeListener = new MyChangeListener();
-		yearProperty.addListener(myChangeListener);
-		monthProperty.bind(dateModel.monthProperty());
-		monthProperty.addListener(myChangeListener);
-		//setListeners();
+		dateModel.yearProperty().addListener(myChangeListener);
+		dateModel.monthProperty().addListener(myChangeListener);
 		setStudents();
 		setDayTextFields();
+
 	}
 
-	public void setListeners(){
-		yearProperty.addListener( (observable , oldvalue , newvalue) -> {
-			System.out.println(" In controller year" +yearProperty.getValue());
-			view.clearRefreshHeader();
-			setStudents();
-			setDayTextFields();
-		});
-		monthProperty.addListener( (observable , oldvalue , newvalue) -> {
-			System.out.println("in controller month" + monthProperty.getValue());
-			view.clearRefreshHeader();
-			setStudents();
-			setDayTextFields();
-		});
-	}
+
 
 	/**
 	 * @return the view
@@ -72,16 +56,23 @@ public class Controller  {
 	public void setDayTextFields() {
 		view.fillDayParts(model.getStudentList(), view.getGridDays());
 	}
-	
-	private class MyChangeListener implements ChangeListener
-	{
+
+	public void setDaysHeader(){
+		view.setDaysHeader();
+	}
+
+	private class MyChangeListener implements ChangeListener {
 
 		@Override
 		public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 			System.out.println(" In controller " + newValue);
+
 			view.clearRefreshHeader();
+			setDaysHeader();
 			setStudents();
 			setDayTextFields();
+
 		}
 	}
+
 }

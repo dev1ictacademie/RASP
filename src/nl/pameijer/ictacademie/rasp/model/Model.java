@@ -67,12 +67,22 @@ public class Model {
 		schedule1.put(DayPart.THURSDAY_MORNING, Place.ICT_10);
 		schedule1.put(DayPart.FRIDAY_AFTERNOON, Place.ICT_13);
 
+		HashMap<DayPart, Place> schedule2 = new HashMap<>();
+		schedule1.put(DayPart.MONDAY_MORNING, Place.ICT_3);
+		schedule1.put(DayPart.MONDAY_AFTERNOON, Place.ICT_9);
+		schedule1.put(DayPart.FRIDAY_MORNING, Place.ICT_11);
+
 		studentList.setAll(
 		new Student("Piet", "Pietersen", LocalDate.of(2018,3,3), LocalDate.MAX, schedule),
 		new Student("Ton", "Hout , van", LocalDate.of(2018,3,15), LocalDate.MAX, schedule1),
 		new Student("Jan", "Jansen", LocalDate.of(2018,3,7), LocalDate.MAX, schedule),
 		new Student("Paula", "Aardbei", LocalDate.of(2018,3,5), LocalDate.MAX, schedule1),
-		new Student("Karel", "Appel", LocalDate.of(2018,3,1), LocalDate.MAX, schedule)
+		new Student("Karel", "Appel", LocalDate.of(2018,3,1), LocalDate.MAX, schedule2),
+		new Student("Hans", "Andersen", LocalDate.of(2018,3,3), LocalDate.MAX, schedule),
+		new Student("Kim", "Hulst, van", LocalDate.of(2018,3,15), LocalDate.MAX, schedule2),
+		new Student("John", "Bouwer", LocalDate.of(2018,3,7), LocalDate.MAX, schedule),
+		new Student("Pamela", "Negi", LocalDate.of(2018,3,5), LocalDate.MAX, schedule1),
+		new Student("Thijs", "Steen, van der", LocalDate.of(2018,3,1), LocalDate.MAX, schedule)
 		);
 
 	}//  end method loadDat

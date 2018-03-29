@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 
 import javafx.beans.property.SimpleIntegerProperty;
+import nl.pameijer.ictacademie.rasp.model.DayPart;
 
 /**
  * DateModel sets a date and set the properties. Holds length of month and weekday names
@@ -104,9 +105,8 @@ public class DateModel {
 		for(int i =0 ; i<getLengthOfMonth();i++){
 			dayNames[i] = dayOfWeek(i+1);
 		}
-
-
 		return dayNames;
 	}
+
 
 }

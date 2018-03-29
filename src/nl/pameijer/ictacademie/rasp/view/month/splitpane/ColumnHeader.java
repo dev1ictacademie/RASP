@@ -127,7 +127,7 @@ public class ColumnHeader {
 		Label lastname = new Label("Achternaam");
 		createLabels(lastname, grid);
 		grid.add(lastname, 2, 0);
-		
+
 
 	}
 	/**
@@ -138,7 +138,7 @@ public class ColumnHeader {
 	 * @param col
 	 */
 	public void createLabels(Label label, GridPane grid) {
-			
+
 			GridPane.setFillWidth(label, true);
 			GridPane.setFillHeight(label, true);
 			label.setMaxWidth(Double.MAX_VALUE);
