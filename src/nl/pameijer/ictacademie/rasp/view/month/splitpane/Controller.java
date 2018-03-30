@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import nl.pameijer.ictacademie.rasp.model.Model;
 
 /**
@@ -14,7 +13,7 @@ import nl.pameijer.ictacademie.rasp.model.Model;
  *
  *
  */
-public class Controller extends ActionEvent {
+public class Controller {
 
 	private MonthInputView view;
 	private Model model;
@@ -33,11 +32,12 @@ public class Controller extends ActionEvent {
 
 		// FIXME sometimes loses the connection/bind maybe garbage collected
 		MyChangeListener myChangeListener = new MyChangeListener();
+	
 		dateModel.yearProperty().addListener(myChangeListener);
 		dateModel.monthProperty().addListener(myChangeListener);
 		setStudents();
 		setDayTextFields();
-
+		
 	}
 
 
@@ -71,7 +71,7 @@ public class Controller extends ActionEvent {
 			setDaysHeader();
 			setStudents();
 			setDayTextFields();
-
+			
 		}
 	}
 

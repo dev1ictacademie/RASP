@@ -3,16 +3,10 @@ package nl.pameijer.ictacademie.rasp.view.month.splitpane;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import com.sun.xml.internal.ws.api.server.LazyMOMProvider.Scope;
-import com.sun.xml.internal.ws.message.RootElementSniffer;
-
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
@@ -26,7 +20,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import nl.pameijer.ictacademie.rasp.model.DayPart;
-import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.model.Student;
 
 public class MonthInputView {
