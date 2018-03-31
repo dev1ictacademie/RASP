@@ -1,4 +1,4 @@
-package nl.pameijer.ictacademie.rasp.view.month.splitpane;
+package nl.pameijer.ictacademie.rasp.view.month;
 
 import java.time.LocalDate;
 
@@ -19,7 +19,6 @@ public class Controller {
 	private Model model;
 	private DateModel dateModel;
 
-
 	public Controller(Model model) {
 		// this month
 		LocalDate date = LocalDate.now();
@@ -29,18 +28,14 @@ public class Controller {
 		model.loadDataWithSchedule();
 		// view
 		view = new MonthInputView(dateModel);
-
-		// FIXME sometimes loses the connection/bind maybe garbage collected
+		//setListener
 		MyChangeListener myChangeListener = new MyChangeListener();
-	
 		dateModel.yearProperty().addListener(myChangeListener);
 		dateModel.monthProperty().addListener(myChangeListener);
 		setStudents();
 		setDayTextFields();
-		
+
 	}
-
-
 
 	/**
 	 * @return the view
@@ -57,7 +52,7 @@ public class Controller {
 		view.fillDayParts(model.getStudentList(), view.getGridDays());
 	}
 
-	public void setDaysHeader(){
+	public void setDaysHeader() {
 		view.setDaysHeader();
 	}
 
@@ -71,7 +66,7 @@ public class Controller {
 			setDaysHeader();
 			setStudents();
 			setDayTextFields();
-			
+
 		}
 	}
 

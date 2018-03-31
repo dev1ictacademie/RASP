@@ -1,4 +1,4 @@
-package nl.pameijer.ictacademie.rasp.view.month.splitpane;
+package nl.pameijer.ictacademie.rasp.view.month;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,7 +10,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 
 /**
  * this view is responsible for total header
@@ -92,24 +91,19 @@ public class ColumnHeader {
 		return list;
 	}
 
-	public void createColumnHeaderDays(GridPane grid){
+	public void createColumnHeaderDays(GridPane grid) {
 
-		// vertical box to hold headers
-				VBox vbHeaders = new VBox();
-				// set columnheaders
-				ArrayList<VBox> list = vBoxDayList();
-				int col = 0;
-				for (int i = 0; i < list.size(); i++) {
-					VBox label = list.get(i);
-					grid.add(label, col, 0, 2, 1);
-					col += 2;
-				}
+		ArrayList<VBox> list = vBoxDayList();
+		int col = 0;
+		for (int i = 0; i < list.size(); i++) {
+			VBox label = list.get(i);
+			grid.add(label, col, 0, 2, 1);
+			col += 2;
+		}
 
-				vbHeaders.getChildren().add(grid);
+	}
 
-			}
-
-	public void createStudentColumnHeader(GridPane grid){
+	public void createStudentColumnHeader(GridPane grid) {
 
 		// grid
 		// set first three columns
@@ -128,10 +122,11 @@ public class ColumnHeader {
 		createLabels(lastname, grid);
 		grid.add(lastname, 2, 0);
 
-
 	}
+
 	/**
 	 * add label to gridPane
+	 *
 	 * @param label
 	 * @param grid
 	 * @param row
@@ -139,18 +134,13 @@ public class ColumnHeader {
 	 */
 	public void createLabels(Label label, GridPane grid) {
 
-			GridPane.setFillWidth(label, true);
-			GridPane.setFillHeight(label, true);
-			label.setMaxWidth(Double.MAX_VALUE);
-			label.setMaxHeight(Double.MAX_VALUE);
-			label.setAlignment(Pos.CENTER);
-			label.setPadding(new Insets(0, 0, 0, 5));
-
-
+		GridPane.setFillWidth(label, true);
+		GridPane.setFillHeight(label, true);
+		label.setMaxWidth(Double.MAX_VALUE);
+		label.setMaxHeight(Double.MAX_VALUE);
+		label.setAlignment(Pos.CENTER);
+		label.setPadding(new Insets(0, 0, 0, 5));
 
 	}// end method createLabels
 
-	}
-
-
-
+}

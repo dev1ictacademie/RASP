@@ -3,213 +3,249 @@ package nl.pameijer.ictacademie.rasp.view.month;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import javafx.application.Application;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.geometry.Orientation;
+import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import nl.pameijer.ictacademie.rasp.model.DayPart;
-import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.model.Student;
 
-/**
- * monthview
- *
- * @author devadv
- *
- */
-public class MonthInputView extends Application {
+public class MonthInputView {
 
-	private CalendarHeaderView calHeaderView;
-	private VBox root;
-	private VBox vbHeaders;
 	private DateModel dateModel;
-	private Model model;
-	private Node label;
+	private ColumnHeader columnHeader;
+	// combos
+	private VBox vBoxCombo;
+	// scrollPanes
+	private ScrollPane sStudentsHeader;
+	private ScrollPane sStudents;
+	private ScrollPane sDaysHeader;
+	private ScrollPane sDaysTextFields;
+	// splitpanes
+	private SplitPane splitPane;
+	private SplitPane splitPaneHeaders;
+	private SplitPane splitPaneStudentsTextFields;
+	// gridpanes
+	private GridPane gridStudentsHeader;
+	private GridPane gridStudents;
+	private GridPane gridDaysHeader;
+	private GridPane gridDaysTextFields;
+	private VBox root;
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public MonthInputView(DateModel dateModel) {
+		this.dateModel = dateModel;
 
-		// scrollpane
-		ScrollPane scrollPane = new ScrollPane();
-		// Box to hold views
 		root = new VBox();
-		// Scene
-		Scene scene = new Scene(scrollPane, 1600, 600);
-		// set this month and year to dateModel
-		dateModel = new DateModel(LocalDate.now().getYear(), LocalDate.now().getMonthValue());
-
-		// Model
-		model = new Model();
-		model.loadDataWithSchedule();
-		// calendar view with Boxes
-		calHeaderView = new CalendarHeaderView(dateModel);
-		root.getChildren().add(createComboBoxes());
-		root.getChildren().add(createGridPaneColumns());
-		scrollPane.setContent(root);
-
-		// set CSS
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		primaryStage.setTitle("CalendarHeaderViewTest");
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		// scrollpane
+		sStudentsHeader = new ScrollPane();
+		sStudents = new ScrollPane();
+		sDaysHeader = new ScrollPane();
+		sDaysTextFields = new ScrollPane();
+		// splitpanes
+		splitPane = new SplitPane();
+		splitPane.setDividerPositions(0.15f);
+		splitPane.setOrientation(Orientation.VERTICAL);
+		splitPaneHeaders = new SplitPane();
+		splitPaneHeaders.setOrientation(Orientation.HORIZONTAL);
+		splitPaneHeaders.setDividerPositions(0.21f);
+		splitPaneHeaders.setMinHeight(54);
+		splitPaneHeaders.setMaxHeight(54);
+		splitPaneStudentsTextFields = new SplitPane();
+		splitPaneStudentsTextFields.setOrientation(Orientation.HORIZONTAL);
+		splitPaneStudentsTextFields.setDividerPositions(0.21f);
+		// gridpanes
+		gridStudentsHeader = new GridPane();
+		gridStudents = new GridPane();
+		gridDaysHeader = new GridPane();
+		gridDaysTextFields = new GridPane();
+		// scrollpanes
+		sStudentsHeader.setContent(gridStudentsHeader);
+		sStudentsHeader.setHbarPolicy(ScrollBarPolicy.NEVER);
+		sStudentsHeader.setVbarPolicy(ScrollBarPolicy.NEVER);
+		sStudentsHeader.setMinWidth(290);
+		sStudentsHeader.setMaxWidth(290);
+		sStudents.setContent(gridStudents);
+		sStudents.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		sStudents.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		sStudents.setMinWidth(290);
+		sStudents.setMaxWidth(290);
+		sDaysHeader.setContent(gridDaysHeader);
+		sDaysHeader.setHbarPolicy(ScrollBarPolicy.NEVER);
+		sDaysHeader.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		sDaysTextFields.setContent(gridDaysTextFields);
+		sDaysTextFields.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		sDaysTextFields.setContent(gridDaysTextFields);
+		// bindings
+		sStudents.vvalueProperty().bindBidirectional(sDaysTextFields.vvalueProperty());
+		sDaysHeader.hvalueProperty().bind(sDaysTextFields.hvalueProperty());
+		// comboboxes
+		setcomboBoxes();
+		// columnheader object for studentheader
+		columnHeader = new ColumnHeader(dateModel);
+		columnHeader.createStudentColumnHeader(gridStudentsHeader);
+		//columnHeader.createColumnHeaderDays(gridDaysHeader);
+		// days header
+		setDaysHeader();
+		setSplitPanes();
 
 	}
 
-	public HBox createComboBoxes() {
-		// set comboboxes
-		HBox hb = new HBox();
-		ComboBox<String> comb1 = calHeaderView.getMonthComboBox();
-		// set Listener for monthbox
-		comb1.setOnAction(value -> {
-			int month = comb1.getSelectionModel().getSelectedIndex() + 1;
-			System.out.println("month changed " + (month + 1));
-			dateModel.setMonth(month);
-		});
-		ComboBox<Integer> comb2 = calHeaderView.getYearComboBox();
-		// set Listener for yearbox
-		comb2.setOnAction(value -> {
-			int year = comb2.getSelectionModel().getSelectedItem();
-			System.out.println("year changed " + year);
-			dateModel.setYear(year);
-		});
-		hb.getChildren().add(comb1);
-		hb.getChildren().add(comb2);
-		return hb;
+	public void setcomboBoxes() {
+		// comboboxes
+		vBoxCombo = new VBox();
+		vBoxCombo.getChildren().addAll(getMonthComboBox(), getYearComboBox());
+		root.getChildren().add(vBoxCombo);
+	}
 
+	public void setDaysHeader() {
+		columnHeader.createColumnHeaderDays(gridDaysHeader);
+		System.out.println("setDaysHeader");
+	}
+
+	public void setSplitPanes() {
+		splitPaneHeaders.getItems().addAll(sStudentsHeader, sDaysHeader);
+		splitPaneStudentsTextFields.getItems().addAll(sStudents, sDaysTextFields);
+		splitPane.getItems().addAll(splitPaneHeaders, splitPaneStudentsTextFields);
+		root.getChildren().add(splitPane);
 	}
 
 	public void clearRefreshHeader() {
-		vbHeaders.getChildren().clear();
-		root.getChildren().add(createGridPaneColumns());
+
+		gridStudents.getChildren().clear();
+		gridDaysTextFields.getChildren().clear();
+		gridDaysHeader.getChildren().clear();
 	}
 
+	/**
+	 *
+	 * @return ComboBox months
+	 */
+	public ComboBox<String> getMonthComboBox() {
+		ObservableList<String> months = FXCollections.observableArrayList("januari", "februari", "maart", "april",
+				"mei", "juni", "juli", "augustus", "september", "oktober", "november", "december");
 
+		ComboBox<String> monthBox = new ComboBox<String>(months);
+		monthBox.getSelectionModel().select(LocalDate.now().getMonthValue() - 1);
 
-	private VBox createGridPaneColumns() {
-		// vertical box to hold headers
-		vbHeaders = new VBox();
-		Label gridLabel = new Label("GridPane");
-		vbHeaders.getChildren().add(gridLabel);
-		// grid
-		GridPane grid = new GridPane();
-		grid.setAlignment(Pos.CENTER_LEFT);
-		// set first three columns
-		grid.getColumnConstraints().add(new ColumnConstraints(40));
-		grid.getColumnConstraints().add(new ColumnConstraints(100));
-		grid.getColumnConstraints().add(new ColumnConstraints(150));
+		monthBox.setOnAction(value -> {
+			int month = monthBox.getSelectionModel().getSelectedIndex();
+			dateModel.setMonth(month + 1);
+			System.out.println("monthbox changed: " + (month + 1));
+		});
 
-		Label idLabel = new Label("id");
-		GridPane.setConstraints(idLabel, 0, 0);
-		GridPane.setFillWidth(idLabel, true);
-		GridPane.setFillHeight(idLabel, true);
-		idLabel.setMaxWidth(Double.MAX_VALUE);
-		idLabel.setMaxHeight(Double.MAX_VALUE);
-		idLabel.setAlignment(Pos.CENTER);
+		return monthBox;
 
-		Label firstname = new Label("Voornaam");
-		GridPane.setConstraints(firstname, 1, 0);
-		GridPane.setFillWidth(firstname, true);
-		GridPane.setFillHeight(firstname, true);
-		firstname.setMaxWidth(Double.MAX_VALUE);
-		firstname.setMaxHeight(Double.MAX_VALUE);
-		firstname.setAlignment(Pos.CENTER);
+	}
 
-		Label lastname = new Label("Achternaam");
-		GridPane.setConstraints(lastname, 2, 0);
-		GridPane.setFillWidth(lastname, true);
-		GridPane.setFillHeight(lastname, true);
-		lastname.setMaxWidth(Double.MAX_VALUE);
-		lastname.setMaxHeight(Double.MAX_VALUE);
-		lastname.setAlignment(Pos.CENTER);
-
-		grid.getChildren().addAll(idLabel, firstname, lastname);
-		// set columnheaders
-		ArrayList<VBox> list = calHeaderView.createColumnHeaders();
-		int col = 3;
-		for (int i = 0; i < list.size(); i++) {
-			VBox label = list.get(i);
-			grid.add(label, col, 0, 2, 1);
-			col += 2;
+	/**
+	 *
+	 * @return ComboBox years
+	 */
+	public ComboBox<Integer> getYearComboBox() {
+		ObservableList<Integer> years = FXCollections.observableArrayList();
+		ComboBox<Integer> yearBox = new ComboBox<Integer>();
+		for (int i = 0; i < 25; i++) {
+			years.add(2017 + i);
 		}
-		// create textfields for users
-		createRowsUserTextFields(grid);
+		yearBox.setItems(years);
+		yearBox.setValue(dateModel.getYear());
 
-		vbHeaders.getChildren().add(grid);
-		return vbHeaders;
+		yearBox.setOnAction(value -> {
+			int year = yearBox.getSelectionModel().getSelectedItem();
+			dateModel.setYear(year);
+			System.out.println("yearbox changed: " + year);
+		});
+
+		return yearBox;
+
 	}
 
-	public void createRowsUserTextFields(GridPane grid) {
-		int daysOfMonth = dateModel.getLengthOfMonth();
+	/**
+	 * Fills the grid with id, first name and last name labels
+	 *
+	 * @param students
+	 * @param grid
+	 */
+	public void fillStudents(ObservableList<Student> students, GridPane grid) {
+		for (int i = 0; i < students.size(); i++) {
+			Label idLabel = new Label();
+			idLabel.setPrefHeight(30);
+			idLabel.setMinWidth(40);
+			idLabel.getStyleClass().add("userlabel");
+			idLabel.setText("" + (i + 1));
+			grid.add(idLabel, 0, i + 1);
+			columnHeader.createLabels(idLabel, grid);
+			// first name
+			Label firstName = new Label();
+			firstName.setMinWidth(100);
+			firstName.setText(students.get(i).getFName());
+			firstName.getStyleClass().add("userlabel");
+			grid.add(firstName, 1, i + 1);
+			columnHeader.createLabels(firstName, grid);
+			// last name
+			Label lastName = new Label();
+			lastName.setMinWidth(150);
+			lastName.setText(students.get(i).getLName());
+			lastName.getStyleClass().add("userlabel");
+			grid.add(lastName, 2, i + 1);
+			columnHeader.createLabels(lastName, grid);
+
+		}
+	}// end method fillStudents
+
+	/**
+	 *
+	 * @param students
+	 * @param grid
+	 */
+	public void fillDayParts(ObservableList<Student> students, GridPane grid) {
 		String[] dayNames = dateModel.dayNameList();
-		// TODO add different css setting for even rows (lightgrey)for userdata and textfield
-		// TODO method for setting bottom border for textfields from schedules/dayparts
-		ObservableList<Student> studentList = model.getStudentList();
+		for (int row = 0; row < students.size(); row++) {
+		/*	System.out.println("----------------------------------");
+			System.out.println("Student: " + students.get(row).getLName());*/
 
-		for (int row = 0; row < model.getStudentList().size(); row++) {
-
-			// id
-			Label idLabel = new Label("" + (row+1) );
-			// set even rows of id label to a different color
-			if(row % 2 == 0){
-				idLabel.getStyleClass().add("rowColor");
-			}
-
-			createLabels(idLabel, grid, row+1, 0);
-			// firstname
-			Label firstNameLabel = new Label(studentList.get(row ).getFName());
-			createLabels(firstNameLabel, grid, row+1, 1);
-			// lastname
-			Label lastNameLabel = new Label(studentList.get(row ).getLName());
-			createLabels(lastNameLabel, grid, row+1, 2);
-			int counter = 0;
-			for (int i = 0,  j = 0; i < daysOfMonth * 2; i++) {
-				if(i%2==0){
-					counter++;
-				}
-
-				if (dayNames[i / 2].equals("za") || dayNames[i / 2].equals("zo")) {
+			for (int col = 0, j = 0; col < dateModel.getLengthOfMonth() * 2; col++) {
+				// weekend
+				if (dayNames[col / 2].equals("za") || dayNames[col / 2].equals("zo")) {
 					Pane pane = new Pane();
-					pane.setPrefWidth(10);
+					pane.setMinWidth(15);
 					pane.getStyleClass().add("weekend");
-					grid.add(pane, i + 3, row+1, 1, studentList.size());
-					//grid.add(pane, i + 3, row);
+					grid.add(pane, col, row + 1, 1, students.size());
+					// grid.add(pane, i + 3, row);
 				} else {
 					TextField txt = new TextField();
-					txt.setId(" " + (row+1));
-					txt.setPrefWidth(30);
-					txt.setPrefHeight(30);
+					txt.setId("" + (row + 1));
+
+					txt.setPrefSize(30, 30);
 					txt.getStyleClass().add("textfield");
-					txt.setStyle(" -fx-border-color: black black black black");
 
-					// set even rows of text fields to a different color
-					//TODO write methods for schedule for Student true or false
-					//there are 10 dayparts in a week so j is the value of that part
-					if(j <9){
+					if (j < 9) {
 						j++;
-					}else {
-						j=0;
+					} else {
+						j = 0;
+						//System.out.println("*_*_*_*_*_*_*_*_*_");
 					}
-					System.out.println(" j" + j + "DayPart: " +getDaypart(j) + "counter: " + counter);
-					if(studentList.get(row).isExpected(LocalDate.of(dateModel.getYear(), dateModel.getMonth(), counter),getDaypart(j))){
-						txt.getStyleClass().add("rowColor");
-						txt.setStyle(" -fx-border-color: black black red black");
+					//TODO method needed for dayparts
+					if (students.get(row).isExpected(
+							LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1),
+							DayPart.values()[j])) {
+						//System.out.println(DayPart.values()[j]);
 
+						txt.setStyle(" -fx-border-color: #073E70 #073E70 red #073E70");
+					} else {
+						txt.setStyle("-fx-border-color: #073E70");
 					}
 
 					txt.textProperty().addListener(new ChangeListener<String>() {
@@ -225,95 +261,26 @@ public class MonthInputView extends Application {
 						}
 					});
 
-					grid.add(txt, i + 3, row+1);
-
+					grid.add(txt, col, row + 1);
 				}
 
 			}
 
 		}
-	}// end method createRowsUserTextFields
+	}// end method fillDayParts
 
 
-
-	public DayPart getDaypart(int value){
-
-		DayPart dayPart = null;
-
-		switch (value) {
-		case 0:
-			dayPart = DayPart.MONDAY_MORNING;
-			break;
-		case 1:
-			dayPart = DayPart.MONDAY_AFTERNOON;
-			break;
-		case 2:
-			dayPart = DayPart.TUESDAY_MORNING;
-			break;
-		case 3:
-			dayPart = DayPart.TUESDAY_AFTERNOON;
-			break;
-		case 4:
-			dayPart = DayPart.WEDNESDAY_MORNING;
-			break;
-		case 5:
-			dayPart = DayPart.WEDNESDAY_AFTERNOON;
-			break;
-		case 6:
-			dayPart = DayPart.THURSDAY_MORNING;
-			break;
-		case 7:
-			dayPart = DayPart.THURSDAY_AFTERNOON;
-			break;
-		case 8:
-			dayPart = DayPart.FRIDAY_MORNING;
-			break;
-		case 9:
-			dayPart = DayPart.FRIDAY_AFTERNOON;
-		default:
-			break;
-		}
-
-
-		return dayPart;
+	public GridPane getGridStudents() {
+		return gridStudents;
 	}
 
-	/**
-	 * add label to gridPane
-	 * @param label
-	 * @param grid
-	 * @param row
-	 * @param col
-	 */
-	public void createLabels(Label label, GridPane grid, int row, int col) {
-		if(row % 2 == 0){
-			// set even rows of labels to a different color
-			label.getStyleClass().add("userlabel");
-			label.getStyleClass().add("rowColor");
-			GridPane.setFillWidth(label, true);
-			GridPane.setFillHeight(label, true);
-			label.setMaxWidth(Double.MAX_VALUE);
-			label.setMaxHeight(Double.MAX_VALUE);
-			label.setAlignment(Pos.CENTER);
-			grid.add(label, col, row);
-			label.setPadding(new Insets(0, 0, 0, 5));
+	public GridPane getGridDays() {
+		return gridDaysTextFields;
+	}
 
-		}
-		else{
-			label.getStyleClass().add("userlabel");
-			GridPane.setFillWidth(label, true);
-			GridPane.setFillHeight(label, true);
-			label.setMaxWidth(Double.MAX_VALUE);
-			label.setMaxHeight(Double.MAX_VALUE);
-			label.setAlignment(Pos.CENTER);
-			grid.add(label, col, row);
-			label.setPadding(new Insets(0, 0, 0, 5));
-		}
+	public Parent asParent() {
 
-	}// end method createLabels
-
-	public DateModel getDateModel() {
-		return dateModel;
+		return root;
 	}
 
 }

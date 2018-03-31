@@ -20,21 +20,14 @@
 	-fx-background-color: #fff;
 	-fx-text-fill: black;
 }
-
  .weekend {
 	-fx-background-color: #1C68AC;
 	-fx-border-color: #1C68AC;
-	
 }
-
  .pane{
 	-fx-background-color: #1C68AC;
 }
 
 .textfield{
 	-fx-font-smoothing-type: lcd;
-}
-
-.rowColor{
-	-fx-background-color: lightgrey;
 }
