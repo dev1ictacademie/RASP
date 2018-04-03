@@ -60,7 +60,6 @@ public class Controller {
 
 		@Override
 		public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-			System.out.println(" In controller " + newValue);
 
 			view.clearRefreshHeader();
 			setDaysHeader();

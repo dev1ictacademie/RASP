@@ -97,7 +97,7 @@ public class MonthInputView {
 		// columnheader object for studentheader
 		columnHeader = new ColumnHeader(dateModel);
 		columnHeader.createStudentColumnHeader(gridStudentsHeader);
-		//columnHeader.createColumnHeaderDays(gridDaysHeader);
+		// columnHeader.createColumnHeaderDays(gridDaysHeader);
 		// days header
 		setDaysHeader();
 		setSplitPanes();
@@ -113,7 +113,6 @@ public class MonthInputView {
 
 	public void setDaysHeader() {
 		columnHeader.createColumnHeaderDays(gridDaysHeader);
-		System.out.println("setDaysHeader");
 	}
 
 	public void setSplitPanes() {
@@ -208,48 +207,39 @@ public class MonthInputView {
 	}// end method fillStudents
 
 	/**
-	 *
+	 *fillDayparts makes a row of TextFields for each student and pu them into a grid
 	 * @param students
 	 * @param grid
 	 */
 	public void fillDayParts(ObservableList<Student> students, GridPane grid) {
-		//TODO Let this method work correctly when switching months through GUI
+		// TODO Let this method work correctly when switching months through GUI
 		String[] dayNames = dateModel.dayNameList();
 		for (int row = 0; row < students.size(); row++) {
-		/*	System.out.println("----------------------------------");
-			System.out.println("Student: " + students.get(row).getLName());*/
-
-			for (int col = 0, j = 0; col < dateModel.getLengthOfMonth() * 2; col++) {
+			//index is  a counter for dayparts form daypartlist which is in the DataModel
+			for (int col = 0, index = 0; col < dateModel.getLengthOfMonth() * 2; col++) {
 				// weekend
 				if (dayNames[col / 2].equals("za") || dayNames[col / 2].equals("zo")) {
 					Pane pane = new Pane();
 					pane.setMinWidth(15);
 					pane.getStyleClass().add("weekend");
 					grid.add(pane, col, row + 1, 1, students.size());
-					// grid.add(pane, i + 3, row);
 				} else {
 					TextField txt = new TextField();
 					txt.setId("" + (row + 1));
 
 					txt.setPrefSize(30, 30);
 					txt.getStyleClass().add("textfield");
-					
+
 					if (students.get(row).isExpected(
 
 							LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1),
-							DayPart.values()[j])) {
+							dateModel.getDayPartList().get(index))) {
 
 						txt.setStyle(" -fx-border-color: #073E70 #073E70 red #073E70");
 					} else {
 						txt.setStyle("-fx-border-color: #073E70");
 					}
-					
-					if (j < 9) {
-						j++;
-					} else {
-						j = 0;
-						//System.out.println("*_*_*_*_*_*_*_*_*_");
-					}
+					index++;
 
 					txt.textProperty().addListener(new ChangeListener<String>() {
 
@@ -271,7 +261,6 @@ public class MonthInputView {
 
 		}
 	}// end method fillDayParts
-
 
 	public GridPane getGridStudents() {
 		return gridStudents;

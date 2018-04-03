@@ -74,7 +74,7 @@ public class Model {
 
 		studentList.setAll(
 		new Student("Piet", "Pietersen", LocalDate.of(2018,3,3), LocalDate.MAX, schedule),
-		new Student("Ton", "Hout , van", LocalDate.of(2018,3,15), LocalDate.MAX, schedule1),
+		new Student("Ton", "Hout , van", LocalDate.of(2018,4,15), LocalDate.MAX, schedule1),
 		new Student("Jan", "Jansen", LocalDate.of(2018,3,7), LocalDate.MAX, schedule),
 		new Student("Paula", "Aardbei", LocalDate.of(2018,3,5), LocalDate.MAX, schedule1),
 		new Student("Karel", "Appel", LocalDate.of(2018,3,1), LocalDate.MAX, schedule2),
