@@ -68,9 +68,9 @@ public class Model {
 		schedule1.put(DayPart.FRIDAY_AFTERNOON, Place.ICT_13);
 
 		HashMap<DayPart, Place> schedule2 = new HashMap<>();
-		schedule1.put(DayPart.MONDAY_MORNING, Place.ICT_3);
-		schedule1.put(DayPart.MONDAY_AFTERNOON, Place.ICT_9);
-		schedule1.put(DayPart.FRIDAY_MORNING, Place.ICT_11);
+		schedule2.put(DayPart.MONDAY_MORNING, Place.ICT_3);
+		schedule2.put(DayPart.MONDAY_AFTERNOON, Place.ICT_9);
+		schedule2.put(DayPart.FRIDAY_MORNING, Place.ICT_11);
 
 		studentList.setAll(
 		new Student("Piet", "Pietersen", LocalDate.of(2018,3,3), LocalDate.MAX, schedule),

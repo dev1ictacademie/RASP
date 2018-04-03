@@ -1,9 +1,9 @@
 package nl.pameijer.ictacademie.rasp.view.month;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
-
-
+import conceptmodel.DatedDayPart;
 import javafx.beans.property.SimpleIntegerProperty;
 import nl.pameijer.ictacademie.rasp.model.DayPart;
 
@@ -100,6 +100,7 @@ public class DateModel {
 		}
 		return dayName;
 	}
+	
 	public String[] dayNameList(){
 		String[] dayNames = new String[getLengthOfMonth()];
 		for(int i =0 ; i<getLengthOfMonth();i++){
@@ -112,4 +113,26 @@ public class DateModel {
 
 		return null;
 	}
+	
+	/**
+	 * Create and return a listing of all DayParts from this month and year. 
+	 */
+	public ArrayList<DayPart> getDayPartList() {
+		
+		LocalDate now = 
+				LocalDate.of(year.getValue(), month.getValue(), day.getValue());
+		
+	 	ArrayList<DayPart> dayPartsThisMonth = new ArrayList<>();
+	 	
+	 	for (int i = 1; i <= now.lengthOfMonth(); i++) {
+	 		LocalDate date = now.withDayOfMonth(i);
+	 		for (DayPart dayPart: DayPart.values()) {
+	 			if (dayPart.getDay().equals(date.getDayOfWeek())) {
+	 				dayPartsThisMonth.add(dayPart);
+	 			}
+	 		}
+	 	}
+	 	return dayPartsThisMonth;
+	}
+
 }

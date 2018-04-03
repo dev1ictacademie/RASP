@@ -1,6 +1,8 @@
 package nl.pameijer.ictacademie.rasp.view.month;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 
 import javafx.beans.value.ChangeListener;
@@ -211,6 +213,7 @@ public class MonthInputView {
 	 * @param grid
 	 */
 	public void fillDayParts(ObservableList<Student> students, GridPane grid) {
+		//TODO Let this method work correctly when switching months through GUI
 		String[] dayNames = dateModel.dayNameList();
 		for (int row = 0; row < students.size(); row++) {
 		/*	System.out.println("----------------------------------");
@@ -230,22 +233,22 @@ public class MonthInputView {
 
 					txt.setPrefSize(30, 30);
 					txt.getStyleClass().add("textfield");
+					
+					if (students.get(row).isExpected(
 
+							LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1),
+							DayPart.values()[j])) {
+
+						txt.setStyle(" -fx-border-color: #073E70 #073E70 red #073E70");
+					} else {
+						txt.setStyle("-fx-border-color: #073E70");
+					}
+					
 					if (j < 9) {
 						j++;
 					} else {
 						j = 0;
 						//System.out.println("*_*_*_*_*_*_*_*_*_");
-					}
-					//TODO method needed for dayparts
-					if (students.get(row).isExpected(
-							LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1),
-							DayPart.values()[j])) {
-						//System.out.println(DayPart.values()[j]);
-
-						txt.setStyle(" -fx-border-color: #073E70 #073E70 red #073E70");
-					} else {
-						txt.setStyle("-fx-border-color: #073E70");
 					}
 
 					txt.textProperty().addListener(new ChangeListener<String>() {
