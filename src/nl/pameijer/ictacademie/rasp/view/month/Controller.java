@@ -28,10 +28,12 @@ public class Controller {
 		model.loadDataWithSchedule();
 		// view
 		view = new MonthInputView(dateModel);
+		
 		//setListener
 		MyChangeListener myChangeListener = new MyChangeListener();
 		dateModel.yearProperty().addListener(myChangeListener);
 		dateModel.monthProperty().addListener(myChangeListener);
+
 		setStudents();
 		setDayTextFields();
 
@@ -67,6 +69,8 @@ public class Controller {
 			setDayTextFields();
 
 		}
-	}
+	}// end inner class MyChangeListener
 
-}
+
+
+}// end class Controller

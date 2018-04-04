@@ -23,6 +23,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import nl.pameijer.ictacademie.rasp.model.DayPart;
 import nl.pameijer.ictacademie.rasp.model.Student;
+import nl.pameijer.ictacademie.rasp.view.month.Controller.DayPartsListener;
 
 public class MonthInputView {
 
@@ -45,6 +46,8 @@ public class MonthInputView {
 	private GridPane gridDaysHeader;
 	private GridPane gridDaysTextFields;
 	private VBox root;
+	private TextField txt;
+	private DayPartsListener dayPartsListener;
 
 	public MonthInputView(DateModel dateModel) {
 		this.dateModel = dateModel;
@@ -207,7 +210,7 @@ public class MonthInputView {
 	}// end method fillStudents
 
 	/**
-	 *fillDayparts makes a row of TextFields for each student and pu them into a grid
+	 *fillDayparts makes a row of TextFields for each student and put them into a grid
 	 * @param students
 	 * @param grid
 	 */
@@ -215,6 +218,7 @@ public class MonthInputView {
 		// TODO Let this method work correctly when switching months through GUI
 		String[] dayNames = dateModel.dayNameList();
 		for (int row = 0; row < students.size(); row++) {
+			dayPartsListener = new DayPartsListener();
 			//index is  a counter for dayparts form daypartlist which is in the DataModel
 			for (int col = 0, index = 0; col < dateModel.getLengthOfMonth() * 2; col++) {
 				// weekend
@@ -224,43 +228,55 @@ public class MonthInputView {
 					pane.getStyleClass().add("weekend");
 					grid.add(pane, col, row + 1, 1, students.size());
 				} else {
-					TextField txt = new TextField();
-					txt.setId("" + (row + 1));
-
+					txt = new TextField();
+					txt.setId("" + (dateModel.getDayPartList().get(index)));
+					System.out.println(txt.getId());
+					System.out.println(students.get(row).getFName());
 					txt.setPrefSize(30, 30);
 					txt.getStyleClass().add("textfield");
 
-					if (students.get(row).isExpected(
-
-							LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1),
-							dateModel.getDayPartList().get(index))) {
+					if (students.get(row).isExpected( LocalDate.of(dateModel.getYear(),
+							dateModel.getMonth(), col / 2 + 1), dateModel.getDayPartList().get(index))) {
 
 						txt.setStyle(" -fx-border-color: #073E70 #073E70 red #073E70");
-					} else {
+					}
+					else {
 						txt.setStyle("-fx-border-color: #073E70");
 					}
 					index++;
 
-					txt.textProperty().addListener(new ChangeListener<String>() {
-
-						@Override
-						public void changed(ObservableValue<? extends String> observable, String oldValue,
-								String newValue) {
-							if (!(newValue.equals("x") || newValue.equals("z") || newValue.equals("v")
-									|| newValue.equals("a"))) {
-								txt.setText("");
-							}
-
-						}
-					});
+					//add change listener class to day parts text fields
+					txt.textProperty().addListener(dayPartsListener);
 
 					grid.add(txt, col, row + 1);
 				}
 
+			}// end inner for
+		}// end outer for
+
+	}// end method fillDayParts
+
+	/**
+	 * inner class
+	 * @author hintveld
+	 *
+	 */
+	class DayPartsListener implements ChangeListener
+	{
+		@Override
+		public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+			if (!(newValue.equals("x") || newValue.equals("z") || newValue.equals("v")
+					|| newValue.equals("a"))) {
+				txt.setText("");
+			}
+			else{
+				System.out.println("Save to database. localdate, daypart, student");
+				System.out.println();
 			}
 
 		}
-	}// end method fillDayParts
+
+	}// end inner class DayPartsListener
 
 	public GridPane getGridStudents() {
 		return gridStudents;
@@ -273,6 +289,14 @@ public class MonthInputView {
 	public Parent asParent() {
 
 		return root;
+	}
+
+	public DayPartsListener getDayPartsListener() {
+		return dayPartsListener;
+	}
+
+	public void setDayPartsListener(DayPartsListener dayPartsListener) {
+		this.dayPartsListener = dayPartsListener;
 	}
 
 }
