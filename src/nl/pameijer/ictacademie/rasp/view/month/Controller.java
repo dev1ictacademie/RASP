@@ -18,6 +18,7 @@ public class Controller {
 	private MonthInputView view;
 	private Model model;
 	private DateModel dateModel;
+	private DayPartsListener dayPartsListener;
 
 	public Controller(Model model) {
 		// this month
@@ -28,12 +29,14 @@ public class Controller {
 		model.loadDataWithSchedule();
 		// view
 		view = new MonthInputView(dateModel);
-		
+
 		//setListener
 		MyChangeListener myChangeListener = new MyChangeListener();
 		dateModel.yearProperty().addListener(myChangeListener);
 		dateModel.monthProperty().addListener(myChangeListener);
-
+		dayPartsListener = new DayPartsListener();
+		//set daypart listener in view
+		view.addDayPartsListener(dayPartsListener);
 		setStudents();
 		setDayTextFields();
 
@@ -70,6 +73,24 @@ public class Controller {
 
 		}
 	}// end inner class MyChangeListener
+
+	/**
+	 * inner class
+	 *
+	 * @author hintveld
+	 *
+	 */
+	class DayPartsListener implements ChangeListener<Object> {
+		@Override
+		public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+			System.out.println("DaypartListener in Controller to save data to model");
+			System.out.println(observable);
+
+
+
+		}
+
+	}// end inner class DayPartsListener
 
 
 

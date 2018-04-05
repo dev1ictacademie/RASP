@@ -5,11 +5,15 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -24,6 +28,7 @@ import javafx.scene.layout.VBox;
 import nl.pameijer.ictacademie.rasp.model.DayPart;
 import nl.pameijer.ictacademie.rasp.model.Student;
 import nl.pameijer.ictacademie.rasp.view.month.Controller.DayPartsListener;
+import sun.security.action.GetLongAction;
 
 public class MonthInputView {
 
@@ -210,7 +215,9 @@ public class MonthInputView {
 	}// end method fillStudents
 
 	/**
-	 *fillDayparts makes a row of TextFields for each student and put them into a grid
+	 * fillDayparts makes a row of TextFields for each student and put them into
+	 * a grid
+	 *
 	 * @param students
 	 * @param grid
 	 */
@@ -218,8 +225,8 @@ public class MonthInputView {
 		// TODO Let this method work correctly when switching months through GUI
 		String[] dayNames = dateModel.dayNameList();
 		for (int row = 0; row < students.size(); row++) {
-			dayPartsListener = new DayPartsListener();
-			//index is  a counter for dayparts form daypartlist which is in the DataModel
+			// index is a counter for dayparts form daypartlist which is in the
+			// DataModel
 			for (int col = 0, index = 0; col < dateModel.getLengthOfMonth() * 2; col++) {
 				// weekend
 				if (dayNames[col / 2].equals("za") || dayNames[col / 2].equals("zo")) {
@@ -229,54 +236,52 @@ public class MonthInputView {
 					grid.add(pane, col, row + 1, 1, students.size());
 				} else {
 					txt = new TextField();
-					txt.setId("" + (dateModel.getDayPartList().get(index)));
-					System.out.println(txt.getId());
+
 					System.out.println(students.get(row).getFName());
 					txt.setPrefSize(30, 30);
 					txt.getStyleClass().add("textfield");
 
-					if (students.get(row).isExpected( LocalDate.of(dateModel.getYear(),
-							dateModel.getMonth(), col / 2 + 1), dateModel.getDayPartList().get(index))) {
+					if (students.get(row).isExpected(
+							LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1),
+							dateModel.getDayPartList().get(index))) {
 
 						txt.setStyle(" -fx-border-color: #073E70 #073E70 red #073E70");
-					}
-					else {
+					} else {
 						txt.setStyle("-fx-border-color: #073E70");
 					}
+					txt.setId("" + students.get(row).getFName() + "-" + students.get(row).getLName() + "-"
+							+ LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1) + "-"
+							+ (dateModel.getDayPartList().get(index)));
+					System.out.println(txt.getId());
 					index++;
 
-					//add change listener class to day parts text fields
+
+
+					txt.textProperty().addListener((observable)-> {
+
+						StringProperty obs = (StringProperty) observable;
+						System.out.println("Change: "+ (obs.getValue()));
+
+
+						if (!(obs.getValue().equals("x") || obs.getValue().equals("z")
+								|| obs.getValue().equals("v") || obs.getValue().equals("a"))) {
+							System.out.println("not allowed");
+							obs.setValue("");
+
+						}
+
+					});
+					// add change listener class to dayparts text fields
 					txt.textProperty().addListener(dayPartsListener);
 
 					grid.add(txt, col, row + 1);
 				}
 
-			}// end inner for
-		}// end outer for
+			} // end inner for
+} // end outer for
 
-	}// end method fillDayParts
+}// end method fillDayParts
 
-	/**
-	 * inner class
-	 * @author hintveld
-	 *
-	 */
-	class DayPartsListener implements ChangeListener
-	{
-		@Override
-		public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-			if (!(newValue.equals("x") || newValue.equals("z") || newValue.equals("v")
-					|| newValue.equals("a"))) {
-				txt.setText("");
-			}
-			else{
-				System.out.println("Save to database. localdate, daypart, student");
-				System.out.println();
-			}
-
-		}
-
-	}// end inner class DayPartsListener
 
 	public GridPane getGridStudents() {
 		return gridStudents;
@@ -291,12 +296,25 @@ public class MonthInputView {
 		return root;
 	}
 
+	public static ArrayList<Node> getAllNodes(Parent root) {
+		ArrayList<Node> nodes = new ArrayList<Node>();
+		addAllDescendents(root, nodes);
+		return nodes;
+	}
+
+	private static void addAllDescendents(Parent parent, ArrayList<Node> nodes) {
+		for (Node node : parent.getChildrenUnmodifiable()) {
+			nodes.add(node);
+			if (node instanceof Parent)
+				addAllDescendents((Parent) node, nodes);
+		}
+	}
+
 	public DayPartsListener getDayPartsListener() {
 		return dayPartsListener;
 	}
 
-	public void setDayPartsListener(DayPartsListener dayPartsListener) {
+	public void addDayPartsListener(DayPartsListener dayPartsListener) {
 		this.dayPartsListener = dayPartsListener;
 	}
-
 }
