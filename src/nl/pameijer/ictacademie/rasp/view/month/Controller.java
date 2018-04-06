@@ -2,8 +2,10 @@ package nl.pameijer.ictacademie.rasp.view.month;
 
 import java.time.LocalDate;
 
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TextField;
 import nl.pameijer.ictacademie.rasp.model.Model;
 
 /**
@@ -85,9 +87,10 @@ public class Controller {
 		public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 			System.out.println("DaypartListener in Controller to save data to model");
 			System.out.println(observable);
-
-
-
+			StringProperty obs = (StringProperty) observable;
+			System.out.println(obs.getBean());
+			TextField txt = (TextField) obs.getBean();
+			System.out.println(txt.getId());
 		}
 
 	}// end inner class DayPartsListener
