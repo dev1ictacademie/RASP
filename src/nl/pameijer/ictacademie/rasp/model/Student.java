@@ -11,7 +11,8 @@ public class Student {
 
 	private final StringProperty fName = new SimpleStringProperty();
 	private final StringProperty lName = new SimpleStringProperty();
-	
+	private final StringProperty id = new SimpleStringProperty();
+
 	// The students's schedule(s)
 	private ArrayList<Schedule> schedules = new ArrayList<>();
 
@@ -22,39 +23,59 @@ public class Student {
 		setFName(fName);
 		setLName(lName);
 	}
-	
+
+	/**
+	 * Student constructor
+	 */
+	public Student(String fName , String lName, String id){
+		setFName(fName);
+		setLName(lName);
+		setId(id);
+	}
+
 	/**
 	 * Student constructor with Schedule.
 	 */
-	public Student(String fName , String lName, LocalDate startDate, 
+	public Student(String fName , String lName, LocalDate startDate,
 			LocalDate endDate, HashMap<DayPart, Place> schedule) {
 		setFName(fName);
 		setLName(lName);
 		schedules.add(new Schedule(startDate, endDate, schedule));
 
 	}
-	
+
+	/**
+	 * Student constructor with ID and Schedule.
+	 */
+	public Student(String id, String fName , String lName, LocalDate startDate,
+			LocalDate endDate, HashMap<DayPart, Place> schedule) {
+		setFName(fName);
+		setLName(lName);
+		schedules.add(new Schedule(startDate, endDate, schedule));
+		setId(id);
+	}
+
 	/**
 	 * Make a new schedule for a student and add it to the list.
 	 */
-	public void makeNewSchedule(LocalDate startDate, LocalDate endDate, 
+	public void makeNewSchedule(LocalDate startDate, LocalDate endDate,
 			HashMap<DayPart, Place> schedule) {
 		schedules.add(new Schedule(startDate, endDate, schedule));
 	}
-	
+
 	/**
-	 * Is this student expected at a certain date and day part? 
+	 * Is this student expected at a certain date and day part?
 	 * @param   date    the applicable date
 	 * @param   dayPart the applicable dayPart
 	 * @return  true if student is expected to be attending at this date and
 	 *          dayPart, false if not
 	 */
 	public boolean isExpected(LocalDate date, DayPart dayPart) {
-		
+
 		boolean isExpected = false;
-		
+
 		for (Schedule schedule: schedules) {
-			if (schedule.isDateWithinSchedule(date) && 
+			if (schedule.isDateWithinSchedule(date) &&
 					schedule.isDayPartInSchedule(dayPart)) {
 				isExpected = true;
 			}
@@ -64,7 +85,7 @@ public class Student {
 	
 	public ArrayList<Schedule> getSchedules() {
 		return schedules;
-	}
+	}	
 
 	public final StringProperty fNameProperty() {
 		return this.fName;
@@ -94,6 +115,21 @@ public class Student {
 	public final void setLName(final String lName) {
 		this.lNameProperty().set(lName);
 	}
+
+	public final StringProperty idProperty() {
+		return this.id;
+	}
+
+
+	public final String getId() {
+		return this.idProperty().get();
+	}
+
+
+	public final void setId(final String id) {
+		this.idProperty().set(id);
+	}
+
 
 
 }

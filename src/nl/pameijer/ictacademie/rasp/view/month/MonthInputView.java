@@ -249,13 +249,12 @@ public class MonthInputView {
 					} else {
 						txt.setStyle("-fx-border-color: #073E70");
 					}
+
 					txt.setId("" + students.get(row).getFName() + "-" + students.get(row).getLName() + "-"
 							+ LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1) + "-"
 							+ (dateModel.getDayPartList().get(index)));
 					System.out.println(txt.getId());
 					index++;
-
-
 
 					txt.textProperty().addListener((observable)-> {
 
