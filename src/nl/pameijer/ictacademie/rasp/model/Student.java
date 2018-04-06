@@ -62,14 +62,8 @@ public class Student {
 		return isExpected;
 	}
 	
-	/**
-	 * Get the current schedule (always the last from the list).
-	 * Note (23-03-2018) THIS IS FALSE!!! consider future schedules..
-	 * Method needs to be reworked and needs to consider current date.
-	 * (currently also throws ArrayIndexOutOfBoundsException if size == 0)
-	 */
-	public Schedule getCurrentSchedule() {
-		return schedules.get(schedules.size() - 1);
+	public ArrayList<Schedule> getSchedules() {
+		return schedules;
 	}
 
 	public final StringProperty fNameProperty() {

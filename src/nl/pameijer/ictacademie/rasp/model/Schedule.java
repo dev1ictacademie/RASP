@@ -2,6 +2,7 @@ package nl.pameijer.ictacademie.rasp.model;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Set;
 
 /** 
  * This class represents a schedule of a participant which is a listing of 
@@ -82,6 +83,20 @@ public class Schedule {
 			}
 		}
 		return dayPartFound;
+	}
+	
+	/**
+	 * Return the actual schedule (DayPart, Place mappings) of this schedule.
+	 */
+	public HashMap<DayPart, Place> getMap() {
+		return schedule;
+	}
+	
+	/**
+	 * Return the DayParts in this schedule.
+	 */
+	public Set<DayPart> getDayParts() {
+		return schedule.keySet();
 	}
 
 }

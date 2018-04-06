@@ -67,12 +67,4 @@ public class Participant {
 		enlistment.add(currentRegistration);
 	}
 	
-	/**
-	 * Constructor for when new Participant is NOT created by user of program
-	 * but constructed by reading the values from database.
-	 *//*
-	public Participant() {
-		// TODO stub
-	}*/
-	
 }
