@@ -236,8 +236,6 @@ public class MonthInputView {
 					grid.add(pane, col, row + 1, 1, students.size());
 				} else {
 					txt = new TextField();
-
-					System.out.println(students.get(row).getFName());
 					txt.setPrefSize(30, 30);
 					txt.getStyleClass().add("textfield");
 
@@ -250,17 +248,15 @@ public class MonthInputView {
 						txt.setStyle("-fx-border-color: #073E70");
 					}
 
-					txt.setId("" + students.get(row).getFName() + "-" + students.get(row).getLName() + "-"
+					txt.setId("" + students.get(row).getId() + "-"
 							+ LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1) + "-"
 							+ (dateModel.getDayPartList().get(index)));
-					System.out.println(txt.getId());
+
 					index++;
 
-					txt.textProperty().addListener((observable)-> {
+					txt.textProperty().addListener((observable, oldvalue, newvalue)-> {
 
 						StringProperty obs = (StringProperty) observable;
-						System.out.println("Change: "+ (obs.getValue()));
-
 
 						if (!(obs.getValue().equals("x") || obs.getValue().equals("z")
 								|| obs.getValue().equals("v") || obs.getValue().equals("a"))) {
@@ -268,7 +264,6 @@ public class MonthInputView {
 							obs.setValue("");
 
 						}
-
 					});
 					// add change listener class to dayparts text fields
 					txt.textProperty().addListener(dayPartsListener);

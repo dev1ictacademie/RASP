@@ -111,10 +111,15 @@ public class Model {
 		new Student("5","Paula", "Aardbei", LocalDate.of(2018,3,5), LocalDate.MAX, schedule1),
 		new Student("8","Karel", "Appel", LocalDate.of(2018,3,1), LocalDate.MAX, schedule2),
 		new Student("11","Hans", "Andersen", LocalDate.of(2018,3,3), LocalDate.MAX, schedule),
-		new Student("22","Kim", "Hulst, van", LocalDate.of(2018,3,15), LocalDate.MAX, schedule2),
+		new Student("22","Kim", "Holland", LocalDate.of(2018,3,15), LocalDate.MAX, schedule2),
 		new Student("23","John", "Bouwer", LocalDate.of(2018,3,7), LocalDate.MAX, schedule),
 		new Student("12","Pamela", "Negi", LocalDate.of(2018,3,5), LocalDate.MAX, schedule1),
 		new Student("19","Thijs", "Steen, van der", LocalDate.of(2018,3,1), LocalDate.MAX, schedule)
 		);
+	}
+
+	public void saveDayPart(String id, String text) {
+		// TODO split id into studentid, date, daypart and the value from text
+		System.out.println("Day part saved to database. " + id + " " + text);
 	}
 }
