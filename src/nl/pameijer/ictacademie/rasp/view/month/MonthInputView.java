@@ -253,32 +253,7 @@ public class MonthInputView {
 							+ (dateModel.getDayPartList().get(index)));
 
 					index++;
-                    /*
-					txt.textProperty().addListener((observable, oldValue, newValue)-> {
-						
-						if (!(newValue.equals("") || newValue.equals("x") 
-								|| newValue.equals("z") || newValue.equals("v") 
-								|| newValue.equals("a") || newValue.equals("X") 
-								|| newValue.equals("Z") || newValue.equals("V") 
-								|| newValue.equals("A"))) {
 
-							((StringProperty)observable).setValue(oldValue);
-							System.out.println("not allowed");
-							System.out.println("observable (1st if-block): " + observable.getValue() + " observable length: " + observable.getValue().length());
-								
-						}
-						
-						if (newValue.equals("x") || newValue.equals("z")
-								|| newValue.equals("v") || newValue.equals("a")) {
-								
-								((StringProperty)observable).setValue(newValue.toUpperCase());
-								System.out.println("observable (2nd if-block): " + observable.getValue() + " observable length: " + observable.getValue().length());
-						}
-						
-						System.out.println("observable (after if-blocks): " + observable.getValue());
-                        
-						
-					});*/
 					// add change listener class to dayparts text fields
 					txt.textProperty().addListener(dayPartsListener);
 
