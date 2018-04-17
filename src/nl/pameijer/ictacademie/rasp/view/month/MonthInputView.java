@@ -253,7 +253,7 @@ public class MonthInputView {
 							+ (dateModel.getDayPartList().get(index)));
 
 					index++;
-
+                    /*
 					txt.textProperty().addListener((observable, oldValue, newValue)-> {
 						
 						if (!(newValue.equals("") || newValue.equals("x") 
@@ -278,7 +278,7 @@ public class MonthInputView {
 						System.out.println("observable (after if-blocks): " + observable.getValue());
                         
 						
-					});
+					});*/
 					// add change listener class to dayparts text fields
 					txt.textProperty().addListener(dayPartsListener);
 

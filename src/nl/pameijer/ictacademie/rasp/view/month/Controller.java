@@ -75,19 +75,49 @@ public class Controller {
 
 		}
 	}// end inner class MyChangeListener
-
+	
 	/**
-	 * inner class
+	 * The DayPartlistener class is responsible for registering changes in the
+	 * values of the TextFields representing the presence status of students
+	 * for a certain DayPart. It also checks for valid/invalid input, changing
+	 * valid input letters to upper case and can trigger a save to the database
+	 * 
+	 * But saving to the database should ONLY take place if visible changes 
+	 * actually appear in the TextFields. 
 	 *
-	 * @author hintveld
-	 *
+	 * @author hintveld and ttimmermans
+	 * @version 17-04-2018
 	 */
 	class DayPartsListener implements ChangeListener<Object> {
 		@Override
 		public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+
 			StringProperty obs = (StringProperty) observable;
 			TextField txt = (TextField) obs.getBean();
-			model.saveDayPart(txt.getId(), txt.getText());
+
+			if (newValue.equals("x") || newValue.equals("z")
+					|| newValue.equals("v") || newValue.equals("a")) {
+
+				((StringProperty)observable).setValue(newValue.toString().toUpperCase());
+			}
+			else if (newValue.equals("") || newValue.equals("X")
+					|| newValue.equals("Z") || newValue.equals("V")
+					|| newValue.equals("A")) {
+
+				if (oldValue.equals("X") || oldValue.equals("Z")
+						|| oldValue.equals("V") || oldValue.equals("A")
+						|| oldValue.equals("x") || oldValue.equals("z")
+						|| oldValue.equals("v") || oldValue.equals("a")
+						|| oldValue.equals("")) {
+					// Saving to database
+					model.saveDayPart(txt.getId(), txt.getText());
+				}
+			}	
+			else {
+				// Invalid input. Setting observable back to oldValue.
+				((StringProperty)observable).setValue(oldValue.toString());
+			}
+
 		}
 
 	}// end inner class DayPartsListener
