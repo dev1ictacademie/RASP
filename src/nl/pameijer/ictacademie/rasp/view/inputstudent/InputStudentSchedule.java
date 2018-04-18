@@ -16,13 +16,15 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class InputStudentSchedule extends Application{
-	GridPane gridPane;// base grid pane
-	GridPane gpSitPlace;// grid pane to hold sit places and day parts labels and combo boxes
-	Label lblFName, lblLName, lblOverview, lblStartDate, lblEndDate;
-	TextField txtFName, txtLName;
-	ArrayList<ComboBox<String>> cbSitPlace;
-	Label[] lblDaySitPlace, lblMorningAfternoon;
-	DatePicker dpStartDate, dpEndDate;
+	private GridPane gpBase;// base grid pane
+	private GridPane gpSitPlace;// grid pane to hold sit places, day parts labels and combo boxes
+	private Label lblFName, lblLName, lblOverview, lblStartDate, lblEndDate;
+	private TextField txtFName, txtLName;
+	private ArrayList<ComboBox<String>> cbSitPlace;
+	private Label[] lblDay, lblMorningAfternoon;
+	private DatePicker dpStartDate, dpEndDate;
+	private String days[] = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"};
+	private String dayParts[] = {"o", "m"};
 
 	public static void main(String[] args) {
 		launch(args);
@@ -33,16 +35,17 @@ public class InputStudentSchedule extends Application{
 	 */
 	public void start(Stage primaryStage) {
 		// make the base gridPane
-		gridPane = new GridPane();
-		gridPane.setPadding(new Insets(30, 30, 30, 30));
-		gridPane.setHgap(10);
-		gridPane.setVgap(20);
+		gpBase = new GridPane();
+		gpBase.setPadding(new Insets(30, 30, 30, 30));
+		gpBase.setHgap(10);
+		gpBase.setVgap(20);
 
 		setLabelsTextFields();// make labels
 		setLabelDatePicker();;// make label and date pickers
+		setLblDayLblDayPartCbSitPlace();//
 
 		// Add the gridPane to a scene
-		Scene scene = new Scene(gridPane, 1000, 700);
+		Scene scene = new Scene(gpBase, 1400, 700);
 		// Finalize and show the stage
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Overzicht bezetting");
@@ -59,18 +62,18 @@ public class InputStudentSchedule extends Application{
 		lblLName = new Label("Achternaam:");
 		lblOverview = new Label("Bezetting:");
 		// add labels to gridPane
-		gridPane.add(lblFName, 0, 0);
-		gridPane.add(lblLName, 0, 1);
-		gridPane.add(lblOverview, 0, 4);
+		gpBase.add(lblFName, 0, 0);
+		gpBase.add(lblLName, 0, 1);
+		gpBase.add(lblOverview, 0, 4);
 		// make text fields
 		txtFName = new TextField();
 		txtFName.setMinWidth(100.0);
 		txtFName.setMaxWidth(150);
 		txtLName = new TextField();
-		txtLName.setMinWidth(300.0);
+		txtLName.setMinWidth(200.0);
 		// add text fields to grid pane
-		gridPane.add(txtFName, 1, 0);
-		gridPane.add(txtLName, 1, 1);
+		gpBase.add(txtFName, 1, 0);
+		gpBase.add(txtLName, 1, 1);
 
 	}// end setLabels
 
@@ -80,38 +83,46 @@ public class InputStudentSchedule extends Application{
 	public void setLabelDatePicker() {
 		lblStartDate = new Label("Begin datum:");
 		lblEndDate = new Label("Eind datum:");
-		gridPane.add(lblStartDate, 0, 2);
-		gridPane.add(lblEndDate, 1, 2);
+		gpBase.add(lblStartDate, 0, 2);
+		gpBase.add(lblEndDate, 1, 2);
 		dpStartDate = new DatePicker();
 		dpEndDate = new DatePicker();
 		dpStartDate.setValue(LocalDate.now());// shows the current date from the system clock
 		dpEndDate.setValue(LocalDate.now());
-		gridPane.add(dpStartDate, 0, 3);
-		gridPane.add(dpEndDate, 1, 3);
+		gpBase.add(dpStartDate, 0, 3);
+		gpBase.add(dpEndDate, 1, 3);
 	}// setLabelDatePicker
 
 	/**
-	 * place labels and sit place combo boxes into sitPlace GridPane
+	 * place labels days, day parts and sit place combo boxes into sitPlace GridPane
 	 */
-	public void setComboBoxLabelSitPlace() {
+	public void setLblDayLblDayPartCbSitPlace() {
 		gpSitPlace = new GridPane();
-		lblDaySitPlace = new Label[7];
+		gpSitPlace.setPadding(new Insets(20.0, 20.0, 20.0, 20.0));
+		gpSitPlace.setHgap(90.0);
+		lblDay = new Label[5];
 		lblMorningAfternoon = new Label[10];
 		cbSitPlace = new ArrayList<ComboBox<String>>();
 
-		for (int i = 0; i < lblDaySitPlace.length; i++) { // place label day of week
+		
+
+		for (int i = 0; i < lblMorningAfternoon.length; i++) { // place labels day part
+			if(i % 2 == 0){
+				gpSitPlace.add(lblMorningAfternoon[i] = new Label(dayParts[0]), i + 1, 1);
+			}else{
+				gpSitPlace.add(lblMorningAfternoon[i] = new Label(dayParts[1]), i + 1, 1);
+			}
+
+		}
+for (int i = 0; i < lblDay.length; i++) { // place labels day of week
+			gpSitPlace.add(lblDay[i] = new Label(days[i]), i + 1, 0, 2, 1);
+		}
+		for (int i = 0; i <cbSitPlace.size() ; i++) { // place combo boxes for picking sit place
 
 		}
 
-		for (int i = 0; i < lblMorningAfternoon.length; i++) { // place label day part
+		gpBase.add(gpSitPlace, 2, 0);
 
-		}
-
-
-		for (int i = 0; i <cbSitPlace.size() ; i++) { // place combo box for picking sit place
-
-		}
-
-	}// end setComboBoxLabelSitPlace
+	}// end setLblDayLblDayPartCbSitPlace
 
 }// InputStudentSchedule
