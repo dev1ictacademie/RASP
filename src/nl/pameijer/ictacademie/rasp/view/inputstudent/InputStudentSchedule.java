@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.sun.javafx.scene.control.skin.VirtualFlow.ArrayLinkedList;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -14,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import sun.launcher.resources.launcher;
 
 public class InputStudentSchedule extends Application{
 	private GridPane gpBase;// base grid pane
@@ -21,7 +23,7 @@ public class InputStudentSchedule extends Application{
 	private Label lblFName, lblLName, lblOverview, lblStartDate, lblEndDate;
 	private TextField txtFName, txtLName;
 	private ArrayList<ComboBox<String>> cbSitPlace;
-	private Label[] lblDay, lblMorningAfternoon;
+	private Label[] lblDay, lblDayPart;
 	private DatePicker dpStartDate, dpEndDate;
 	private String days[] = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"};
 	private String dayParts[] = {"o", "m"};
@@ -83,14 +85,14 @@ public class InputStudentSchedule extends Application{
 	public void setLabelDatePicker() {
 		lblStartDate = new Label("Begin datum:");
 		lblEndDate = new Label("Eind datum:");
-		gpBase.add(lblStartDate, 0, 2);
-		gpBase.add(lblEndDate, 1, 2);
+		gpBase.add(lblStartDate, 1, 2);
+		gpBase.add(lblEndDate, 2, 2);
 		dpStartDate = new DatePicker();
 		dpEndDate = new DatePicker();
 		dpStartDate.setValue(LocalDate.now());// shows the current date from the system clock
 		dpEndDate.setValue(LocalDate.now());
-		gpBase.add(dpStartDate, 0, 3);
-		gpBase.add(dpEndDate, 1, 3);
+		gpBase.add(dpStartDate, 1, 3);
+		gpBase.add(dpEndDate, 2, 3);
 	}// setLabelDatePicker
 
 	/**
@@ -101,23 +103,22 @@ public class InputStudentSchedule extends Application{
 		gpSitPlace.setPadding(new Insets(20.0, 20.0, 20.0, 20.0));
 		gpSitPlace.setHgap(90.0);
 		lblDay = new Label[5];
-		lblMorningAfternoon = new Label[10];
+		lblDayPart = new Label[2];
 		cbSitPlace = new ArrayList<ComboBox<String>>();
 
-		
+		for (int i = 0, j = 0; i < lblDay.length; i++, j++) { // place labels day of week
+			gpSitPlace.add(lblDay[i] = new Label(days[i]), i + 3, 0, 2, 1);
+		}
 
-		for (int i = 0; i < lblMorningAfternoon.length; i++) { // place labels day part
+		for (int i = 0; i < dayParts.length; i++) {
 			if(i % 2 == 0){
-				gpSitPlace.add(lblMorningAfternoon[i] = new Label(dayParts[0]), i + 1, 1);
+				gpSitPlace.add(lblDayPart[i] = new Label(dayParts[i]), 2, 2);
 			}else{
-				gpSitPlace.add(lblMorningAfternoon[i] = new Label(dayParts[1]), i + 1, 1);
+				gpSitPlace.add(lblDayPart[i] = new Label(dayParts[i]), 2, 4);
 			}
+		}
 
-		}
-for (int i = 0; i < lblDay.length; i++) { // place labels day of week
-			gpSitPlace.add(lblDay[i] = new Label(days[i]), i + 1, 0, 2, 1);
-		}
-		for (int i = 0; i <cbSitPlace.size() ; i++) { // place combo boxes for picking sit place
+		for (int i = 0; i <days.length ; i++) { // place combo boxes for picking sit place
 
 		}
 
