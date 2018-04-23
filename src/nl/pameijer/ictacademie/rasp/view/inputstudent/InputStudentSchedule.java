@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import nl.pameijer.ictacademie.rasp.model.Model;
 import sun.launcher.resources.launcher;
 
 public class InputStudentSchedule extends Application{
@@ -26,7 +27,8 @@ public class InputStudentSchedule extends Application{
 	private Label[] lblDay, lblDayPart;
 	private DatePicker dpStartDate, dpEndDate;
 	private String days[] = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"};
-	private String dayParts[] = {"o", "m"};
+	private String dayParts[] = {"Ochtend", "Middag"};
+	private Model model = new Model();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -105,24 +107,37 @@ public class InputStudentSchedule extends Application{
 		lblDay = new Label[5];
 		lblDayPart = new Label[2];
 		cbSitPlace = new ArrayList<ComboBox<String>>();
+		int columspan = 4;
 
-		for (int i = 0, j = 0; i < lblDay.length; i++, j++) { // place labels day of week
-			gpSitPlace.add(lblDay[i] = new Label(days[i]), i + 3, 0, 2, 1);
+		for (int i = 0; i < days.length * 2; i++) { // create combo boxes
+			cbSitPlace.add(new ComboBox<String>());
 		}
 
-		for (int i = 0; i < dayParts.length; i++) {
+		for (int i = 0; i < lblDay.length; i++) { // place labels day of week
+			gpSitPlace.add(lblDay[i] = new Label(days[i]), i + 4, 0, columspan, 1);
+		}
+
+		for (int i = 0; i < dayParts.length; i++) { // add day part labels
 			if(i % 2 == 0){
-				gpSitPlace.add(lblDayPart[i] = new Label(dayParts[i]), 2, 2);
+				gpSitPlace.add(lblDayPart[i] = new Label(dayParts[i]), 3, 3, columspan, 1);
 			}else{
-				gpSitPlace.add(lblDayPart[i] = new Label(dayParts[i]), 2, 4);
+				gpSitPlace.add(lblDayPart[i] = new Label(dayParts[i]), 3, 4, columspan, 1);
 			}
 		}
 
-		for (int i = 0; i <days.length ; i++) { // place combo boxes for picking sit place
-
+		for (int i = 0; i < days.length ; i++) { // place combo boxes for picking sit place
+			gpSitPlace.add(cbSitPlace.get(i * 2), i + 4, 3, columspan, 1);
+			gpSitPlace.add(cbSitPlace.get(i * 2 + 1), i + 4, 4, columspan, 1);
 		}
+		
+		for (ComboBox<String> comboBox : cbSitPlace) {
+			comboBox.setItems(model.getAvailablePlaces());
+			comboBox.getSelectionModel().selectFirst();
+		}
+		
+		
 
-		gpBase.add(gpSitPlace, 2, 0);
+		gpBase.add(gpSitPlace, 2, 0, 4,4);
 
 	}// end setLblDayLblDayPartCbSitPlace
 
