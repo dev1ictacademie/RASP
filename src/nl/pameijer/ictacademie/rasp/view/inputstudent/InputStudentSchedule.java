@@ -12,10 +12,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.pameijer.ictacademie.rasp.model.Model;
+import nl.pameijer.ictacademie.rasp.model.Student;
+import nl.pameijer.ictacademie.rasp.model.Students;
 import sun.launcher.resources.launcher;
 
 public class InputStudentSchedule extends Application{
@@ -46,10 +50,11 @@ public class InputStudentSchedule extends Application{
 
 		setLabelsTextFields();// make labels
 		setLabelDatePicker();;// make label and date pickers
-		setLblDayLblDayPartCbSitPlace();//
+		setLblDayLblDayPartCbSitPlace();// make combo boxes
+		// make table view
 
 		// Add the gridPane to a scene
-		Scene scene = new Scene(gpBase, 1400, 700);
+		Scene scene = new Scene(gpBase, 1600, 700);
 		// Finalize and show the stage
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Overzicht bezetting");
@@ -114,7 +119,8 @@ public class InputStudentSchedule extends Application{
 		}
 
 		for (int i = 0; i < lblDay.length; i++) { // place labels day of week
-			gpSitPlace.add(lblDay[i] = new Label(days[i]), i + 4, 0, columspan, 1);
+			gpSitPlace.add(lblDay[i] = new Label(days[i]), i + 4, 0, 1, 1);
+			lblDay[i].setMinWidth(80.0);
 		}
 
 		for (int i = 0; i < dayParts.length; i++) { // add day part labels
@@ -127,18 +133,45 @@ public class InputStudentSchedule extends Application{
 
 		for (int i = 0; i < days.length ; i++) { // place combo boxes for picking sit place
 			gpSitPlace.add(cbSitPlace.get(i * 2), i + 4, 3, columspan, 1);
+			cbSitPlace.get(i * 2).setMaxWidth(165.0);
 			gpSitPlace.add(cbSitPlace.get(i * 2 + 1), i + 4, 4, columspan, 1);
+			cbSitPlace.get(i *2 + 1).setMaxWidth(165.0);
 		}
-		
+
 		for (ComboBox<String> comboBox : cbSitPlace) {
 			comboBox.setItems(model.getAvailablePlaces());
 			comboBox.getSelectionModel().selectFirst();
 		}
-		
-		
 
 		gpBase.add(gpSitPlace, 2, 0, 4,4);
 
 	}// end setLblDayLblDayPartCbSitPlace
+
+	/**
+	 * place table view occupation in base grid pane
+	 */
+	public void setTableView() {
+		TableView<Student> occupation = new TableView<Student>();
+		occupation.setItems(new Model().loadDataWithScheduleAndID());
+
+		TableColumn<Student, String> colFirstName = new TableColumn("Voornaam");
+
+
+		occupation.getColumns().addAll(colFirstName);
+		gpBase.add(occupation, 0, 0);
+
+	}// end setTableView
+
+
+
+
+
+
+
+
+
+
+
+
 
 }// InputStudentSchedule

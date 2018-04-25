@@ -33,16 +33,9 @@ public class Model {
     }
 
     public ObservableList<String> getAvailablePlaces() {
-//    	ICT_1, ICT_2, ICT_3, ICT_4, ICT_5, ICT_6,
-//    	ICT_7, ICT_8, ICT_9, ICT_10, ICT_11, ICT_12,
-//    	ICT_13, ICT_14, ICT_15, ICT_16, ICT_17, ICT_18,
-//
-//    	ECDL_1, ECDL_2, ECDL_3, ECDL_4, ECDL_5, ECDL_6,
-//
-//    	SERVICEDESK_1, SERVICEDESK_2, SERVICEDESK_3;
 
 		ObservableList<String> list = FXCollections.observableArrayList();
-		list.add("ICT_1");
+		list.add("SERVICEDESK_88");
 		list.add("ICT_2");
 		list.add("ICT_3");
 		list.add("ECDL_1");
@@ -51,6 +44,7 @@ public class Model {
 
     	return list;
 	}
+
 
 	public void loadData(){
 
