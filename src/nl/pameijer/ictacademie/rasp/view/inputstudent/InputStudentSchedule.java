@@ -19,7 +19,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.model.Student;
-import nl.pameijer.ictacademie.rasp.model.Students;
 import sun.launcher.resources.launcher;
 
 public class InputStudentSchedule extends Application{
@@ -32,7 +31,7 @@ public class InputStudentSchedule extends Application{
 	private DatePicker dpStartDate, dpEndDate;
 	private String days[] = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"};
 	private String dayParts[] = {"Ochtend", "Middag"};
-	private Model model = new Model();
+	private Model model;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -152,7 +151,8 @@ public class InputStudentSchedule extends Application{
 	 */
 	public void setTableView() {
 		TableView<Student> occupation = new TableView<Student>();
-		occupation.setItems(new Model().loadDataWithScheduleAndID());
+		model.loadDataWithSchedule();
+		occupation.setItems(model.getStudentList());
 
 		TableColumn<Student, String> colFirstName = new TableColumn("Voornaam");
 
