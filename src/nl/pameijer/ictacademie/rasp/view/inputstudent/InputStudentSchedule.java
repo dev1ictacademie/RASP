@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.pameijer.ictacademie.rasp.model.Model;
@@ -31,7 +32,7 @@ public class InputStudentSchedule extends Application{
 	private DatePicker dpStartDate, dpEndDate;
 	private String days[] = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"};
 	private String dayParts[] = {"Ochtend", "Middag"};
-	private Model model;
+	private Model model = new Model();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -50,7 +51,7 @@ public class InputStudentSchedule extends Application{
 		setLabelsTextFields();// make labels
 		setLabelDatePicker();;// make label and date pickers
 		setLblDayLblDayPartCbSitPlace();// make combo boxes
-		// make table view
+		setTableView();// make table view
 
 		// Add the gridPane to a scene
 		Scene scene = new Scene(gpBase, 1600, 700);
@@ -70,8 +71,8 @@ public class InputStudentSchedule extends Application{
 		lblLName = new Label("Achternaam:");
 		lblOverview = new Label("Bezetting:");
 		// add labels to gridPane
-		gpBase.add(lblFName, 0, 0);
-		gpBase.add(lblLName, 0, 1);
+		gpBase.add(lblFName, 0, 0, 2, 1);
+		gpBase.add(lblLName, 0, 1, 2, 1);
 		gpBase.add(lblOverview, 0, 4);
 		// make text fields
 		txtFName = new TextField();
@@ -80,8 +81,8 @@ public class InputStudentSchedule extends Application{
 		txtLName = new TextField();
 		txtLName.setMinWidth(200.0);
 		// add text fields to grid pane
-		gpBase.add(txtFName, 1, 0);
-		gpBase.add(txtLName, 1, 1);
+		gpBase.add(txtFName, 1, 0, 2, 1);
+		gpBase.add(txtLName, 1, 1, 2, 1);
 
 	}// end setLabels
 
@@ -91,14 +92,14 @@ public class InputStudentSchedule extends Application{
 	public void setLabelDatePicker() {
 		lblStartDate = new Label("Begin datum:");
 		lblEndDate = new Label("Eind datum:");
-		gpBase.add(lblStartDate, 1, 2);
-		gpBase.add(lblEndDate, 2, 2);
+		gpBase.add(lblStartDate, 0, 3, 1, 1);
+		gpBase.add(lblEndDate, 1, 3, 1, 1);
 		dpStartDate = new DatePicker();
 		dpEndDate = new DatePicker();
 		dpStartDate.setValue(LocalDate.now());// shows the current date from the system clock
 		dpEndDate.setValue(LocalDate.now());
-		gpBase.add(dpStartDate, 1, 3);
-		gpBase.add(dpEndDate, 2, 3);
+		gpBase.add(dpStartDate, 0, 4, 1, 1);
+		gpBase.add(dpEndDate, 1, 4, 1, 1);
 	}// setLabelDatePicker
 
 	/**
@@ -142,7 +143,7 @@ public class InputStudentSchedule extends Application{
 			comboBox.getSelectionModel().selectFirst();
 		}
 
-		gpBase.add(gpSitPlace, 2, 0, 4,4);
+		gpBase.add(gpSitPlace, 1, 0, 4,4);
 
 	}// end setLblDayLblDayPartCbSitPlace
 
@@ -150,15 +151,22 @@ public class InputStudentSchedule extends Application{
 	 * place table view occupation in base grid pane
 	 */
 	public void setTableView() {
-		TableView<Student> occupation = new TableView<Student>();
+		TableView<Student> occupation = new TableView<Student>();// create new table object
 		model.loadDataWithSchedule();
-		occupation.setItems(model.getStudentList());
-
+		occupation.setItems(model.getStudentList());// items list is created
+		
+		// first name column
 		TableColumn<Student, String> colFirstName = new TableColumn("Voornaam");
+		colFirstName.setMinWidth(100.0);
+		colFirstName.setCellValueFactory(new PropertyValueFactory<Student, String>("fName"));
+		
+		// last name column
+		TableColumn<Student, String> colLastName = new TableColumn<Student, String>("Achternaam");
+		colLastName.setMinWidth(200.0);
+		colLastName.setCellValueFactory(new PropertyValueFactory<Student, String>("lName"));
 
-
-		occupation.getColumns().addAll(colFirstName);
-		gpBase.add(occupation, 0, 0);
+		occupation.getColumns().addAll(colFirstName, colLastName);
+		gpBase.add(occupation, 0, 5, 2, 2);
 
 	}// end setTableView
 
