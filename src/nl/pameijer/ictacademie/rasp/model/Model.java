@@ -28,10 +28,19 @@ public class Model {
         currentStudentProperty().set(Student);
     }
 
+    /**
+     *
+     * @return String id, String fName , String lName, LocalDate startDate,
+			LocalDate endDate, HashMap<DayPart, Place> schedule
+     */
     public ObservableList<Student> getStudentList() {
         return studentList ;
     }
 
+    /**
+     * Method for testing combo boxes sit places
+     * @return Array list Strings of sit places
+     */
     public ObservableList<String> getAvailablePlaces() {
 
 		ObservableList<String> list = FXCollections.observableArrayList();

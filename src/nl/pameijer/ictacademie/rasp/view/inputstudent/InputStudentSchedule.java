@@ -2,6 +2,7 @@ package nl.pameijer.ictacademie.rasp.view.inputstudent;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.sun.javafx.scene.control.skin.VirtualFlow.ArrayLinkedList;
 
@@ -18,7 +19,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import nl.pameijer.ictacademie.rasp.model.DayPart;
 import nl.pameijer.ictacademie.rasp.model.Model;
+import nl.pameijer.ictacademie.rasp.model.Place;
 import nl.pameijer.ictacademie.rasp.model.Student;
 import sun.launcher.resources.launcher;
 
@@ -81,8 +84,8 @@ public class InputStudentSchedule extends Application{
 		txtLName = new TextField();
 		txtLName.setMinWidth(200.0);
 		// add text fields to grid pane
-		gpBase.add(txtFName, 1, 0, 2, 1);
-		gpBase.add(txtLName, 1, 1, 2, 1);
+		gpBase.add(txtFName, 1, 0, 1, 1);
+		gpBase.add(txtLName, 1, 1, 1, 1);
 
 	}// end setLabels
 
@@ -103,7 +106,7 @@ public class InputStudentSchedule extends Application{
 	}// setLabelDatePicker
 
 	/**
-	 * place labels days, day parts and sit place combo boxes into sitPlace GridPane
+	 * Place labels days, day parts and sit place combo boxes into sitPlace GridPane
 	 */
 	public void setLblDayLblDayPartCbSitPlace() {
 		gpSitPlace = new GridPane();
@@ -143,30 +146,50 @@ public class InputStudentSchedule extends Application{
 			comboBox.getSelectionModel().selectFirst();
 		}
 
-		gpBase.add(gpSitPlace, 1, 0, 4,4);
+		gpBase.add(gpSitPlace, 1, 0, 3, 4);
 
 	}// end setLblDayLblDayPartCbSitPlace
 
 	/**
-	 * place table view occupation in base grid pane
+	 * Place TableView occupation of students with schedules
 	 */
 	public void setTableView() {
 		TableView<Student> occupation = new TableView<Student>();// create new table object
 		model.loadDataWithSchedule();
-		occupation.setItems(model.getStudentList());// items list is created
-		
+
+		//occupation contains String id, fName, lName, LocalDate startDate, endDate,
+		//HashMap <DayPart, Place> schedule
+		occupation.setItems(model.getStudentList());
+
 		// first name column
 		TableColumn<Student, String> colFirstName = new TableColumn("Voornaam");
 		colFirstName.setMinWidth(100.0);
 		colFirstName.setCellValueFactory(new PropertyValueFactory<Student, String>("fName"));
-		
+
 		// last name column
 		TableColumn<Student, String> colLastName = new TableColumn<Student, String>("Achternaam");
 		colLastName.setMinWidth(200.0);
 		colLastName.setCellValueFactory(new PropertyValueFactory<Student, String>("lName"));
 
-		occupation.getColumns().addAll(colFirstName, colLastName);
-		gpBase.add(occupation, 0, 5, 2, 2);
+		// begin date column
+		TableColumn<Student, LocalDate> colBeginDate = new TableColumn<Student, LocalDate>("Begin datum");
+		colBeginDate.setMinWidth(150.0);
+		colBeginDate.setCellValueFactory(new PropertyValueFactory<Student, LocalDate>("startDate"));
+
+		// end date column
+		TableColumn<Student, LocalDate> colEndDate = new TableColumn<Student, LocalDate>("Eind datum");
+		colEndDate.setMinWidth(150.0);
+		colEndDate.setCellValueFactory(new PropertyValueFactory<Student, LocalDate>("endDate"));
+
+		// schedule column
+		TableColumn<Student, HashMap<DayPart, Place>> colSchedule = 
+				new TableColumn<Student, HashMap<DayPart,Place>>("Schema");
+		colSchedule.setMinWidth(200.0);
+		colSchedule.setCellValueFactory(new PropertyValueFactory<Student, HashMap<DayPart,Place>>("schedule"));
+
+		occupation.getColumns().addAll(colFirstName, colLastName, colBeginDate, colEndDate, colSchedule);
+
+		gpBase.add(occupation, 0, 5, 4, 2);
 
 	}// end setTableView
 
