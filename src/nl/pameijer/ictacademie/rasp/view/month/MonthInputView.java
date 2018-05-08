@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -222,11 +223,10 @@ public class MonthInputView {
 	 * @param grid
 	 */
 	public void fillDayParts(ObservableList<Student> students, GridPane grid) {
-		// TODO Let this method work correctly when switching months through GUI
+		
 		String[] dayNames = dateModel.dayNameList();
 		for (int row = 0; row < students.size(); row++) {
-			// index is a counter for dayparts form daypartlist which is in the
-			// DataModel
+			// index is a counter for day parts from dayPartList in DateModel
 			for (int col = 0, index = 0; col < dateModel.getLengthOfMonth() * 2; col++) {
 				// weekend
 				if (dayNames[col / 2].equals("za") || dayNames[col / 2].equals("zo")) {
@@ -243,29 +243,57 @@ public class MonthInputView {
 							LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1),
 							dateModel.getDayPartList().get(index))) {
 
-						txt.setStyle(" -fx-border-color: #073E70 #073E70 red #073E70");
+						txt.setStyle("-fx-border-color: #073E70 #073E70 red #073E70;");
 					} else {
-						txt.setStyle("-fx-border-color: #073E70");
+						txt.setStyle("-fx-border-color: #073E70;");
 					}
 
 					txt.setId("" + students.get(row).getId() + "-"
 							+ LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1) + "-"
 							+ (dateModel.getDayPartList().get(index)));
+					
+					addFocusPropToTextField(txt);
 
 					index++;
-
+					
 					// add change listener class to dayparts text fields
 					txt.textProperty().addListener(dayPartsListener);
 
 					grid.add(txt, col, row + 1);
 				}
 
-			} // end inner for
-} // end outer for
+			}  // end inner for loop
+		}     // end outer for loop
 
-}// end method fillDayParts
+	}       // end method fillDayParts
+	
+	
+	/**
+	 * Add a styleProperty to a textField which changes it's background color
+	 * depending on if the field has the focus (is selected) or not.
+	 * 
+	 * Original borders of textField (student expected or not?) should be kept 
+	 * as is and therefore getStyle() is used here so existing style-attributes
+	 * are not reset.
+	 *  
+	 * @param textField  The textField to add the styleProperty to
+	 */
+	public void addFocusPropToTextField(TextField textField) {
 
-
+		String focused = " -fx-control-inner-background: white;";
+		String notFocused = " -fx-control-inner-background: #FDE5C8;";
+		
+        textField.styleProperty().bind(
+                Bindings.when(
+                        textField.focusedProperty()
+                )
+                        .then(textField.getStyle() + focused)
+                        .otherwise(textField.getStyle() + notFocused)
+        );
+        
+	}
+	
+	
 	public GridPane getGridStudents() {
 		return gridStudents;
 	}
