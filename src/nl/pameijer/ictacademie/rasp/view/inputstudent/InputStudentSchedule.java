@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import com.sun.javafx.scene.control.skin.VirtualFlow.ArrayLinkedList;
 
+import conceptmodel.Schedule;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -172,6 +173,7 @@ public class InputStudentSchedule extends Application{
 		colLastName.setCellValueFactory(new PropertyValueFactory<Student, String>("lName"));
 
 		// begin date column
+
 		TableColumn<Student, LocalDate> colBeginDate = new TableColumn<Student, LocalDate>("Begin datum");
 		colBeginDate.setMinWidth(150.0);
 		colBeginDate.setCellValueFactory(new PropertyValueFactory<Student, LocalDate>("startDate"));
@@ -181,13 +183,9 @@ public class InputStudentSchedule extends Application{
 		colEndDate.setMinWidth(150.0);
 		colEndDate.setCellValueFactory(new PropertyValueFactory<Student, LocalDate>("endDate"));
 
-		// schedule column
-		TableColumn<Student, HashMap<DayPart, Place>> colSchedule = 
-				new TableColumn<Student, HashMap<DayPart,Place>>("Schema");
-		colSchedule.setMinWidth(200.0);
-		colSchedule.setCellValueFactory(new PropertyValueFactory<Student, HashMap<DayPart,Place>>("schedule"));
 
-		occupation.getColumns().addAll(colFirstName, colLastName, colBeginDate, colEndDate, colSchedule);
+		occupation.getColumns().addAll(colFirstName, colLastName, colBeginDate, colEndDate);
+
 
 		gpBase.add(occupation, 0, 5, 4, 2);
 
