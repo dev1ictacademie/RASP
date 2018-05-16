@@ -77,7 +77,7 @@ public class InputStudentSchedule extends Application{
 		// add labels to gridPane
 		gpBase.add(lblFName, 0, 0, 2, 1);
 		gpBase.add(lblLName, 0, 1, 2, 1);
-		gpBase.add(lblOverview, 0, 4);
+		gpBase.add(lblOverview, 0, 5);
 		// make text fields
 		txtFName = new TextField();
 		txtFName.setMinWidth(100.0);
@@ -167,27 +167,32 @@ public class InputStudentSchedule extends Application{
 		colFirstName.setMinWidth(100.0);
 		colFirstName.setCellValueFactory(new PropertyValueFactory<Student, String>("fName"));
 
+		// infix column
+		TableColumn<Student, String> colInfix = new TableColumn("Tussenv.");
+		colInfix.setMinWidth(100.0);
+		colInfix.setCellValueFactory(new PropertyValueFactory<Student, String>(""));
+
 		// last name column
 		TableColumn<Student, String> colLastName = new TableColumn<Student, String>("Achternaam");
 		colLastName.setMinWidth(200.0);
 		colLastName.setCellValueFactory(new PropertyValueFactory<Student, String>("lName"));
 
-		// begin date column
+		// day of week columns
+		TableColumn<Student, String> colMonday = new TableColumn<Student, String>("Ma");
+		colMonday.setCellValueFactory(new PropertyValueFactory<Student, String>(""));
+		TableColumn<Student, String> colMorning = new TableColumn<Student, String>("O");
+		colMorning.setMinWidth(50.0);
+		TableColumn<Student, String> colAfternoon = new TableColumn<Student, String>("M");
+		colAfternoon.setMinWidth(50.0);
+		colMonday.getColumns().addAll(colMorning, colAfternoon);
 
-		TableColumn<Student, LocalDate> colBeginDate = new TableColumn<Student, LocalDate>("Begin datum");
-		colBeginDate.setMinWidth(150.0);
-		colBeginDate.setCellValueFactory(new PropertyValueFactory<Student, LocalDate>("startDate"));
-
-		// end date column
-		TableColumn<Student, LocalDate> colEndDate = new TableColumn<Student, LocalDate>("Eind datum");
-		colEndDate.setMinWidth(150.0);
-		colEndDate.setCellValueFactory(new PropertyValueFactory<Student, LocalDate>("endDate"));
-
-
-		occupation.getColumns().addAll(colFirstName, colLastName, colBeginDate, colEndDate);
+		TableColumn<Student, String> colThuesday = new TableColumn<Student, String>("Di");
+		colThuesday.setCellValueFactory(new PropertyValueFactory<Student, String>(""));
 
 
-		gpBase.add(occupation, 0, 5, 4, 2);
+		occupation.getColumns().addAll(colFirstName, colInfix, colLastName , colMonday, colThuesday);
+
+		gpBase.add(occupation, 0, 6, 5, 2);
 
 	}// end setTableView
 
