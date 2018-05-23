@@ -157,7 +157,12 @@ public class InputStudentSchedule extends Application{
 	public void setTableView() {
 		TableView<Student> occupation = new TableView<Student>();// create new table object
 		model.loadDataWithSchedule();
-
+		ObservableList<Student> students = (ObservableList<Student>) model.getStudentList();
+		for(int i = 0; i < students.size(); i++)
+		{
+			System.out.println(students.get(i).getSchedules().get(0).getDayParts());
+		}
+		
 		//occupation contains String id, fName, lName, LocalDate startDate, endDate,
 		//HashMap <DayPart, Place> schedule
 		occupation.setItems(model.getStudentList());
