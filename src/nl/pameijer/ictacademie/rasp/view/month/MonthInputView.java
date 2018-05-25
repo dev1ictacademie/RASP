@@ -166,8 +166,8 @@ public class MonthInputView {
 	public ComboBox<Integer> getYearComboBox() {
 		ObservableList<Integer> years = FXCollections.observableArrayList();
 		ComboBox<Integer> yearBox = new ComboBox<Integer>();
-		for (int i = 0; i < 25; i++) {
-			years.add(2017 + i);
+		for (int i = 0; i < 6; i++) {
+			years.add( (dateModel.getYear() - 3) + i);
 		}
 		yearBox.setItems(years);
 		yearBox.setValue(dateModel.getYear());

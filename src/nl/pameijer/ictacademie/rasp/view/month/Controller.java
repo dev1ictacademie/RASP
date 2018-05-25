@@ -31,7 +31,7 @@ public class Controller {
 		model.loadDataWithScheduleAndID();
 		// view
 		view = new MonthInputView(dateModel);
-
+		
 		//setListener
 		MyChangeListener myChangeListener = new MyChangeListener();
 		dateModel.yearProperty().addListener(myChangeListener);
