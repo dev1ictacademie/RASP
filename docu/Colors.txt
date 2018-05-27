@@ -1,0 +1,37 @@
+-fx-background-color MonthView:  #1C68AC    H: 208, S: 84, B: 67
+
+
+-fx-border-color MonthView:  #073E70    H: 209, S: 94, B: 44
+
+
+Github-commit very light green color:  #E6FFED   H: 137, S: 10, B: 100
+
+
+Github-commit very light pink color:  #FFEEF0    H: 353, S: 7, B: 100
+
+
+Github-commit very light blue color:  #F1F8FF    H: 210, S: 5, B: 100
+
+
+Custom-made very light yellow:  #FFF8CC    H: 52, S: 20, B: 100
+
+
+Github-commit light green color:  #CDFFD8   H: 133, S: 20, B: 100
+
+
+Github-commit light pink color:  #FFDCE0    H: 353, S: 14, B: 100
+
+
+Github-commit light blue color:  #DBEDFF    H: 210, S: 14, B: 100
+
+
+Custom-made light yellow:  #FFF3A3    H: 52, S: 36, B: 100
+
+
+Hearthstone-login unselected TextField color:  #EBE4D4    H: 42, S: 10, B: 92
+
+
+Hearthstone-login filled-in TextField color:  #FAFFBD    H: 65, S: 26, B: 100
+
+
+Gmail/ABN-AMRO selected mail/TextField light yellow:  #FFFFCC    H: 60, S: 20, B: 100
