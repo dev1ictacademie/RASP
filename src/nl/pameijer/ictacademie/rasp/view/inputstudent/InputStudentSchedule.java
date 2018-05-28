@@ -162,7 +162,7 @@ public class InputStudentSchedule extends Application{
 		{
 			System.out.println(students.get(i).getSchedules().get(0).getDayParts());
 		}
-		
+
 		//occupation contains String id, fName, lName, LocalDate startDate, endDate,
 		//HashMap <DayPart, Place> schedule
 		occupation.setItems(model.getStudentList());
@@ -185,17 +185,47 @@ public class InputStudentSchedule extends Application{
 		// day of week columns
 		TableColumn<Student, String> colMonday = new TableColumn<Student, String>("Ma");
 		colMonday.setCellValueFactory(new PropertyValueFactory<Student, String>(""));
-		TableColumn<Student, String> colMorning = new TableColumn<Student, String>("O");
-		colMorning.setMinWidth(50.0);
-		TableColumn<Student, String> colAfternoon = new TableColumn<Student, String>("M");
-		colAfternoon.setMinWidth(50.0);
-		colMonday.getColumns().addAll(colMorning, colAfternoon);
+		TableColumn<Student, String> colMonMorning = new TableColumn<Student, String>("o");
+		colMonMorning.setMinWidth(50.0);
+		TableColumn<Student, String> colMonAfternoon = new TableColumn<Student, String>("m");
+		colMonMorning.setMinWidth(50.0);
+		colMonday.getColumns().addAll(colMonMorning, colMonAfternoon);
 
-		TableColumn<Student, String> colThuesday = new TableColumn<Student, String>("Di");
-		colThuesday.setCellValueFactory(new PropertyValueFactory<Student, String>(""));
+		TableColumn<Student, String> colTeusday = new TableColumn<Student, String>("Di");
+		colTeusday.setCellValueFactory(new PropertyValueFactory<Student, String>(""));
+		TableColumn<Student, String> colTeusMorning = new TableColumn<Student, String>("o");
+		colTeusMorning.setMinWidth(50.0);
+		TableColumn<Student, String> colTeusAfternoon = new TableColumn<Student, String>("m");
+		colTeusAfternoon.setMinWidth(50.0);
+		colTeusday.getColumns().addAll(colTeusMorning, colTeusAfternoon);
+
+		TableColumn<Student, String> colWed = new TableColumn<Student, String>("Wo");
+		colMonday.setCellValueFactory(new PropertyValueFactory<Student, String>(""));
+		TableColumn<Student, String> colWedMorning = new TableColumn<Student, String>("o");
+		colWedMorning.setMinWidth(50.0);
+		TableColumn<Student, String> colWedAfternoon = new TableColumn<Student, String>("m");
+		colWedAfternoon.setMinWidth(50.0);
+		colWed.getColumns().addAll(colWedMorning, colWedAfternoon);
+
+		TableColumn<Student, String> colThursday = new TableColumn<Student, String>("Do");
+		colMonday.setCellValueFactory(new PropertyValueFactory<Student, String>(""));
+		TableColumn<Student, String> colThursMorning = new TableColumn<Student, String>("o");
+		colThursMorning.setMinWidth(50.0);
+		TableColumn<Student, String> colThursAfternoon = new TableColumn<Student, String>("m");
+		colThursAfternoon.setMinWidth(50.0);
+		colThursday.getColumns().addAll(colThursMorning, colThursAfternoon);
+
+		TableColumn<Student, String> colVriday = new TableColumn<Student, String>("Vrij");
+		colMonday.setCellValueFactory(new PropertyValueFactory<Student, String>(""));
+		TableColumn<Student, String> colVriMorning = new TableColumn<Student, String>("o");
+		colVriMorning.setMinWidth(50.0);
+		TableColumn<Student, String> colVriAfternoon = new TableColumn<Student, String>("m");
+		colVriAfternoon.setMinWidth(50.0);
+		colVriday.getColumns().addAll(colVriMorning, colVriAfternoon);
 
 
-		occupation.getColumns().addAll(colFirstName, colInfix, colLastName , colMonday, colThuesday);
+		occupation.getColumns().addAll(colFirstName, colInfix, colLastName, colMonday, colTeusday,
+				colWed, colThursday, colVriday );
 
 		gpBase.add(occupation, 0, 6, 5, 2);
 
