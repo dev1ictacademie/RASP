@@ -2,6 +2,7 @@ package nl.pameijer.ictacademie.rasp.view.month;
 
 import java.time.LocalDate;
 
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,7 +14,6 @@ import nl.pameijer.ictacademie.rasp.model.Model;
  *
  * @author ben
  *
- *
  */
 public class Controller {
 
@@ -21,6 +21,7 @@ public class Controller {
 	private Model model;
 	private DateModel dateModel;
 	private DayPartsListener dayPartsListener;
+	private TextFocusListener textFocusListener;
 
 	public Controller(Model model) {
 		// this month
@@ -31,14 +32,16 @@ public class Controller {
 		model.loadDataWithScheduleAndID();
 		// view
 		view = new MonthInputView(dateModel);
-
-		//setListener
+		
+		// set Listeners
 		MyChangeListener myChangeListener = new MyChangeListener();
 		dateModel.yearProperty().addListener(myChangeListener);
 		dateModel.monthProperty().addListener(myChangeListener);
 		dayPartsListener = new DayPartsListener();
-		//set daypart listener in view
 		view.addDayPartsListener(dayPartsListener);
+		textFocusListener = new TextFocusListener();
+		view.addTextFocusListener(textFocusListener);
+		
 		setStudents();
 		setDayTextFields();
 
@@ -121,7 +124,51 @@ public class Controller {
 		}
 
 	}// end inner class DayPartsListener
+	
+	/**
+	 * A TextFocusListener checks if a TextField is focused (selected) or not.
+	 * If focused it sets the appropriate "highlighting" background color
+	 * of the TextField.
+	 * 
+	 * If not focused it reads the text in the field and then assigns the
+	 * appropriate background color based on the value read since different
+	 * presence-status-codes are associated with different colors.
+	 * 
+	 * Original borders of textField (student expected or not?) should be kept 
+	 * as is and therefore getStyle() is used here so existing style-attributes
+	 * are not reset.
+	 */
+	class TextFocusListener implements ChangeListener<Boolean> {
+		
+			@Override
+			public void changed(ObservableValue<? extends Boolean> obs, 
+					Boolean oldValue, Boolean newValue) {
+				
+				ReadOnlyBooleanProperty observable = (ReadOnlyBooleanProperty) obs;
+				TextField txt = (TextField) observable.getBean();
+				
+				if (txt.isFocused()) {
+					txt.setStyle(txt.getStyle() + " -fx-control-inner-background: #FAFFBD;");
+				}
+				else {
+					if (txt.getText().equals("")) {
+						txt.setStyle(txt.getStyle() + " -fx-control-inner-background: white;");
+					}
+					else if (txt.getText().equals("X")) {
+						txt.setStyle(txt.getStyle() + " -fx-control-inner-background: #E6FFED;");
+					}
+					else if (txt.getText().equals("Z")) {
+						txt.setStyle(txt.getStyle() + " -fx-control-inner-background: #FFF8CC;");
+					}
+					else if (txt.getText().equals("V")) {
+						txt.setStyle(txt.getStyle() + " -fx-control-inner-background: #F1F8FF;");
+					}
+					else if (txt.getText().equals("A")) {
+						txt.setStyle(txt.getStyle() + " -fx-control-inner-background: #FFEEF0;");
+					}
+				}
+			}
+		
+	}// end inner class TextFocusListener
 
-	
-	
 }// end class Controller

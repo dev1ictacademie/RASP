@@ -29,6 +29,7 @@ import javafx.scene.layout.VBox;
 import nl.pameijer.ictacademie.rasp.model.DayPart;
 import nl.pameijer.ictacademie.rasp.model.Student;
 import nl.pameijer.ictacademie.rasp.view.month.Controller.DayPartsListener;
+import nl.pameijer.ictacademie.rasp.view.month.Controller.TextFocusListener;
 import sun.security.action.GetLongAction;
 
 public class MonthInputView {
@@ -54,6 +55,7 @@ public class MonthInputView {
 	private VBox root;
 	private TextField txt;
 	private DayPartsListener dayPartsListener;
+	private TextFocusListener textFocusListener;
 
 	public MonthInputView(DateModel dateModel) {
 		this.dateModel = dateModel;
@@ -166,8 +168,8 @@ public class MonthInputView {
 	public ComboBox<Integer> getYearComboBox() {
 		ObservableList<Integer> years = FXCollections.observableArrayList();
 		ComboBox<Integer> yearBox = new ComboBox<Integer>();
-		for (int i = 0; i < 25; i++) {
-			years.add(2017 + i);
+		for (int i = 0; i < 6; i++) {
+			years.add( (dateModel.getYear() - 3) + i);
 		}
 		yearBox.setItems(years);
 		yearBox.setValue(dateModel.getYear());
@@ -243,16 +245,18 @@ public class MonthInputView {
 							LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1),
 							dateModel.getDayPartList().get(index))) {
 
-						txt.setStyle("-fx-border-color: #073E70 #073E70 red #073E70;");
+						txt.setStyle("-fx-border-color: #073E70 #073E70 red #073E70;"/* +
+								" -fx-control-inner-background: #FAFFBD;"*/);
 					} else {
-						txt.setStyle("-fx-border-color: #073E70;");
+						txt.setStyle("-fx-border-color: #073E70;"/* +
+								" -fx-control-inner-background: #FAFFBD;"*/);
 					}
 
 					txt.setId("" + students.get(row).getId() + "-"
 							+ LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1) + "-"
 							+ (dateModel.getDayPartList().get(index)));
 					
-					addFocusPropToTextField(txt);
+					txt.focusedProperty().addListener(textFocusListener);
 
 					index++;
 					
@@ -267,31 +271,6 @@ public class MonthInputView {
 
 	}       // end method fillDayParts
 	
-	
-	/**
-	 * Add a styleProperty to a textField which changes it's background color
-	 * depending on if the field has the focus (is selected) or not.
-	 * 
-	 * Original borders of textField (student expected or not?) should be kept 
-	 * as is and therefore getStyle() is used here so existing style-attributes
-	 * are not reset.
-	 *  
-	 * @param textField  The textField to add the styleProperty to
-	 */
-	public void addFocusPropToTextField(TextField textField) {
-
-		String focused = " -fx-control-inner-background: white;";
-		String notFocused = " -fx-control-inner-background: #FDE5C8;";
-		
-        textField.styleProperty().bind(
-                Bindings.when(
-                        textField.focusedProperty()
-                )
-                        .then(textField.getStyle() + focused)
-                        .otherwise(textField.getStyle() + notFocused)
-        );
-        
-	}
 	
 	
 	public GridPane getGridStudents() {
@@ -327,5 +306,9 @@ public class MonthInputView {
 
 	public void addDayPartsListener(DayPartsListener dayPartsListener) {
 		this.dayPartsListener = dayPartsListener;
+	}
+	
+	public void addTextFocusListener(TextFocusListener textFocusListener) {
+		this.textFocusListener = textFocusListener;
 	}
 }
