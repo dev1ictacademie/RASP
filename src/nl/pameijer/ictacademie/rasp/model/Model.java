@@ -44,12 +44,12 @@ public class Model {
     public ObservableList<String> getAvailablePlaces() {
 
 		ObservableList<String> list = FXCollections.observableArrayList();
-		list.add("SERVICEDESK_88");
+		list.add("SD_88");
 		list.add("ICT_2");
 		list.add("ICT_3");
 		list.add("ECDL_1");
 		list.add("ECDL_2");
-		list.add("SERVICEDESK_1");
+		list.add("SD_1");
 
     	return list;
 	}
