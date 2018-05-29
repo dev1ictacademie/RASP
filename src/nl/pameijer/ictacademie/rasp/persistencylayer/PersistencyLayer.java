@@ -33,6 +33,10 @@ public class PersistencyLayer {
 	 *
 	 * This registrant is present on spot place ICT_9 on Wednesday morning and afternoon and
 	 * on Thursday morning at the same spot.
+	 * 
+	 * Purpose: The purpose of this array delivered by the database is to 
+	 *          provide a week-overview of the students scheduled-in that
+	 *          particular week and the places/spots which they then have.
 	 */
 	String[][] weekSchedules =
 		{
