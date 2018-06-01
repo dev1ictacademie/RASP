@@ -44,41 +44,21 @@ public class PersistencyLayer {
 					"ICT_13", "ICT_13", "ICT_13", "ICT_13", null, null, "ICT_13", "ICT_13", "ICT_13", "ICT_13" },
 				{"99387", "Klein", "Hans", null,
 					null, null, null, null, "ICT_9", "ICT_9", "ICT_9", null, null, null},
-				{"99387", "Jansen", "Jan", null,
+				{"99387", "Boer", "Cornelis", "den",
 					null, null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
+				{"99387", "Schoenlapper", "Frederik", null,
 					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
+				{"99387", "Groot", "Kees", "de",
 					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
+				{"99387", "Klein", "Hans", null,
 					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
+				{"99387", "Hout", "Ton", "van",
 					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
+				{"99387", "Vries", "Hans", "de",
 					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
-					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
+				{"99387", "Appel", "Karel", null,
+					"ICT_1", "ICT_2", "ICT_3", "ICT_4", "ICT_5", "ICT_6", "ICT_7", "ICT_8", null, "ICT_9" },
 		};
-	/*
-	studentList.setAll(
-	new Student("Piet", "Pietersen" ),
-	new Student("Jan", "Jansen"),
-	new Student("Kees", "Groot" ),
-	new Student("Hans", "Klein"),
-	new Student("Cornelis", "Boer, den" ),
-	new Student("Frederik", "Schoenlapper"),
-	new Student("Kees", "Groot, de" ),
-	new Student("Hans", "Klein"),
-	new Student("Karel", "Bakker" ),
-	new Student("Fred", "Lubbers"),
-	new Student("Ton", "Hout , van" ),
-	new Student("Hans", "Vries , de"),
-	new Student("Karel", "Appel"),
-	new Student("Paula", "Aardbei"),
-	new Student("Piet", "Derksen"),
-	new Student("Klaas" , "Graaf, de")
-	);
-*/
 
 	//// Temporary Mock-Data ////
 
