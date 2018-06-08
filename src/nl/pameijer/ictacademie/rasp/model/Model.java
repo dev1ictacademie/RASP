@@ -4,16 +4,18 @@ package nl.pameijer.ictacademie.rasp.model;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+import javax.swing.text.StyledEditorKit.ForegroundAction;
+
 import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import nl.pameijer.ictacademie.rasp.persistencylayer.PersistencyLayer;
 
 public class Model {
 
-	private final ObservableList<Student> studentList = FXCollections.observableArrayList(student ->
-    new Observable[] {student.fNameProperty(), student.lNameProperty()});
+	private final ObservableList<Student> studentList = FXCollections.observableArrayList();
 
 	private final ObjectProperty<Student> currentStudent = new SimpleObjectProperty<>(null);
 
@@ -44,7 +46,7 @@ public class Model {
     public ObservableList<String> getAvailablePlaces() {
 
 		ObservableList<String> list = FXCollections.observableArrayList();
-		list.add("SD_88");
+		list.add("");
 		list.add("ICT_2");
 		list.add("ICT_3");
 		list.add("ECDL_1");
@@ -109,7 +111,7 @@ public class Model {
 
 	}//  end method loadDat
 
-	public void loadDataWithScheduleAndID(){
+	public void loadDataWithScheduleAndID_2(){
 
 		HashMap<DayPart, Place> schedule = new HashMap<>();
 		schedule.put(DayPart.MONDAY_MORNING, Place.ICT_1);
@@ -139,6 +141,26 @@ public class Model {
 		new Student("19","Thijs", "Steen, van der", LocalDate.of(2018,3,1), LocalDate.MAX, schedule)
 		);
 	}
+
+	/**
+	 * method to fill observable student list from PersistencyLayer class for test purposes
+	 */
+	public void loadDataWithScheduleAndID()
+	{
+		for (int i = 0; i < PersistencyLayer.weekSchedules.length; i++)
+		{
+			studentList.add ( new Student (PersistencyLayer.weekSchedules[i][0],
+					PersistencyLayer.weekSchedules[i][2], PersistencyLayer.weekSchedules[i][1],
+					PersistencyLayer.weekSchedules[i][3], PersistencyLayer.weekSchedules[i][4],
+					PersistencyLayer.weekSchedules[i][5], PersistencyLayer.weekSchedules[i][6],
+					PersistencyLayer.weekSchedules[i][7], PersistencyLayer.weekSchedules[i][8],
+					PersistencyLayer.weekSchedules[i][9], PersistencyLayer.weekSchedules[i][10],
+					PersistencyLayer.weekSchedules[i][11], PersistencyLayer.weekSchedules[i][12],
+					PersistencyLayer.weekSchedules[i][13] ) );
+		}
+
+	}
+
 
 	public void saveDayPart(String id, String text) {
 		// TODO split id into studentid, date, daypart and the value from text

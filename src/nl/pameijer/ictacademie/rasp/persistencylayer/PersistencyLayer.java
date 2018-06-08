@@ -129,12 +129,12 @@ public class PersistencyLayer {
 	 *
 	 * This registrant is present on spot place ICT_9 on Wednesday morning and afternoon and
 	 * on Thursday morning at the same spot.
-	 * 
-	 * Purpose: The purpose of this array delivered by the database is to 
+	 *
+	 * Purpose: The purpose of this array delivered by the database is to
 	 *          provide a week-overview of the students scheduled-in that
 	 *          particular week and the places/spots which they then have.
 	 */
-	String[][] weekSchedules =
+	public static String[][] weekSchedules =
 		{
 				{"99991", "Pietersen", "Piet", null,
 					"ICT_17", "ICT_17", null, null, "ICT_17", null, null, null, "ICT_17", null },
@@ -144,21 +144,23 @@ public class PersistencyLayer {
 					"ICT_13", "ICT_13", "ICT_13", "ICT_13", null, null, "ICT_13", "ICT_13", "ICT_13", "ICT_13" },
 				{"99387", "Klein", "Hans", null,
 					null, null, null, null, "ICT_9", "ICT_9", "ICT_9", null, null, null},
-				{"99387", "Jansen", "Jan", null,
+				{"99387", "Boer", "Cornelis", "den",
 					null, null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
+				{"99387", "Schoenlapper", "Frederik", null,
 					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
+				{"99387", "Groot", "Kees", "de",
 					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
+				{"97", "Klein", "Hans", null,
 					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
+				{"99387", "Hout", "Ton", "van",
 					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
+				{"987", "Vries", "Hans", "de",
 					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
-				{"99387", "Jansen", "Jan", null,
-					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
+				{"99387", "Appel", "Karel", null,
+					"ICT_1", "ICT_2", "ICT_3", "ICT_4", "ICT_5", "ICT_6", "ICT_7", "ICT_8", "ICT_9", "ICT_10" },
 		};
+
+
 
 
 }
