@@ -1,17 +1,113 @@
 package nl.pameijer.ictacademie.rasp.persistencylayer;
 
+import java.util.ArrayList;
+
+import nl.pameijer.ictacademie.rasp.model.Schedule;
 import nl.pameijer.ictacademie.rasp.model.Student;
 
 public class PersistencyLayer {
+	
+	/* Arrays needed at application start to be delivered by the database:
 
-	public static void getMonthlyRegistration() {
-		for (String[] entry: mockArray) {
-			for (String field: entry) {
-
+       - Array with students
+       - Array with schedules
+       
+     */
+		
+	/* 
+	 * A student from this array has a studentID, a last name, a first name
+	 * and a last name prefix.
+	 */
+	static String[][] studentsMockArray = {
+			{"101", "Richthofen", "Baron", "von"},
+			{"119", "Pietersen", "Piet", null},
+			{"162", "Jovanovich", "Lena", null},
+			{"184", "Murdo", "Bob", "Mac"}	
+	};
+	
+	/*
+	 * A schedule from this array has a studentID (indicating which student 
+	 * this schedule belongs to), a starting date, an end date,
+     * a place value for monday morning, a place value for monday afternoon,
+	 * a place value for tuesday morning, a place value for tuesday afternoon, 
+	 * a place value for wednesday morning, a place value for wednesday afternoon, 
+	 * a place value for thursday morning, a place value for thursday afternoon, 
+	 * a place value for friday morning and a place value for friday afternoon.
+	 */ 
+	static String[][] schedulesMockArray = {
+			{"119", "2018-02-06", "9999-12-31", "6", "6", null, null, "1", "1", null, null, null, null},
+			{"162", "2018-04-19", "2018-05-31", null, null, "19", "8", null, null, "14", "14", null, null},
+			{"162", "2018-06-01", "9999-12-31", null, null, "19", "8", null, null, null, null, "16", "16"},
+			{"101", "2017-11-29", "9999-12-31", "3", "3", null, null, "5", "7", null, null, null, null},
+			{"184", "2017-06-21", "2018-03-14", "11", "11", null, null, null, null, null, null, "9", "5"},
+			{"184", "2018-03-15", "9999-12-31", null, null, null, "18", null, null, null, null, null, "18"}
+	};
+	
+	/**
+	 * Construct a list of students based on input from a two-dimensional array
+	 * of strings.
+	 * 
+	 * @param arr       The two-dimensional array of strings describing a 
+	 *                  number of students.
+	 */
+	public static ArrayList<Student> constructStudentList(String[][] arr) {
+		ArrayList<Student> studentList = new ArrayList<>();
+		for (String[] entry: arr) {
+			String[] attribs = new String[4];
+			int i = 0;
+			for (String studentProperty: entry) {
+				attribs[i] = studentProperty;
+				i++;
 			}
+			studentList.add(new Student(attribs[2], attribs[1], attribs[3], attribs[0]));
+		}
+		return studentList;
+	}
+	
+	/**
+	 * Construct any number of schedules based on input from a two-dimensional 
+	 * array of strings (and assign them to the appropriate student).
+	 * 
+	 * @param arr       The two-dimensional array of strings describing a 
+	 *                  number of schedules.
+	 *             
+	 * @param students  The list with Student objects to which the schedules
+	 *                  need to be assigned.       
+	 */
+	public static void constructSchedules(String[][] arr, ArrayList<Student> students) {
+		for (String[] entry: arr) {
+            new Schedule(entry);
 		}
 	}
-
+	
+	
+	/* Student list made based on studentsMockArray for testing */ 
+	static ArrayList<Student> testList = constructStudentList(studentsMockArray);
+	
+	
+	public static void main(String[] args) {
+		
+		// test the studentList by printing the student's properties
+		for (Student stu: testList) {
+			System.out.println(stu.getId() + " " + stu.getLName() + " " + 
+		                       stu.getFName() + " " + stu.getNamePrefix());
+		}
+		
+		System.out.println();
+		
+		// test the constructSchedules method by using the schedulesMockArray
+		// to create schedules and assign them to the students from the testList
+		constructSchedules(schedulesMockArray, testList);
+		
+	}
+	
+	
+	
+	
+	
+	
+	//////////////////////////////////////////////
+	
 	/*
 	 * Mock array for week schedule(s)
 	 *
@@ -63,40 +159,6 @@ public class PersistencyLayer {
 				{"99387", "Jansen", "Jan", null,
 					"ICT_1", null, null, null, "ICT_17", null, null, null, null, "ICT_17" },
 		};
-	/*
-	studentList.setAll(
-	new Student("Piet", "Pietersen" ),
-	new Student("Jan", "Jansen"),
-	new Student("Kees", "Groot" ),
-	new Student("Hans", "Klein"),
-	new Student("Cornelis", "Boer, den" ),
-	new Student("Frederik", "Schoenlapper"),
-	new Student("Kees", "Groot, de" ),
-	new Student("Hans", "Klein"),
-	new Student("Karel", "Bakker" ),
-	new Student("Fred", "Lubbers"),
-	new Student("Ton", "Hout , van" ),
-	new Student("Hans", "Vries , de"),
-	new Student("Karel", "Appel"),
-	new Student("Paula", "Aardbei"),
-	new Student("Piet", "Derksen"),
-	new Student("Klaas" , "Graaf, de")
-	);
-*/
 
-	//// Temporary Mock-Data ////
-
-	static String[][] mockArray =
-		{
-				{"99991", "Richthofen", "Baron", "von", "2018-05-24", "1", "5", "3"},
-				{"99387", "Bunny", "Bugs", null, "2018-05-24", "2", "5", "3"},
-				{"98456", "Milutinovich", "Lena", null, "2018-05-26", "1", "5", "7"},
-				{"97678", "Donald", "Bob", "Mac", "2018-05-27", "2", "4", "3"},
-		};
-
-
-	public static void main(String[] args) {
-
-	}
 
 }
