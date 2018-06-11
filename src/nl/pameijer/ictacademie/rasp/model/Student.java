@@ -23,8 +23,8 @@ public class Student {
 	private final StringProperty wedAfternoon = new SimpleStringProperty();
 	private final StringProperty thursMorning = new SimpleStringProperty();
 	private final StringProperty thursAfternoon = new SimpleStringProperty();
-	private final StringProperty vriMorning = new SimpleStringProperty();
-	private final StringProperty vriAfternoon = new SimpleStringProperty();
+	private final StringProperty friMorning = new SimpleStringProperty();
+	private final StringProperty friAfternoon = new SimpleStringProperty();
 
 	// The students's schedule(s)
 	private ArrayList<Schedule> schedules = new ArrayList<>();
@@ -75,7 +75,7 @@ public class Student {
 	public Student(String id, String fName , String lName, String infix,
 			String monMorning, String monAfternoon, String teusMorning, String teusAfternoon,
 			String wedMorning, String wedAfternoon, String thursMorning, String thursAfternoon,
-			String vriMorning, String vriAfternoon)
+			String friMorning, String friAfternoon)
 	{
 		setFName(fName);
 		setLName(lName);
@@ -89,8 +89,8 @@ public class Student {
 		setWedAfternoon(wedAfternoon);
 		setThursMorning(thursMorning);
 		setThursAfternoon(thursAfternoon);
-		setVriMorning(vriMorning);
-		setVriAfternoon(vriAfternoon);
+		setFriMorning(friMorning);
+		setFriAfternoon(friAfternoon);
 	}
 
 	/**
@@ -284,7 +284,7 @@ public class Student {
 		return this.wedMorning;
 	}
 
-	public final String getwedMorning() {
+	public final String getWedMorning() {
 		return this.wedMorningProperty().get();
 	}
 
@@ -298,7 +298,7 @@ public class Student {
 		return this.wedAfternoon;
 	}
 
-	public final String getwedAfternoon() {
+	public final String getWedAfternoon() {
 		return this.wedAfternoonProperty().get();
 	}
 
@@ -312,7 +312,7 @@ public class Student {
 		return this.thursMorning;
 	}
 
-	public final String getthursMorning() {
+	public final String getThursMorning() {
 		return this.thursMorningProperty().get();
 	}
 
@@ -335,31 +335,31 @@ public class Student {
 
 	}
 
-	public final StringProperty vriMorningProperty()
+	public final StringProperty friMorningProperty()
 	{
-		return this.vriMorning;
+		return this.friMorning;
 	}
 
-	public final String getVriMorning() {
-		return this.vriMorningProperty().get();
+	public final String getFriMorning() {
+		return this.friMorningProperty().get();
 	}
 
-	public final void setVriMorning(final String vriMorning) {
-		this.vriMorningProperty().set(vriMorning);
+	public final void setFriMorning(final String friMorning) {
+		this.friMorningProperty().set(friMorning);
 
 	}
 
-	public final StringProperty vriAfternoonProperty()
+	public final StringProperty friAfternoonProperty()
 	{
-		return this.vriAfternoon;
+		return this.friAfternoon;
 	}
 
-	public final String getVriAfternoon() {
-		return this.vriAfternoonProperty().get();
+	public final String getFriAfternoon() {
+		return this.friAfternoonProperty().get();
 	}
 
-	public final void setVriAfternoon(final String vriAfternoon) {
-		this.vriAfternoonProperty().set(vriAfternoon);
+	public final void setFriAfternoon(final String friAfternoon) {
+		this.friAfternoonProperty().set(friAfternoon);
 
 	}
 	
