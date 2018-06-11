@@ -2,6 +2,7 @@ package nl.pameijer.ictacademie.rasp.model;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ArrayList;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -122,6 +123,33 @@ public class Student {
 
 	public ArrayList<Schedule> getSchedules() {
 		return schedules;
+	}
+	
+	/**
+	 * Get a student from the list based on student's ID
+	 */
+	public Student getStudentByID(String ID, List<Student> studentList) {
+		Student stu = null;
+		for (Student student: studentList) {
+			if (student.getId().equals(ID)) {
+				stu = student;
+			}
+		} 
+		return stu;
+	}
+	
+	/**
+	 * Does student have this ID?
+	 */
+	public boolean hasThisID(String ID) {
+		return this.getId().equals(ID);
+	}
+	
+	/**
+	 * Assign a schedule to a student (add it to the schedules list).
+	 */
+	public void addSchedule(Schedule schedule) {
+		schedules.add(schedule);
 	}
 
 	

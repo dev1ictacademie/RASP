@@ -76,7 +76,12 @@ public class PersistencyLayer {
 	 */
 	public static void constructSchedules(String[][] arr, ArrayList<Student> students) {
 		for (String[] entry: arr) {
-            new Schedule(entry);
+            Schedule schedule = new Schedule(entry);
+            for (Student student: students) {
+            	if (student.hasThisID(entry[0])) {
+            		student.addSchedule(schedule);
+            	}
+            }
 		}
 	}
 	

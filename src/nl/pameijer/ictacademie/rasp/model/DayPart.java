@@ -63,6 +63,32 @@ public enum DayPart {
 	public PartOfDay getPart() {
 		return part;
 	}
+	
+	/**
+	 * Return a DayPart based on it's ordinal number.
+	 * @param ordinal
+	 * @return
+	 */
+	public static DayPart getDayPartByNumber(int ordinal) {
+		
+		DayPart dayPart;
+		
+		switch(ordinal) {
+		case 0: dayPart = DayPart.MONDAY_MORNING; break;
+		case 1: dayPart = DayPart.MONDAY_AFTERNOON; break;
+		case 2: dayPart = DayPart.TUESDAY_MORNING; break;
+		case 3: dayPart = DayPart.TUESDAY_AFTERNOON; break;
+		case 4: dayPart = DayPart.WEDNESDAY_MORNING; break;
+		case 5: dayPart = DayPart.WEDNESDAY_AFTERNOON; break;
+		case 6: dayPart = DayPart.THURSDAY_MORNING; break;
+		case 7: dayPart = DayPart.THURSDAY_AFTERNOON; break;
+		case 8: dayPart = DayPart.FRIDAY_MORNING; break;
+		case 9: dayPart = DayPart.FRIDAY_AFTERNOON; break;
+		default: throw new IllegalArgumentException();
+		}
+		
+		return dayPart;
+	}
 
 }
 
