@@ -300,10 +300,6 @@ public class MonthInputView {
 		}
 	}
 
-	public DayPartsListener getDayPartsListener() {
-		return dayPartsListener;
-	}
-
 	public void addDayPartsListener(DayPartsListener dayPartsListener) {
 		this.dayPartsListener = dayPartsListener;
 	}

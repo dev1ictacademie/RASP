@@ -1,7 +1,12 @@
 package nl.pameijer.ictacademie.rasp.persistencylayer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import nl.pameijer.ictacademie.rasp.model.DayPart;
+import nl.pameijer.ictacademie.rasp.model.Place;
 import nl.pameijer.ictacademie.rasp.model.Schedule;
 import nl.pameijer.ictacademie.rasp.model.Student;
 
@@ -50,8 +55,8 @@ public class PersistencyLayer {
 	 * @param arr       The two-dimensional array of strings describing a 
 	 *                  number of students.
 	 */
-	public static ArrayList<Student> constructStudentList(String[][] arr) {
-		ArrayList<Student> studentList = new ArrayList<>();
+	public static List<Student> constructStudentList(String[][] arr) {
+		List<Student> studentList = new ArrayList<>();
 		for (String[] entry: arr) {
 			String[] attribs = new String[4];
 			int i = 0;
@@ -74,12 +79,12 @@ public class PersistencyLayer {
 	 * @param students  The list with Student objects to which the schedules
 	 *                  need to be assigned.       
 	 */
-	public static void constructSchedules(String[][] arr, ArrayList<Student> students) {
+	public static void constructSchedules(String[][] arr, List<Student> students) {
 		for (String[] entry: arr) {
-            Schedule schedule = new Schedule(entry);
             for (Student student: students) {
             	if (student.hasThisID(entry[0])) {
-            		student.addSchedule(schedule);
+            		student.addSchedule(new Schedule(entry));
+            		break;
             	}
             }
 		}
@@ -87,7 +92,7 @@ public class PersistencyLayer {
 	
 	
 	/* Student list made based on studentsMockArray for testing */ 
-	static ArrayList<Student> testList = constructStudentList(studentsMockArray);
+	static List<Student> testList = constructStudentList(studentsMockArray);
 	
 	
 	public static void main(String[] args) {
@@ -104,11 +109,41 @@ public class PersistencyLayer {
 		// to create schedules and assign them to the students from the testList
 		constructSchedules(schedulesMockArray, testList);
 		
+		
+		// test the construction and assignment of the schedules above by 
+		// printing out the student's ID, name and his or her schedule(s)
+		for (Student stu: testList) {
+			System.out.print(stu.getId() + " " + stu.getLName() + " " + 
+					stu.getFName() + " " + stu.getNamePrefix() +
+					schedules_String(stu) + "\n");
+		}
+		
 	}
 	
+    //////////////////////////////////////////////
 	
-	
-	
+	/**
+	 * Test method. Create and return a string describing all schedules
+	 * a student has. 
+	 */
+	public static String schedules_String(Student stu) {
+
+		String desc = "";
+
+		for (Schedule schedule: stu.getSchedules()) {
+			
+			desc = desc + " " + schedule.getStartDate() + " " + schedule.getEndDate();
+
+			HashMap<DayPart, Place> map = schedule.getMap();
+			for(Map.Entry<DayPart, Place> entry : map.entrySet()){
+				desc = desc + " " + entry.getKey().toString() + " " +
+						entry.getValue().toString() + ",";
+			}
+			desc = desc + "   ";
+			
+		}
+		return desc;
+	}
 	
 	
 	//////////////////////////////////////////////

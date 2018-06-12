@@ -121,25 +121,15 @@ public class Student {
 		return isExpected;
 	}
 
+	/**
+	 * Get the student's list of schedules.
+	 */
 	public ArrayList<Schedule> getSchedules() {
 		return schedules;
 	}
 	
 	/**
-	 * Get a student from the list based on student's ID
-	 */
-	public Student getStudentByID(String ID, List<Student> studentList) {
-		Student stu = null;
-		for (Student student: studentList) {
-			if (student.getId().equals(ID)) {
-				stu = student;
-			}
-		} 
-		return stu;
-	}
-	
-	/**
-	 * Does student have this ID?
+	 * Does the student have this exact ID?
 	 */
 	public boolean hasThisID(String ID) {
 		return this.getId().equals(ID);

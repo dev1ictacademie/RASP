@@ -58,7 +58,6 @@ public class Schedule {
 					schedule.put(
 							DayPart.getDayPartByNumber(i - 3),
 							Place.getPlaceByNumber(Integer.parseInt(scheduleData[i])));
-					// assign i as dayPart (match with dayParts) and     scheduleData[i] as place 
 				}
 			}
 			this.studentID = scheduleData[0];
@@ -67,8 +66,6 @@ public class Schedule {
 			this.schedule = schedule;
 		}	
 	}
-	
-	////
 	
 	/**
 	 * Get the starting date.

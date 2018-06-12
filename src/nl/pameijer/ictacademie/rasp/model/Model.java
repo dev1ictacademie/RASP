@@ -57,28 +57,6 @@ public class Model {
 	}
 
 
-	public void loadData(){
-
-		studentList.setAll(
-		new Student("Piet", "Pietersen" ),
-		new Student("Jan", "Jansen"),
-		new Student("Kees", "Groot" ),
-		new Student("Hans", "Klein"),
-		new Student("Cornelis", "Boer, den" ),
-		new Student("Frederik", "Schoenlapper"),
-		new Student("Kees", "Groot, de" ),
-		new Student("Hans", "Klein"),
-		new Student("Karel", "Bakker" ),
-		new Student("Fred", "Lubbers"),
-		new Student("Ton", "Hout , van" ),
-		new Student("Hans", "Vries , de"),
-		new Student("Karel", "Appel"),
-		new Student("Paula", "Aardbei"),
-		new Student("Piet", "Derksen"),
-		new Student("Klaas" , "Graaf, de")
-		);
-	}//  end method loadData
-
 	public void loadDataWithSchedule(){
 
 		HashMap<DayPart, Place> schedule = new HashMap<>();
@@ -109,7 +87,7 @@ public class Model {
 		new Student("Thijs", "Steen, van der", LocalDate.of(2018,3,1), LocalDate.MAX, schedule)
 		);
 
-	}//  end method loadDat
+	}//  end method loadDataWithSchedule
 
 	public void loadDataWithScheduleAndID_2(){
 

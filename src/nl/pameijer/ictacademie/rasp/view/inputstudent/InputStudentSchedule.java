@@ -224,7 +224,7 @@ public class InputStudentSchedule extends Application
 
 		final double COL_MON_FRI_WIDTH = 65.0;
 		// monday column
-		TableColumn<Student, String> colMonday = new TableColumn<Student, String>("Ma");
+		TableColumn<Student, String> colMonday = new TableColumn<Student, String>(TableDate.thisWeek[0]);
 		TableColumn<Student, String> colMonMorning = new TableColumn<Student, String>("o");
 		colMonMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colMonMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("monMorning"));
@@ -234,7 +234,7 @@ public class InputStudentSchedule extends Application
 		colMonday.getColumns().addAll(colMonMorning, colMonAfternoon);
 
 		// theusday column
-		TableColumn<Student, String> colTeusday = new TableColumn<Student, String>("Di");
+		TableColumn<Student, String> colTeusday = new TableColumn<Student, String>(TableDate.thisWeek[1]);
 		TableColumn<Student, String> colTeusMorning = new TableColumn<Student, String>("o");
 		colTeusMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colTeusMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("teusMorning"));
@@ -244,7 +244,7 @@ public class InputStudentSchedule extends Application
 		colTeusday.getColumns().addAll(colTeusMorning, colTeusAfternoon);
 
 		// wednesday column
-		TableColumn<Student, String> colWed = new TableColumn<Student, String>("Wo");
+		TableColumn<Student, String> colWed = new TableColumn<Student, String>(TableDate.thisWeek[2]);
 		TableColumn<Student, String> colWedMorning = new TableColumn<Student, String>("o");
 		colWedMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colWedMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("wedMorning"));
@@ -254,7 +254,7 @@ public class InputStudentSchedule extends Application
 		colWed.getColumns().addAll(colWedMorning, colWedAfternoon);
 
 		// theursday column
-		TableColumn<Student, String> colThursday = new TableColumn<Student, String>("Do");
+		TableColumn<Student, String> colThursday = new TableColumn<Student, String>(TableDate.thisWeek[3]);
 		TableColumn<Student, String> colThursMorning = new TableColumn<Student, String>("o");
 		colThursMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colThursMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("thursMorning"));
@@ -264,7 +264,7 @@ public class InputStudentSchedule extends Application
 		colThursday.getColumns().addAll(colThursMorning, colThursAfternoon);
 
 		// vriday column
-		TableColumn<Student, String> colVriday = new TableColumn<Student, String>("Vrij");
+		TableColumn<Student, String> colVriday = new TableColumn<Student, String>(TableDate.thisWeek[4]);
 		TableColumn<Student, String> colVriMorning = new TableColumn<Student, String>("o");
 		colVriMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colVriMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("friMorning"));
