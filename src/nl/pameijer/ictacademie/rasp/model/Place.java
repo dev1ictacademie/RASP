@@ -58,42 +58,42 @@ public enum Place {
 	}
 	
 	/**
-	 * Return a Place based on it's ordinal number.
+	 * Return a Place based on it's numbering.
 	 */
-	public static Place getPlaceByNumber(int ordinal) {
+	public static Place getPlaceByNumber(int number) {
 		
 		Place place;
 		
-		switch(ordinal) {
-		case 0: place = Place.ICT_1; break; 
-		case 1: place = Place.ICT_2; break;
-		case 2: place = Place.ICT_3; break;
-		case 3: place = Place.ICT_4; break;
-		case 4: place = Place.ICT_5; break;
-		case 5: place = Place.ICT_6; break;
-		case 6: place = Place.ICT_7; break;
-		case 7: place = Place.ICT_8; break;
-		case 8: place = Place.ICT_9; break;
-		case 9: place = Place.ICT_10; break;
-		case 10: place = Place.ICT_11; break;
-		case 11: place = Place.ICT_12; break;
-		case 12: place = Place.ICT_13; break;
-		case 13: place = Place.ICT_14; break;
-		case 14: place = Place.ICT_15; break;
-		case 15: place = Place.ICT_16; break;
-		case 16: place = Place.ICT_17; break;
-		case 17: place = Place.ICT_18; break;
+		switch(number) {
+		case 1: place = Place.ICT_1; break; 
+		case 2: place = Place.ICT_2; break;
+		case 3: place = Place.ICT_3; break;
+		case 4: place = Place.ICT_4; break;
+		case 5: place = Place.ICT_5; break;
+		case 6: place = Place.ICT_6; break;
+		case 7: place = Place.ICT_7; break;
+		case 8: place = Place.ICT_8; break;
+		case 9: place = Place.ICT_9; break;
+		case 10: place = Place.ICT_10; break;
+		case 11: place = Place.ICT_11; break;
+		case 12: place = Place.ICT_12; break;
+		case 13: place = Place.ICT_13; break;
+		case 14: place = Place.ICT_14; break;
+		case 15: place = Place.ICT_15; break;
+		case 16: place = Place.ICT_16; break;
+		case 17: place = Place.ICT_17; break;
+		case 18: place = Place.ICT_18; break;
 
-		case 18: place = Place.ECDL_1; break;
-		case 19: place = Place.ECDL_2; break;
-		case 20: place = Place.ECDL_3; break;
-		case 21: place = Place.ECDL_4; break;
-		case 22: place = Place.ECDL_5; break;
-		case 23: place = Place.ECDL_6; break;
+		case 19: place = Place.ECDL_1; break;
+		case 20: place = Place.ECDL_2; break;
+		case 21: place = Place.ECDL_3; break;
+		case 22: place = Place.ECDL_4; break;
+		case 23: place = Place.ECDL_5; break;
+		case 24: place = Place.ECDL_6; break;
 
-		case 24: place = Place.SERVICEDESK_1; break;
-		case 25: place = Place.SERVICEDESK_2; break;
-		case 26: place = Place.SERVICEDESK_3; break;
+		case 25: place = Place.SERVICEDESK_1; break;
+		case 26: place = Place.SERVICEDESK_2; break;
+		case 27: place = Place.SERVICEDESK_3; break;
 		
 		default: throw new IllegalArgumentException();
 		}

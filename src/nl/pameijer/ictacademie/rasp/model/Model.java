@@ -22,6 +22,7 @@ public class Model {
 	public ObjectProperty<Student> currentStudentProperty() {
         return currentStudent ;
     }
+	
 	public final Student getCurrentStudent() {
         return currentStudentProperty().get();
     }
@@ -31,9 +32,7 @@ public class Model {
     }
 
     /**
-     *
-     * @return String id, String fName , String lName, LocalDate startDate,
-			LocalDate endDate, HashMap<DayPart, Place> schedule
+     * Return the studentList.
      */
     public ObservableList<Student> getStudentList() {
         return studentList ;
@@ -56,39 +55,12 @@ public class Model {
     	return list;
 	}
 
-
-	public void loadDataWithSchedule(){
-
-		HashMap<DayPart, Place> schedule = new HashMap<>();
-		schedule.put(DayPart.MONDAY_MORNING, Place.ICT_1);
-		schedule.put(DayPart.MONDAY_AFTERNOON,Place.ICT_8);
-		schedule.put(DayPart.TUESDAY_AFTERNOON, Place.ECDL_5);
-
-		HashMap<DayPart, Place> schedule1 = new HashMap<>();
-		schedule1.put(DayPart.WEDNESDAY_AFTERNOON, Place.ICT_1);
-		schedule1.put(DayPart.THURSDAY_MORNING, Place.ICT_10);
-		schedule1.put(DayPart.FRIDAY_AFTERNOON, Place.ICT_13);
-
-		HashMap<DayPart, Place> schedule2 = new HashMap<>();
-		schedule2.put(DayPart.MONDAY_MORNING, Place.ICT_3);
-		schedule2.put(DayPart.MONDAY_AFTERNOON, Place.ICT_9);
-		schedule2.put(DayPart.FRIDAY_MORNING, Place.ICT_11);
-
-		studentList.setAll(
-		new Student("Piet", "Pietersen", LocalDate.of(2018,3,3), LocalDate.MAX, schedule),
-		new Student("Ton", "Hout , van", LocalDate.of(2018,4,15), LocalDate.MAX, schedule1),
-		new Student("Jan", "Jansen", LocalDate.of(2018,3,7), LocalDate.MAX, schedule),
-		new Student("Paula", "Aardbei", LocalDate.of(2018,3,5), LocalDate.MAX, schedule1),
-		new Student("Karel", "Appel", LocalDate.of(2018,3,1), LocalDate.MAX, schedule2),
-		new Student("Hans", "Andersen", LocalDate.of(2018,3,3), LocalDate.MAX, schedule),
-		new Student("Kim", "Hulst, van", LocalDate.of(2018,3,15), LocalDate.MAX, schedule2),
-		new Student("John", "Bouwer", LocalDate.of(2018,3,7), LocalDate.MAX, schedule),
-		new Student("Pamela", "Negi", LocalDate.of(2018,3,5), LocalDate.MAX, schedule1),
-		new Student("Thijs", "Steen, van der", LocalDate.of(2018,3,1), LocalDate.MAX, schedule)
-		);
-
-	}//  end method loadDataWithSchedule
-
+    /**
+	 * Test method to construct Students, Schedules and then add them to 
+	 * the ObservableList.
+	 * 
+	 * Used by Controller (and then indirectly by MonthInputView class).
+	 */
 	public void loadDataWithScheduleAndID_2(){
 
 		HashMap<DayPart, Place> schedule = new HashMap<>();
@@ -118,10 +90,13 @@ public class Model {
 		new Student("12","Pamela", "Negi", LocalDate.of(2018,3,5), LocalDate.MAX, schedule1),
 		new Student("19","Thijs", "Steen, van der", LocalDate.of(2018,3,1), LocalDate.MAX, schedule)
 		);
-	}
+	}//  end method loadDataWithScheduleAndID_2
 
 	/**
-	 * method to fill observable student list from PersistencyLayer class for test purposes
+	 * Test method to construct Students from the weekSchedules array (found in 
+	 * PersistencyLayer class) and add them to the ObservableList.
+	 * 
+	 * Used by InputStudentSchedule class.
 	 */
 	public void loadDataWithScheduleAndID()
 	{

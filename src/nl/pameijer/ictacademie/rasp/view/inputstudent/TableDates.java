@@ -4,7 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 
-public class TableDate {
+public class TableDates {
 	
 	static LocalDate now = LocalDate.now();
 
@@ -13,7 +13,7 @@ public class TableDate {
 	
 	static String[] thisWeek = new String[5];
 
-	static {
+	static {   
 		for (int i = 0; i < 5; i++) {
 			thisWeek[i] = formatDate(mostRecentMonday.plusDays(i));
 		}

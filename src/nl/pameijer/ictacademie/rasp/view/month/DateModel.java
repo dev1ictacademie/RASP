@@ -108,7 +108,7 @@ public class DateModel {
 		}
 		return dayNames;
 	}
-    //TODO array needed for methods isExpected
+	
 	public DayPart[] dayPartsOfMonth(){
 
 		return null;

@@ -20,7 +20,7 @@ public class TestPlaceAvailability {
 	ObservableList<Student> studentList;
 	
 	TestPlaceAvailability() {
-		model.loadDataWithSchedule();
+		model.loadDataWithScheduleAndID_2();
 		studentList = model.getStudentList();
 	}
 	

@@ -29,8 +29,8 @@ public class InputStudentSchedule extends Application
 {
 	private GridPane gpBase;// base grid pane
 	private GridPane gpSitPlace;// grid pane to hold sit places, day parts labels and combo boxes
-	private Label lblFName, lblLName, lblInfix , lblOverview, lblStartDate, lblEndDate;
-	private TextField txtFName, txtLName, txtInfix;
+	private Label lblFName, lblLName, lblPrefix , lblOverview, lblStartDate, lblEndDate;
+	private TextField txtFName, txtLName, txtPrefix;
 	private ArrayList<ComboBox<String>> cbSitPlace;
 	private Label[] lblDay;
 	private DatePicker dpStartDate, dpEndDate;
@@ -73,11 +73,11 @@ public class InputStudentSchedule extends Application
 		// make labels
 		lblFName = new Label("Voornaam:");
 		lblLName = new Label("Achternaam:");
-		lblInfix = new Label("Tussenvoegsel:");
+		lblPrefix = new Label("Tussenvoegsel:");
 		lblOverview = new Label("Bezetting:");
 		// add labels to gridPane
 		gpBase.add(lblFName, 0, 0, 2, 1);
-		gpBase.add(lblInfix, 0, 1, 2, 1);
+		gpBase.add(lblPrefix, 0, 1, 2, 1);
 		gpBase.add(lblLName, 0, 2, 2, 1);
 		gpBase.add(lblOverview, 0, 5, 2, 1);
 		// make text fields
@@ -86,11 +86,11 @@ public class InputStudentSchedule extends Application
 		txtFName.setMaxWidth(150);
 		txtLName = new TextField();
 		txtLName.setMinWidth(200.0);
-		txtInfix = new TextField();
-		txtInfix.setMaxWidth(130.0);
+		txtPrefix = new TextField();
+		txtPrefix.setMaxWidth(130.0);
 		// add text fields to grid pane
 		gpBase.add(txtFName, 1, 0, 1, 1);
-		gpBase.add(txtInfix, 1, 1, 1, 1);
+		gpBase.add(txtPrefix, 1, 1, 1, 1);
 		gpBase.add(txtLName, 1, 2, 1, 1);
 	}// end setLabels
 
@@ -224,7 +224,7 @@ public class InputStudentSchedule extends Application
 
 		final double COL_MON_FRI_WIDTH = 65.0;
 		// monday column
-		TableColumn<Student, String> colMonday = new TableColumn<Student, String>(TableDate.thisWeek[0]);
+		TableColumn<Student, String> colMonday = new TableColumn<Student, String>(TableDates.thisWeek[0]);
 		TableColumn<Student, String> colMonMorning = new TableColumn<Student, String>("o");
 		colMonMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colMonMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("monMorning"));
@@ -234,7 +234,7 @@ public class InputStudentSchedule extends Application
 		colMonday.getColumns().addAll(colMonMorning, colMonAfternoon);
 
 		// theusday column
-		TableColumn<Student, String> colTeusday = new TableColumn<Student, String>(TableDate.thisWeek[1]);
+		TableColumn<Student, String> colTeusday = new TableColumn<Student, String>(TableDates.thisWeek[1]);
 		TableColumn<Student, String> colTeusMorning = new TableColumn<Student, String>("o");
 		colTeusMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colTeusMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("teusMorning"));
@@ -244,7 +244,7 @@ public class InputStudentSchedule extends Application
 		colTeusday.getColumns().addAll(colTeusMorning, colTeusAfternoon);
 
 		// wednesday column
-		TableColumn<Student, String> colWed = new TableColumn<Student, String>(TableDate.thisWeek[2]);
+		TableColumn<Student, String> colWed = new TableColumn<Student, String>(TableDates.thisWeek[2]);
 		TableColumn<Student, String> colWedMorning = new TableColumn<Student, String>("o");
 		colWedMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colWedMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("wedMorning"));
@@ -254,7 +254,7 @@ public class InputStudentSchedule extends Application
 		colWed.getColumns().addAll(colWedMorning, colWedAfternoon);
 
 		// theursday column
-		TableColumn<Student, String> colThursday = new TableColumn<Student, String>(TableDate.thisWeek[3]);
+		TableColumn<Student, String> colThursday = new TableColumn<Student, String>(TableDates.thisWeek[3]);
 		TableColumn<Student, String> colThursMorning = new TableColumn<Student, String>("o");
 		colThursMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colThursMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("thursMorning"));
@@ -264,7 +264,7 @@ public class InputStudentSchedule extends Application
 		colThursday.getColumns().addAll(colThursMorning, colThursAfternoon);
 
 		// vriday column
-		TableColumn<Student, String> colVriday = new TableColumn<Student, String>(TableDate.thisWeek[4]);
+		TableColumn<Student, String> colVriday = new TableColumn<Student, String>(TableDates.thisWeek[4]);
 		TableColumn<Student, String> colVriMorning = new TableColumn<Student, String>("o");
 		colVriMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colVriMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("friMorning"));
@@ -290,7 +290,7 @@ public class InputStudentSchedule extends Application
 	{
 		Student student = (Student) newValue;
         txtFName.setText(student.getFName());
-        txtInfix.setText(student.getInfix());
+        txtPrefix.setText(student.getNamePrefix());
         txtLName.setText(student.getLName());
         cbSitPlace.get(0).setValue(student.getMonMorning());
         cbSitPlace.get(1).setValue(student.getMonAfternoon());

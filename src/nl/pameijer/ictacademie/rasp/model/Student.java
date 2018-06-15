@@ -14,7 +14,7 @@ public class Student {
 	private final StringProperty lName = new SimpleStringProperty();
 	private final StringProperty namePrefix = new SimpleStringProperty();
 	private final StringProperty id = new SimpleStringProperty();
-	private final StringProperty infix = new SimpleStringProperty();
+	
 	private final StringProperty monMorning = new SimpleStringProperty();
 	private final StringProperty monAfternoon = new SimpleStringProperty();
 	private final StringProperty teusMorning = new SimpleStringProperty();
@@ -32,30 +32,11 @@ public class Student {
 	/**
 	 * Student constructor
 	 */
-	public Student(String fName , String lName){
-		setFName(fName);
-		setLName(lName);
-	}
-
-	/**
-	 * Student constructor
-	 */
 	public Student(String fName , String lName, String namePrefix, String id){
 		setFName(fName);
 		setLName(lName);
 		setNamePrefix(namePrefix);
 		setId(id);
-	}
-
-	/**
-	 * Student constructor with Schedule.
-	 */
-	public Student(String fName , String lName, LocalDate startDate,
-			LocalDate endDate, HashMap<DayPart, Place> schedule) {
-		setFName(fName);
-		setLName(lName);
-		schedules.add(new Schedule(id.toString(), startDate, endDate, schedule));
-
 	}
 
 	/**
@@ -72,7 +53,7 @@ public class Student {
 	/**
 	 * Student constructor with ID, First name Last name, Infix and 10 day parts.
 	 */
-	public Student(String id, String fName , String lName, String infix,
+	public Student(String id, String fName , String lName, String namePrefix,
 			String monMorning, String monAfternoon, String teusMorning, String teusAfternoon,
 			String wedMorning, String wedAfternoon, String thursMorning, String thursAfternoon,
 			String friMorning, String friAfternoon)
@@ -80,7 +61,7 @@ public class Student {
 		setFName(fName);
 		setLName(lName);
 		setId(id);
-		setInfix(infix);
+		setNamePrefix(namePrefix);
 		setMonMorning(monMorning);
 		setMonAfternoon(monAfternoon);
 		setTeusMorning(teusMorning);
@@ -91,14 +72,6 @@ public class Student {
 		setThursAfternoon(thursAfternoon);
 		setFriMorning(friMorning);
 		setFriAfternoon(friAfternoon);
-	}
-
-	/**
-	 * Make a new schedule for a student and add it to the list.
-	 */
-	public void makeNewSchedule(LocalDate startDate, LocalDate endDate,
-			HashMap<DayPart, Place> schedule) {
-		schedules.add(new Schedule(id.toString(), startDate, endDate, schedule));
 	}
 
 	/**
@@ -169,10 +142,10 @@ public class Student {
 	public final void setLName(final String lName) {
 		this.lNameProperty().set(lName);
 	}
-	
+
 	
 	// Name Prefix
-	public final StringProperty namePrefixProperty() {
+	public final StringProperty namePrefixProperty()	{
 		return this.namePrefix;
 	}
 	
@@ -183,8 +156,8 @@ public class Student {
 	public final void setNamePrefix(final String namePrefix) {
 		this.namePrefixProperty().set(namePrefix);
 	}
-	
-	
+
+
 	// ID
 	public final StringProperty idProperty() {
 		return this.id;
@@ -197,21 +170,9 @@ public class Student {
 	public final void setId(final String id) {
 		this.idProperty().set(id);
 	}
-
-	public final String getInfix() {
-		return this.infixProperty().get();
-	}
-
-
-	public final void setInfix(final String infix) {
-		this.infixProperty().set(infix);
-	}
-
-	public final StringProperty infixProperty()
-	{
-		return this.infix;
-	}
-
+	
+	
+    // Weekday properties
 	public final StringProperty monMorningProperty()
 	{
 		return this.monMorning;
