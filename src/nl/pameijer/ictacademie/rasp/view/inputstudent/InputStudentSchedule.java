@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -37,6 +38,7 @@ public class InputStudentSchedule extends Application
 	private String days[] = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"};
 	private Model model = new Model();
 	private Button addParticipant;
+	private ArrayList<TableColumn<Student, String>> weekDayColumns = new ArrayList<>();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -56,6 +58,8 @@ public class InputStudentSchedule extends Application
 		setLabelDatePicker();;// make label and date pickers
 		setLblDayLblDayPartCbSitPlace();// make combo boxes
 		setTableView();// make table view
+		
+		setButtonBar(); // Right now (16-06-2018) layout not correct at all!
 
 		// Add the gridPane to a scene
 		Scene scene = new Scene(gpBase, 1300, 600);
@@ -212,10 +216,10 @@ public class InputStudentSchedule extends Application
 		colFirstName.setMinWidth(130.0);
 		colFirstName.setCellValueFactory(new PropertyValueFactory<Student, String>("fName"));
 
-		// infix column
-		TableColumn<Student, String> colInfix = new TableColumn("Tussenv.");
-		colInfix.setMinWidth(120.0);
-		colInfix.setCellValueFactory(new PropertyValueFactory<Student, String>("infix"));
+		// name prefix column
+		TableColumn<Student, String> colPrefix = new TableColumn("Tussenv.");
+		colPrefix.setMinWidth(120.0);
+		colPrefix.setCellValueFactory(new PropertyValueFactory<Student, String>("namePrefix"));
 
 		// last name column
 		TableColumn<Student, String> colLastName = new TableColumn<Student, String>("Achternaam");
@@ -224,7 +228,8 @@ public class InputStudentSchedule extends Application
 
 		final double COL_MON_FRI_WIDTH = 65.0;
 		// monday column
-		TableColumn<Student, String> colMonday = new TableColumn<Student, String>(TableDates.thisWeek[0]);
+		TableColumn<Student, String> colMonday = new TableColumn<Student, String>(TableDates.thisWeekStrings[0]);
+		weekDayColumns.add(colMonday);
 		TableColumn<Student, String> colMonMorning = new TableColumn<Student, String>("o");
 		colMonMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colMonMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("monMorning"));
@@ -233,18 +238,20 @@ public class InputStudentSchedule extends Application
 		colMonAfternoon.setCellValueFactory(new PropertyValueFactory<Student, String>("monAfternoon"));
 		colMonday.getColumns().addAll(colMonMorning, colMonAfternoon);
 
-		// theusday column
-		TableColumn<Student, String> colTeusday = new TableColumn<Student, String>(TableDates.thisWeek[1]);
-		TableColumn<Student, String> colTeusMorning = new TableColumn<Student, String>("o");
-		colTeusMorning.setMinWidth(COL_MON_FRI_WIDTH);
-		colTeusMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("teusMorning"));
-		TableColumn<Student, String> colTeusAfternoon = new TableColumn<Student, String>("m");
-		colTeusAfternoon.setMinWidth(COL_MON_FRI_WIDTH);
-		colTeusAfternoon.setCellValueFactory(new PropertyValueFactory<Student, String>("teusAfternoon"));
-		colTeusday.getColumns().addAll(colTeusMorning, colTeusAfternoon);
+		// tuesday column
+		TableColumn<Student, String> colTuesday = new TableColumn<Student, String>(TableDates.thisWeekStrings[1]);
+		weekDayColumns.add(colTuesday);
+		TableColumn<Student, String> colTuesMorning = new TableColumn<Student, String>("o");
+		colTuesMorning.setMinWidth(COL_MON_FRI_WIDTH);
+		colTuesMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("tuesMorning"));
+		TableColumn<Student, String> colTuesAfternoon = new TableColumn<Student, String>("m");
+		colTuesAfternoon.setMinWidth(COL_MON_FRI_WIDTH);
+		colTuesAfternoon.setCellValueFactory(new PropertyValueFactory<Student, String>("tuesAfternoon"));
+		colTuesday.getColumns().addAll(colTuesMorning, colTuesAfternoon);
 
 		// wednesday column
-		TableColumn<Student, String> colWed = new TableColumn<Student, String>(TableDates.thisWeek[2]);
+		TableColumn<Student, String> colWed = new TableColumn<Student, String>(TableDates.thisWeekStrings[2]);
+		weekDayColumns.add(colWed);
 		TableColumn<Student, String> colWedMorning = new TableColumn<Student, String>("o");
 		colWedMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colWedMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("wedMorning"));
@@ -253,8 +260,9 @@ public class InputStudentSchedule extends Application
 		colWedAfternoon.setCellValueFactory(new PropertyValueFactory<Student, String>("wedAfternoon"));
 		colWed.getColumns().addAll(colWedMorning, colWedAfternoon);
 
-		// theursday column
-		TableColumn<Student, String> colThursday = new TableColumn<Student, String>(TableDates.thisWeek[3]);
+		// thursday column
+		TableColumn<Student, String> colThursday = new TableColumn<Student, String>(TableDates.thisWeekStrings[3]);
+		weekDayColumns.add(colThursday);
 		TableColumn<Student, String> colThursMorning = new TableColumn<Student, String>("o");
 		colThursMorning.setMinWidth(COL_MON_FRI_WIDTH);
 		colThursMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("thursMorning"));
@@ -263,19 +271,20 @@ public class InputStudentSchedule extends Application
 		colThursAfternoon.setCellValueFactory(new PropertyValueFactory<Student, String>("thursAfternoon"));
 		colThursday.getColumns().addAll(colThursMorning, colThursAfternoon);
 
-		// vriday column
-		TableColumn<Student, String> colVriday = new TableColumn<Student, String>(TableDates.thisWeek[4]);
-		TableColumn<Student, String> colVriMorning = new TableColumn<Student, String>("o");
-		colVriMorning.setMinWidth(COL_MON_FRI_WIDTH);
-		colVriMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("friMorning"));
-		TableColumn<Student, String> colVriAfternoon = new TableColumn<Student, String>("m");
-		colVriAfternoon.setMinWidth(COL_MON_FRI_WIDTH);
-		colVriAfternoon.setCellValueFactory(new PropertyValueFactory<Student, String>("friAfternoon"));
-		colVriday.getColumns().addAll(colVriMorning, colVriAfternoon);
+		// friday column
+		TableColumn<Student, String> colFriday = new TableColumn<Student, String>(TableDates.thisWeekStrings[4]);
+		weekDayColumns.add(colFriday);
+		TableColumn<Student, String> colFriMorning = new TableColumn<Student, String>("o");
+		colFriMorning.setMinWidth(COL_MON_FRI_WIDTH);
+		colFriMorning.setCellValueFactory(new PropertyValueFactory<Student, String>("friMorning"));
+		TableColumn<Student, String> colFriAfternoon = new TableColumn<Student, String>("m");
+		colFriAfternoon.setMinWidth(COL_MON_FRI_WIDTH);
+		colFriAfternoon.setCellValueFactory(new PropertyValueFactory<Student, String>("friAfternoon"));
+		colFriday.getColumns().addAll(colFriMorning, colFriAfternoon);
 
 
-		occupation.getColumns().addAll(colId, colFirstName, colInfix, colLastName, colMonday, colTeusday,
-				colWed, colThursday, colVriday );
+		occupation.getColumns().addAll(colId, colFirstName, colPrefix, colLastName, colMonday, colTuesday,
+				colWed, colThursday, colFriday );
 
 		scrollPane.setContent(occupation);
 
@@ -283,7 +292,7 @@ public class InputStudentSchedule extends Application
 
 	}// end setTableView
 
-	/*
+	/**
 	 * Fills text fields and combo boxes.
 	 */
 	public void setTextsAndCombos( Object newValue )
@@ -294,8 +303,8 @@ public class InputStudentSchedule extends Application
         txtLName.setText(student.getLName());
         cbSitPlace.get(0).setValue(student.getMonMorning());
         cbSitPlace.get(1).setValue(student.getMonAfternoon());
-        cbSitPlace.get(2).setValue(student.getTeusMorning());
-        cbSitPlace.get(3).setValue(student.getTeusAfternoon());
+        cbSitPlace.get(2).setValue(student.getTuesMorning());
+        cbSitPlace.get(3).setValue(student.getTuesAfternoon());
         cbSitPlace.get(4).setValue(student.getWedMorning());
         cbSitPlace.get(5).setValue(student.getWedAfternoon());
         cbSitPlace.get(6).setValue(student.getThursMorning());
@@ -303,7 +312,82 @@ public class InputStudentSchedule extends Application
         cbSitPlace.get(8).setValue(student.getFriMorning());
         cbSitPlace.get(9).setValue(student.getFriAfternoon());
 	}// end method setTextsAndCombos
-
+	
+	/**
+	 * Three buttons: to switch to month-view, to move 1 week forward
+	 * and to move 1 week backwards.
+	 * 
+	 * Currently (16-06-2018) layout and alignment of the buttons
+	 * is not correct at all! "Vorige Week" and "Volgende Week" buttons
+	 * should be aligned to the far right! (Position of monthViewButton is
+	 * kind of alright though).
+	 * 
+	 * Also the buttons "steal" too much space for some reason from the
+	 * TableView above.
+	 * 
+	 * Also, local declaration of GridPane and Buttons might be questionable. 
+	 */
+	public void setButtonBar() {
+		
+		GridPane buttonBar = new GridPane();
+		
+		Button monthViewButton = new Button("Show MonthView");
+		monthViewButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				System.out.println("Switching to MonthView...");
+			}
+		});
+		
+		Button previousWeekButton = new Button("Vorige Week");
+		previousWeekButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				System.out.println("Showing previous week!");
+				TableDates.changeWeek(-1);
+				updateTableView();
+			}
+		});
+		
+		Button nextWeekButton = new Button("Volgende Week");
+		nextWeekButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				System.out.println("Showing next week!");
+				TableDates.changeWeek(1);
+				updateTableView();			
+			}
+		});
+		
+		buttonBar.add(monthViewButton, 0, 0, 2, 1);
+		buttonBar.add(previousWeekButton, 3, 0, 2, 1);
+		buttonBar.add(nextWeekButton, 6, 0, 2, 1);
+		
+		gpBase.add(buttonBar, 0, 13, 2, 1);
+	}
+	
+	
+	/**
+	 * Update the TableView after a week change, after the studentList has
+	 * changed or after schedules have been changed.
+	 * 
+	 * Set the text from the TableColumn headers to the days and dates from
+	 * the new current week.
+	 * 
+	 * Reassign DayPartProperties to students so that the correct places are
+	 * shown in the week overview.
+	 */
+	public void updateTableView() {
+		
+		for (int i = 0; i < weekDayColumns.size(); i++) {
+			weekDayColumns.get(i).setText(TableDates.thisWeekStrings[i]);
+		}
+		
+		for (Student student: model.getStudentList()) {
+			student.setDayPartProperties(TableDates.thisWeekDates);
+		}
+		
+	}
 
 
 }// InputStudentSchedule

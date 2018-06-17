@@ -56,9 +56,53 @@ public enum Place {
 			int underscore = this.name().indexOf("_");
 			type = this.name().substring(0, underscore);
 	}
+
+	/**
+	 * Return a Place instance based on a string description.
+	 */
+	public static Place getPlaceByString(String description) {
+		
+		Place place;
+		
+		switch(description) {
+		case "ICT_1": place = Place.ICT_1; break; 
+		case "ICT_2": place = Place.ICT_2; break;
+		case "ICT_3": place = Place.ICT_3; break;
+		case "ICT_4": place = Place.ICT_4; break;
+		case "ICT_5": place = Place.ICT_5; break;
+		case "ICT_6": place = Place.ICT_6; break;
+		case "ICT_7": place = Place.ICT_7; break;
+		case "ICT_8": place = Place.ICT_8; break;
+		case "ICT_9": place = Place.ICT_9; break;
+		case "ICT_10": place = Place.ICT_10; break;
+		case "ICT_11": place = Place.ICT_11; break;
+		case "ICT_12": place = Place.ICT_12; break;
+		case "ICT_13": place = Place.ICT_13; break;
+		case "ICT_14": place = Place.ICT_14; break;
+		case "ICT_15": place = Place.ICT_15; break;
+		case "ICT_16": place = Place.ICT_16; break;
+		case "ICT_17": place = Place.ICT_17; break;
+		case "ICT_18": place = Place.ICT_18; break;
+
+		case "ECDL_1": place = Place.ECDL_1; break;
+		case "ECDL_2": place = Place.ECDL_2; break;
+		case "ECDL_3": place = Place.ECDL_3; break;
+		case "ECDL_4": place = Place.ECDL_4; break;
+		case "ECDL_5": place = Place.ECDL_5; break;
+		case "ECDL_6": place = Place.ECDL_6; break;
+
+		case "SERVICEDESK_1": place = Place.SERVICEDESK_1; break;
+		case "SERVICEDESK_2": place = Place.SERVICEDESK_2; break;
+		case "SERVICEDESK_3": place = Place.SERVICEDESK_3; break;
+		
+		default: throw new IllegalArgumentException();
+		}
+		
+		return place;
+	}
 	
 	/**
-	 * Return a Place based on it's numbering.
+	 * Return a Place instance based on sequential numbering.
 	 */
 	public static Place getPlaceByNumber(int number) {
 		

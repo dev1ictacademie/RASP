@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.view.month.Controller;
 
-public class StartApp extends Application{
+public class StartApp extends Application {
 
 	public static void main(String[] args) {
 		launch(args);

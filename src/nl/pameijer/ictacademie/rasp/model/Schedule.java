@@ -44,8 +44,11 @@ public class Schedule {
 	}
 	
 	/**
-	 * new (08-06-2018 15.40u) constructor which accepts an array of strings 
-	 * and should eventually be fed by the database.
+	 * Constructor which accepts String array. Array MUST have length 13
+	 * with first element being StudentID (owner of the schedule), second
+	 * element being the starting date of the schedule, third element being
+	 * the end date and with the last 10 elements representing the place values
+	 * for the 10 day parts.
 	 */
 	public Schedule(String... scheduleData) {
 		if (scheduleData.length != 13) {
@@ -57,7 +60,8 @@ public class Schedule {
 				if (i >= 3 && scheduleData[i] != null) {
 					schedule.put(
 							DayPart.getDayPartByNumber(i - 3),
-							Place.getPlaceByNumber(Integer.parseInt(scheduleData[i])));
+							Place.getPlaceByString(scheduleData[i]));
+							//Place.getPlaceByNumber(Integer.parseInt(scheduleData[i])));
 				}
 			}
 			this.studentID = scheduleData[0];
@@ -101,6 +105,7 @@ public class Schedule {
 	/**
 	 * Is a certain dayPart in this schedule or not? 
 	 */
+	/* Using containsKey() method might be better??? (17-06-2018) */
 	public boolean isDayPartInSchedule(DayPart dayPart) {
 		
 		boolean dayPartFound = false;

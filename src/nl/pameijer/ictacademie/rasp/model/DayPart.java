@@ -8,7 +8,7 @@ import java.time.DayOfWeek;
  * day AND is either a morning or an afternoon.
  * 
  * @author ttimmermans
- * @version 06-03-2018
+ * @version 17-06-2018
  */
 
 public enum DayPart {
@@ -84,6 +84,44 @@ public enum DayPart {
 		case 7: dayPart = DayPart.THURSDAY_AFTERNOON; break;
 		case 8: dayPart = DayPart.FRIDAY_MORNING; break;
 		case 9: dayPart = DayPart.FRIDAY_AFTERNOON; break;
+		default: throw new IllegalArgumentException();
+		}
+		
+		return dayPart;
+	}
+	
+	/**
+	 * Get a Morning-DayPart from a certain day of the week.
+	 */
+	public static DayPart getMorningOf(DayOfWeek dayOfWeek) {
+		
+		DayPart dayPart;
+		
+		switch(dayOfWeek) {
+		case MONDAY: dayPart = DayPart.MONDAY_MORNING; break;
+		case TUESDAY: dayPart = DayPart.TUESDAY_MORNING; break;
+		case WEDNESDAY: dayPart = DayPart.WEDNESDAY_MORNING; break;
+		case THURSDAY: dayPart = DayPart.THURSDAY_MORNING; break;
+		case FRIDAY: dayPart = DayPart.FRIDAY_MORNING; break;
+		default: throw new IllegalArgumentException();
+		}
+		
+		return dayPart;
+	}
+	
+	/**
+	 * Get an Afternoon-DayPart from a certain day of the week.
+	 */
+	public static DayPart getAfternoonOf(DayOfWeek dayOfWeek) {
+		
+		DayPart dayPart;
+		
+		switch(dayOfWeek) {
+		case MONDAY: dayPart = DayPart.MONDAY_AFTERNOON; break;
+		case TUESDAY: dayPart = DayPart.TUESDAY_AFTERNOON; break;
+		case WEDNESDAY: dayPart = DayPart.WEDNESDAY_AFTERNOON; break;
+		case THURSDAY: dayPart = DayPart.THURSDAY_AFTERNOON; break;
+		case FRIDAY: dayPart = DayPart.FRIDAY_AFTERNOON; break;
 		default: throw new IllegalArgumentException();
 		}
 		

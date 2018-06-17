@@ -2,7 +2,7 @@ package nl.pameijer.ictacademie.rasp.model;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -17,8 +17,8 @@ public class Student {
 	
 	private final StringProperty monMorning = new SimpleStringProperty();
 	private final StringProperty monAfternoon = new SimpleStringProperty();
-	private final StringProperty teusMorning = new SimpleStringProperty();
-	private final StringProperty teusAfternoon = new SimpleStringProperty();
+	private final StringProperty tuesMorning = new SimpleStringProperty();
+	private final StringProperty tuesAfternoon = new SimpleStringProperty();
 	private final StringProperty wedMorning = new SimpleStringProperty();
 	private final StringProperty wedAfternoon = new SimpleStringProperty();
 	private final StringProperty thursMorning = new SimpleStringProperty();
@@ -41,6 +41,9 @@ public class Student {
 
 	/**
 	 * Student constructor with ID and Schedule.
+	 * 
+	 * Used by the test method Model.loadDataWithScheduleAndID_2() and
+	 * no longer needed once that test method is obsolete.
 	 */
 	public Student(String id, String fName , String lName, LocalDate startDate,
 			LocalDate endDate, HashMap<DayPart, Place> schedule) {
@@ -49,29 +52,86 @@ public class Student {
 		schedules.add(new Schedule(id, startDate, endDate, schedule));
 		setId(id);
 	}
-
+	
 	/**
-	 * Student constructor with ID, First name Last name, Infix and 10 day parts.
+	 * Set all DayPart properties of a student (which depends on what week
+	 * it is).
+	 * 
+	 * Used by Model to construct Students and add them to the studentList and
+	 * by InputStudentSchedule class when changing weeks.
+	 * 
+	 * @param weekDates  This should always be an array with length 5
+	 *                   and with a monday as first day!
 	 */
-	public Student(String id, String fName , String lName, String namePrefix,
-			String monMorning, String monAfternoon, String teusMorning, String teusAfternoon,
-			String wedMorning, String wedAfternoon, String thursMorning, String thursAfternoon,
-			String friMorning, String friAfternoon)
-	{
-		setFName(fName);
-		setLName(lName);
-		setId(id);
-		setNamePrefix(namePrefix);
-		setMonMorning(monMorning);
-		setMonAfternoon(monAfternoon);
-		setTeusMorning(teusMorning);
-		setTeusAfternoon(teusAfternoon);
-		setWedMorning(wedMorning);
-		setWedAfternoon(wedAfternoon);
-		setThursMorning(thursMorning);
-		setThursAfternoon(thursAfternoon);
-		setFriMorning(friMorning);
-		setFriAfternoon(friAfternoon);
+	public void setDayPartProperties(LocalDate[] weekDates) {
+		
+		// Values To Assign To Properties
+		String[] valuesForProps = new String[10];
+		
+		int i = 0;
+		
+		for (LocalDate date: weekDates) {
+			
+			if (getActiveSchedule(date) == null) {
+				 
+				// If null there is no active schedule at this date!
+				// Skip the rest of this loop and continue with the next 
+				// iteration to prevent a NullPointerException.
+				// However, i DOES need to be incremented by 2 (for the skipped
+				// increments after the assignments) so that next iterations 
+				// don't assign values to wrong indexNumbers of valuesForProps
+				
+				i = i + 2;
+				continue;
+			}
+			
+			// Get the active schedule for this date
+			Schedule schedule = getActiveSchedule(date);
+			DayPart thisMorning = DayPart.getMorningOf(date.getDayOfWeek());
+			DayPart thisAfternoon = DayPart.getAfternoonOf(date.getDayOfWeek());
+
+			Map<DayPart, Place> map = schedule.getMap();
+		
+			if (map.containsKey(thisMorning)) {
+				valuesForProps[i] = map.get(thisMorning).name(); 
+			}
+			i++;
+			
+			if (map.containsKey(thisAfternoon)) {
+				valuesForProps[i] = map.get(thisAfternoon).name(); 
+			}
+			i++;
+		}
+		
+		setMonMorning(valuesForProps[0]);
+		setMonAfternoon(valuesForProps[1]);
+		setTuesMorning(valuesForProps[2]);
+		setTuesAfternoon(valuesForProps[3]);
+		setWedMorning(valuesForProps[4]);
+		setWedAfternoon(valuesForProps[5]);
+		setThursMorning(valuesForProps[6]);
+		setThursAfternoon(valuesForProps[7]);
+		setFriMorning(valuesForProps[8]);
+		setFriAfternoon(valuesForProps[9]);
+	}
+	
+	/**
+	 * Get the schedule that is active at a certain date.
+	 * @param  date   The date to get the then active schedule for.
+	 * @throws NullPointerException  If there is no active schedule at that date.
+	 */
+	public Schedule getActiveSchedule(LocalDate date) throws NullPointerException {
+		
+		Schedule activeSchedule = null;
+		
+		for (Schedule schedule: schedules) {
+			if (schedule.isDateWithinSchedule(date)) {
+				activeSchedule = schedule;
+				break;
+			}
+		}
+		
+		return activeSchedule;
 	}
 
 	/**
@@ -172,7 +232,7 @@ public class Student {
 	}
 	
 	
-    // Weekday properties
+    // DayPart properties
 	public final StringProperty monMorningProperty()
 	{
 		return this.monMorning;
@@ -201,31 +261,31 @@ public class Student {
 
 	}
 
-	public final StringProperty teusMorningProperty()
+	public final StringProperty tuesMorningProperty()
 	{
-		return this.teusMorning;
+		return this.tuesMorning;
 	}
 
-	public final String getTeusMorning() {
-		return this.teusMorningProperty().get();
+	public final String getTuesMorning() {
+		return this.tuesMorningProperty().get();
 	}
 
-	public final void setTeusMorning(final String theusMorning) {
-		this.teusMorningProperty().set(theusMorning);
+	public final void setTuesMorning(final String tuesMorning) {
+		this.tuesMorningProperty().set(tuesMorning);
 
 	}
 
-	public final StringProperty teusAfternoonProperty()
+	public final StringProperty tuesAfternoonProperty()
 	{
-		return this.teusAfternoon;
+		return this.tuesAfternoon;
 	}
 
-	public final String getTeusAfternoon() {
-		return this.teusAfternoonProperty().get();
+	public final String getTuesAfternoon() {
+		return this.tuesAfternoonProperty().get();
 	}
 
-	public final void setTeusAfternoon(final String theusAfternoon) {
-		this.teusAfternoonProperty().set(theusAfternoon);
+	public final void setTuesAfternoon(final String tuesAfternoon) {
+		this.tuesAfternoonProperty().set(tuesAfternoon);
 
 	}
 

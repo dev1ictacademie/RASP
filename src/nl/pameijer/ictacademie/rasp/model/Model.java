@@ -3,6 +3,7 @@ package nl.pameijer.ictacademie.rasp.model;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.text.StyledEditorKit.ForegroundAction;
 
@@ -12,6 +13,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import nl.pameijer.ictacademie.rasp.persistencylayer.PersistencyLayer;
+import nl.pameijer.ictacademie.rasp.view.inputstudent.TableDates;
 
 public class Model {
 
@@ -55,13 +57,34 @@ public class Model {
     	return list;
 	}
 
+
+	/**
+	 * Load the data from the PersistencyLayer class:
+	 * 
+	 *  1) Construct the student objects from the array and add the to the studentList
+	 *  2) Construct the schedules from the other array and assign them to the (right) students
+	 *  3) Set the dayPartProperties for the students so that correct places are shown in weekView
+	 */
+	public void loadDataWithScheduleAndID() {
+		
+		studentList.setAll(PersistencyLayer.constructStudentList(PersistencyLayer.studentsMockArray));
+		
+		PersistencyLayer.constructSchedules(PersistencyLayer.schedulesMockArray, studentList);
+		
+		for (Student student: getStudentList()) {
+			student.setDayPartProperties(TableDates.getThisWeekDates());
+		}
+		
+	}
+	
+	
     /**
-	 * Test method to construct Students, Schedules and then add them to 
-	 * the ObservableList.
+	 * Test method to construct Students, Schedules (with hard-coded HashMaps)
+	 * and then add them to the ObservableList.
 	 * 
 	 * Used by Controller (and then indirectly by MonthInputView class).
 	 */
-	public void loadDataWithScheduleAndID_2(){
+	public void loadDataWithScheduleAndID_2() {
 
 		HashMap<DayPart, Place> schedule = new HashMap<>();
 		schedule.put(DayPart.MONDAY_MORNING, Place.ICT_1);
@@ -91,28 +114,6 @@ public class Model {
 		new Student("19","Thijs", "Steen, van der", LocalDate.of(2018,3,1), LocalDate.MAX, schedule)
 		);
 	}//  end method loadDataWithScheduleAndID_2
-
-	/**
-	 * Test method to construct Students from the weekSchedules array (found in 
-	 * PersistencyLayer class) and add them to the ObservableList.
-	 * 
-	 * Used by InputStudentSchedule class.
-	 */
-	public void loadDataWithScheduleAndID()
-	{
-		for (int i = 0; i < PersistencyLayer.weekSchedules.length; i++)
-		{
-			studentList.add ( new Student (PersistencyLayer.weekSchedules[i][0],
-					PersistencyLayer.weekSchedules[i][2], PersistencyLayer.weekSchedules[i][1],
-					PersistencyLayer.weekSchedules[i][3], PersistencyLayer.weekSchedules[i][4],
-					PersistencyLayer.weekSchedules[i][5], PersistencyLayer.weekSchedules[i][6],
-					PersistencyLayer.weekSchedules[i][7], PersistencyLayer.weekSchedules[i][8],
-					PersistencyLayer.weekSchedules[i][9], PersistencyLayer.weekSchedules[i][10],
-					PersistencyLayer.weekSchedules[i][11], PersistencyLayer.weekSchedules[i][12],
-					PersistencyLayer.weekSchedules[i][13] ) );
-		}
-
-	}
 
 
 	public void saveDayPart(String id, String text) {
