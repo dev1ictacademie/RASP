@@ -1,10 +1,8 @@
 package nl.pameijer.ictacademie.rasp.model;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -32,36 +30,26 @@ public class Student {
 	/**
 	 * Student constructor
 	 */
-	public Student(String fName , String lName, String namePrefix, String id){
+	public Student(String fName , String lName, String namePrefix, String id) {
 		setFName(fName);
 		setLName(lName);
 		setNamePrefix(namePrefix);
 		setId(id);
 	}
-
-	/**
-	 * Student constructor with ID and Schedule.
-	 * 
-	 * Used by the test method Model.loadDataWithScheduleAndID_2() and
-	 * no longer needed once that test method is obsolete.
-	 */
-	public Student(String id, String fName , String lName, LocalDate startDate,
-			LocalDate endDate, HashMap<DayPart, Place> schedule) {
-		setFName(fName);
-		setLName(lName);
-		schedules.add(new Schedule(id, startDate, endDate, schedule));
-		setId(id);
-	}
 	
 	/**
-	 * Set all DayPart properties of a student (which depends on what week
-	 * it is).
+	 * Set all DayPart properties of a student. Needs to be set for each 
+	 * student after they have been constructed and were added to the list.
 	 * 
-	 * Used by Model to construct Students and add them to the studentList and
-	 * by InputStudentSchedule class when changing weeks.
+	 * These properties are used by the TableView from InputStudentSchedule
+	 * class to show the correct places for a certain date and day part.
 	 * 
-	 * @param weekDates  This should always be an array with length 5
-	 *                   and with a monday as first day!
+	 * As such these properties might be different each week and they should
+	 * be set again if a 'week-change' is initiated in the week overview.
+	 * 
+	 * @author ttimmermans
+	 * @param  weekDates  This should always be an array with length 5
+	 *                    and have a Monday as first day!
 	 */
 	public void setDayPartProperties(LocalDate[] weekDates) {
 		
@@ -87,11 +75,12 @@ public class Student {
 			
 			// Get the active schedule for this date
 			Schedule schedule = getActiveSchedule(date);
+			
 			DayPart thisMorning = DayPart.getMorningOf(date.getDayOfWeek());
 			DayPart thisAfternoon = DayPart.getAfternoonOf(date.getDayOfWeek());
-
+			
 			Map<DayPart, Place> map = schedule.getMap();
-		
+
 			if (map.containsKey(thisMorning)) {
 				valuesForProps[i] = map.get(thisMorning).name(); 
 			}
@@ -117,10 +106,11 @@ public class Student {
 	
 	/**
 	 * Get the schedule that is active at a certain date.
-	 * @param  date   The date to get the then active schedule for.
-	 * @throws NullPointerException  If there is no active schedule at that date.
+	 * @param   date   The date to get the schedule for which is then active.
+	 * @return  The schedule which is active at that date. Will return null if
+	 *          there is no active schedule at that date.
 	 */
-	public Schedule getActiveSchedule(LocalDate date) throws NullPointerException {
+	public Schedule getActiveSchedule(LocalDate date) {
 		
 		Schedule activeSchedule = null;
 		
@@ -232,9 +222,12 @@ public class Student {
 	}
 	
 	
-    // DayPart properties
-	public final StringProperty monMorningProperty()
-	{
+    
+	// DayPart properties // 
+	
+	
+	// Monday Morning
+	public final StringProperty monMorningProperty() {
 		return this.monMorning;
 	}
 
@@ -244,11 +237,11 @@ public class Student {
 
 	public final void setMonMorning(final String monMorning) {
 		this.monMorningProperty().set(monMorning);
-
 	}
 
-	public final StringProperty monAfternoonProperty()
-	{
+	
+	// Monday Afternoon
+	public final StringProperty monAfternoonProperty() {
 		return this.monAfternoon;
 	}
 
@@ -258,11 +251,11 @@ public class Student {
 
 	public final void setMonAfternoon(final String monAfternoon) {
 		this.monAfternoonProperty().set(monAfternoon);
-
 	}
-
-	public final StringProperty tuesMorningProperty()
-	{
+	
+	
+    // Tuesday Morning
+	public final StringProperty tuesMorningProperty() {
 		return this.tuesMorning;
 	}
 
@@ -272,11 +265,11 @@ public class Student {
 
 	public final void setTuesMorning(final String tuesMorning) {
 		this.tuesMorningProperty().set(tuesMorning);
-
 	}
 
-	public final StringProperty tuesAfternoonProperty()
-	{
+	
+	// Tuesday Afternoon
+	public final StringProperty tuesAfternoonProperty() {
 		return this.tuesAfternoon;
 	}
 
@@ -286,12 +279,11 @@ public class Student {
 
 	public final void setTuesAfternoon(final String tuesAfternoon) {
 		this.tuesAfternoonProperty().set(tuesAfternoon);
-
 	}
 
-
-	public final StringProperty wedMorningProperty()
-	{
+	
+    // Wednesday Morning
+	public final StringProperty wedMorningProperty() {
 		return this.wedMorning;
 	}
 
@@ -301,11 +293,11 @@ public class Student {
 
 	public final void setWedMorning(final String wedMorning) {
 		this.wedMorningProperty().set(wedMorning);
-
 	}
-
-	public final StringProperty wedAfternoonProperty()
-	{
+	
+	
+    // Wednesday Afternoon
+	public final StringProperty wedAfternoonProperty() {
 		return this.wedAfternoon;
 	}
 
@@ -315,11 +307,11 @@ public class Student {
 
 	public final void setWedAfternoon(final String wedAfternoon) {
 		this.wedAfternoonProperty().set(wedAfternoon);
-
 	}
 
-	public final StringProperty thursMorningProperty()
-	{
+	
+	// Thursday Morning
+	public final StringProperty thursMorningProperty() {
 		return this.thursMorning;
 	}
 
@@ -329,11 +321,11 @@ public class Student {
 
 	public final void setThursMorning(final String thursMorning) {
 		this.thursMorningProperty().set(thursMorning);
-
 	}
+	
 
-	public final StringProperty thursAfternoonProperty()
-	{
+	// Thursday Afternoon
+	public final StringProperty thursAfternoonProperty() {
 		return this.thursAfternoon;
 	}
 
@@ -343,11 +335,11 @@ public class Student {
 
 	public final void setThursAfternoon(final String thursAfternoon) {
 		this.thursAfternoonProperty().set(thursAfternoon);
-
 	}
 
-	public final StringProperty friMorningProperty()
-	{
+	
+	// Friday Morning
+	public final StringProperty friMorningProperty() {
 		return this.friMorning;
 	}
 
@@ -357,11 +349,11 @@ public class Student {
 
 	public final void setFriMorning(final String friMorning) {
 		this.friMorningProperty().set(friMorning);
-
 	}
-
-	public final StringProperty friAfternoonProperty()
-	{
+	
+	
+    // Friday Afternoon
+	public final StringProperty friAfternoonProperty() {
 		return this.friAfternoon;
 	}
 
@@ -371,7 +363,6 @@ public class Student {
 
 	public final void setFriAfternoon(final String friAfternoon) {
 		this.friAfternoonProperty().set(friAfternoon);
-
 	}
 	
 }

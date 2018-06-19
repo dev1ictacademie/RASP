@@ -28,12 +28,10 @@ public class PersistencyLayer {
 			{"119", "Pietersen", "Piet", null},
 			{"162", "Jovanovich", "Lena", null},
 			{"184", "Murdo", "Bob", "Mac"},
-			
 			{"189", "Drump", "Tonald", null},
 			{"191", "Al-Hashimi", "Salima", null},
 			{"208", "Steen", "Thijs", "van der"},
 			{"217", "Monroe", "Melanie", null},
-			
 			{"228", "Hummermans", "Humphry", null},
 			{"247", "Gomez", "Esperanza", null},
 			{"263", "Davidson", "Charlie", null}
@@ -96,7 +94,7 @@ public class PersistencyLayer {
 	 * @param arr       The two-dimensional array of strings describing a 
 	 *                  number of schedules.
 	 *             
-	 * @param students  The list with Student objects to which the schedules
+	 * @param students  The list with Student objects to whom the schedules
 	 *                  need to be assigned.       
 	 */
 	public static void constructSchedules(String[][] arr, List<Student> students) {
@@ -109,6 +107,11 @@ public class PersistencyLayer {
             }
 		}
 	}
+	
+	
+	
+	
+	/* All code below (including the main-method) is test code and eventually no longer needed! */
 	
 	
 	/* Student list made based on studentsMockArray for testing */ 

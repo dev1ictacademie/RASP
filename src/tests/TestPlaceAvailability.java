@@ -12,7 +12,7 @@ import nl.pameijer.ictacademie.rasp.model.Student;
  * during certain DayParts, listing available places at certain dates and
  * DayParts and so on. 
  * @author  ttimmermans
- * @version 06-04-2018
+ * @version 19-06-2018
  */
 public class TestPlaceAvailability {
 	
@@ -20,7 +20,7 @@ public class TestPlaceAvailability {
 	ObservableList<Student> studentList;
 	
 	TestPlaceAvailability() {
-		model.loadDataWithScheduleAndID_2();
+		model.loadDataWithScheduleAndID();
 		studentList = model.getStudentList();
 	}
 	
@@ -48,14 +48,20 @@ public class TestPlaceAvailability {
 	}
 
 	public static void main(String[] args) {
+		
 		TestPlaceAvailability tpa = new TestPlaceAvailability();
 		//tpa.printStudentList();
 		
-		tpa.showOccupiedPlaces(LocalDate.of(2018, 4, 30), DayPart.MONDAY_AFTERNOON);
+		System.out.println();
+		
+		// 27 april 2018 is a friday
+		tpa.showOccupiedPlaces(LocalDate.of(2018, 4, 27), DayPart.FRIDAY_AFTERNOON);
 		
 		System.out.println();
 		
-		tpa.showOccupiedPlaces(LocalDate.of(2018, 4, 27), DayPart.FRIDAY_AFTERNOON);
+		// 30 april 2018 is a monday
+		tpa.showOccupiedPlaces(LocalDate.of(2018, 4, 30), DayPart.MONDAY_AFTERNOON);
+		
 		
 	}
 

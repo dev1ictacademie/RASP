@@ -10,7 +10,7 @@ import java.util.Set;
  * or she has during that DayPart.
  * 
  * @author ttimmermans
- * @version 08-06-2018
+ * @version 19-06-2018
  */
 
 public class Schedule {
@@ -49,6 +49,11 @@ public class Schedule {
 	 * element being the starting date of the schedule, third element being
 	 * the end date and with the last 10 elements representing the place values
 	 * for the 10 day parts.
+	 * 
+	 * @param  scheduleData  The array describing properties of a schedule.
+	 * @throws IllegalArgumentException  if length of array is not 13.
+	 * @throws DateTimeParseException    if element [1] and/or [2] cannot be 
+	 *                                   parsed to valid LocalDate objects.
 	 */
 	public Schedule(String... scheduleData) {
 		if (scheduleData.length != 13) {

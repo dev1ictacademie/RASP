@@ -29,7 +29,7 @@ public class Controller {
 		dateModel = new DateModel(date.getYear(), date.getMonthValue());
 		// model
 		this.model = model;
-		model.loadDataWithScheduleAndID_2();
+		model.loadDataWithScheduleAndID();
 		// view
 		view = new MonthInputView(dateModel);
 		

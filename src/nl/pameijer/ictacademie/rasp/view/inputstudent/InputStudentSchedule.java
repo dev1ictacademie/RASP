@@ -317,7 +317,7 @@ public class InputStudentSchedule extends Application
 	 * Three buttons: to switch to month-view, to move 1 week forward
 	 * and to move 1 week backwards.
 	 * 
-	 * Currently (16-06-2018) layout and alignment of the buttons
+	 * Currently (18-06-2018) layout and alignment of the buttons
 	 * is not correct at all! "Vorige Week" and "Volgende Week" buttons
 	 * should be aligned to the far right! (Position of monthViewButton is
 	 * kind of alright though).
@@ -325,7 +325,7 @@ public class InputStudentSchedule extends Application
 	 * Also the buttons "steal" too much space for some reason from the
 	 * TableView above.
 	 * 
-	 * Also, local declaration of GridPane and Buttons might be questionable. 
+	 * Finally, local declaration of GridPane and Buttons might be questionable. 
 	 */
 	public void setButtonBar() {
 		
@@ -372,7 +372,7 @@ public class InputStudentSchedule extends Application
 	 * changed or after schedules have been changed.
 	 * 
 	 * Set the text from the TableColumn headers to the days and dates from
-	 * the new current week.
+	 * the (new) current week.
 	 * 
 	 * Reassign DayPartProperties to students so that the correct places are
 	 * shown in the week overview.
