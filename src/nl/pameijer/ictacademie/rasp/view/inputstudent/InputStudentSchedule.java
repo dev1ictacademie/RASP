@@ -9,9 +9,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -37,7 +37,7 @@ public class InputStudentSchedule extends Application
 	private DatePicker dpStartDate, dpEndDate;
 	private String days[] = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"};
 	private Model model = new Model();
-	private Button addParticipant;
+	private Button addStudent;
 	private ArrayList<TableColumn<Student, String>> weekDayColumns = new ArrayList<>();
 
 	public static void main(String[] args) {
@@ -55,14 +55,14 @@ public class InputStudentSchedule extends Application
 		gpBase.setVgap(20);
 
 		setLabelsTextFields();// make labels
-		setLabelDatePicker();;// make label and date pickers
+		setLabels_DatePickers();;// make label and date pickers
 		setLblDayLblDayPartCbSitPlace();// make combo boxes
 		setTableView();// make table view
-		
+		addStudent.setDisable(true);
 		setButtonBar(); // Right now (16-06-2018) layout not correct at all!
 
 		// Add the gridPane to a scene
-		Scene scene = new Scene(gpBase, 1300, 600);
+		Scene scene = new Scene(gpBase, 1300, 700);
 		// Finalize and show the stage
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Overzicht bezetting");
@@ -83,7 +83,7 @@ public class InputStudentSchedule extends Application
 		gpBase.add(lblFName, 0, 0, 2, 1);
 		gpBase.add(lblPrefix, 0, 1, 2, 1);
 		gpBase.add(lblLName, 0, 2, 2, 1);
-		gpBase.add(lblOverview, 0, 5, 2, 1);
+		gpBase.add(lblOverview, 0, 6, 2, 1);
 		// make text fields
 		txtFName = new TextField();
 		txtFName.setMinWidth(100.0);//lblDayPart = new Label[2];
@@ -92,6 +92,12 @@ public class InputStudentSchedule extends Application
 		txtLName.setMinWidth(200.0);
 		txtPrefix = new TextField();
 		txtPrefix.setMaxWidth(130.0);
+
+		// if text fields first name, last name or prefix changed then change addStudent button
+		txtFName.textProperty().addListener((e, oldValue, newValue) -> addStudentButton());
+		txtLName.textProperty().addListener((e, oldValue, newValue) -> addStudentButton());
+		txtPrefix.textProperty().addListener((e, oldValue, newValue) -> addStudentButton());
+
 		// add text fields to grid pane
 		gpBase.add(txtFName, 1, 0, 1, 1);
 		gpBase.add(txtPrefix, 1, 1, 1, 1);
@@ -99,13 +105,42 @@ public class InputStudentSchedule extends Application
 	}// end setLabels
 
 	/**
+	 *  change state addStudent button
+	 */
+	public void addStudentButton()
+	{
+		addStudent.setDisable(false);
+		addStudent.setText("Nieuwe student");
+	}
+
+	/**
 	 * place labels and date pickers into base grid pane
 	 */
-	public void setLabelDatePicker() {
+	public void setLabels_DatePickers() {
 		lblStartDate = new Label("Begin datum:");
 		lblEndDate = new Label("Eind datum:");
-		addParticipant = new Button("Toevoegen");
-		addParticipant.setOnAction(new EventHandler<ActionEvent>()
+		addStudent = new Button("Toevoegen");
+		CheckBox noEndDate = new CheckBox("Geen eind datum");
+		noEndDate.selectedProperty().addListener(new ChangeListener<Boolean>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+			{
+				dpEndDate.setDisable(newValue);
+				if(newValue == true)
+				{
+					dpEndDate.setValue(LocalDate.of(9999, 12, 31));
+				}
+				else
+				{
+					dpEndDate.setValue(LocalDate.now());
+				}
+
+			}
+
+		});
+
+		addStudent.setOnAction(new EventHandler<ActionEvent>()
 		{
 
 			@Override
@@ -115,7 +150,8 @@ public class InputStudentSchedule extends Application
 
 			}
 		});
-		addParticipant.setStyle("-fx-font: 18 arial; -fx-base: #e03e3e;");
+
+		addStudent.setStyle("-fx-font: 18 arial; -fx-base: #e03e3e;");
 		gpBase.add(lblStartDate, 0, 3, 1, 1);
 		gpBase.add(lblEndDate, 1, 3, 1, 1);
 		dpStartDate = new DatePicker();
@@ -124,7 +160,9 @@ public class InputStudentSchedule extends Application
 		dpEndDate.setValue(LocalDate.now());
 		gpBase.add(dpStartDate, 0, 4, 1, 1);
 		gpBase.add(dpEndDate, 1, 4, 1, 1);
-		gpBase.add(addParticipant, 2, 4, 1, 1);
+		gpBase.add(addStudent, 2, 4, 1, 1);
+		gpBase.add(noEndDate, 1, 5, 1, 1);
+
 	}// setLabelDatePicker
 
 
@@ -177,6 +215,8 @@ public class InputStudentSchedule extends Application
 	public void setTableView()
 	{
 		TableView<Student> occupation = new TableView<Student>();// create new table object
+		occupation.setMaxWidth(1214.0);
+		occupation.setMinHeight(300.0);
 		model.loadDataWithScheduleAndID();
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setFitToHeight(true);
@@ -288,7 +328,7 @@ public class InputStudentSchedule extends Application
 
 		scrollPane.setContent(occupation);
 
-		gpBase.add(occupation, 0, 6, 5, 4);
+		gpBase.add(occupation, 0, 8, 5, 4);
 
 	}// end setTableView
 
@@ -311,34 +351,35 @@ public class InputStudentSchedule extends Application
         cbSitPlace.get(7).setValue(student.getThursAfternoon());
         cbSitPlace.get(8).setValue(student.getFriMorning());
         cbSitPlace.get(9).setValue(student.getFriAfternoon());
+        addStudent.setText("Profiel wijzigen");
 	}// end method setTextsAndCombos
-	
+
 	/**
 	 * Three buttons: to switch to month-view, to move 1 week forward
 	 * and to move 1 week backwards.
-	 * 
+	 *
 	 * Currently (18-06-2018) layout and alignment of the buttons
 	 * is not correct at all! "Vorige Week" and "Volgende Week" buttons
 	 * should be aligned to the far right! (Position of monthViewButton is
 	 * kind of alright though).
-	 * 
+	 *
 	 * Also the buttons "steal" too much space for some reason from the
 	 * TableView above.
-	 * 
-	 * Finally, local declaration of GridPane and Buttons might be questionable. 
+	 *
+	 * Finally, local declaration of GridPane and Buttons might be questionable.
 	 */
 	public void setButtonBar() {
-		
+
 		GridPane buttonBar = new GridPane();
-		
-		Button monthViewButton = new Button("Show MonthView");
+
+		Button monthViewButton = new Button("Maand overzicht");
 		monthViewButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				System.out.println("Switching to MonthView...");
 			}
 		});
-		
+
 		Button previousWeekButton = new Button("Vorige Week");
 		previousWeekButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -348,45 +389,45 @@ public class InputStudentSchedule extends Application
 				updateTableView();
 			}
 		});
-		
+
 		Button nextWeekButton = new Button("Volgende Week");
 		nextWeekButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				System.out.println("Showing next week!");
 				TableDates.changeWeek(1);
-				updateTableView();			
+				updateTableView();
 			}
 		});
-		
+
 		buttonBar.add(monthViewButton, 0, 0, 2, 1);
 		buttonBar.add(previousWeekButton, 3, 0, 2, 1);
 		buttonBar.add(nextWeekButton, 6, 0, 2, 1);
-		
+
 		gpBase.add(buttonBar, 0, 13, 2, 1);
 	}
-	
-	
+
+
 	/**
 	 * Update the TableView after a week change, after the studentList has
 	 * changed or after schedules have been changed.
-	 * 
+	 *
 	 * Set the text from the TableColumn headers to the days and dates from
 	 * the (new) current week.
-	 * 
+	 *
 	 * Reassign DayPartProperties to students so that the correct places are
 	 * shown in the week overview.
 	 */
 	public void updateTableView() {
-		
+
 		for (int i = 0; i < weekDayColumns.size(); i++) {
 			weekDayColumns.get(i).setText(TableDates.thisWeekStrings[i]);
 		}
-		
+
 		for (Student student: model.getStudentList()) {
 			student.setDayPartProperties(TableDates.thisWeekDates);
 		}
-		
+
 	}
 
 
