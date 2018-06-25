@@ -38,7 +38,11 @@ public class InputStudentSchedule extends Application
 	private String days[] = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"};
 	private Model model = new Model();
 	private Button addStudent;
+	TableView<Student> occupation;
 	private ArrayList<TableColumn<Student, String>> weekDayColumns = new ArrayList<>();
+	private Student currentStudent;
+	//private boolean isComboBoxesCreated = false;
+
 
 	public static void main(String[] args) {
 		launch(args);
@@ -109,24 +113,39 @@ public class InputStudentSchedule extends Application
 	 */
 	public void addStudentButton()
 	{
+		
 		addStudent.setDisable(false);
 		addStudent.setText("Nieuwe student");
+		currentStudent = null;
+
 	}
 
 	/**
 	 * place labels and date pickers into base grid pane
 	 */
-	public void setLabels_DatePickers() {
+	public void setLabels_DatePickers()
+	{
+		
+		dpStartDate = new DatePicker();
+		dpEndDate = new DatePicker();
+		dpStartDate.setValue(LocalDate.now());// shows the current date from the system clock
+		dpEndDate.setValue(LocalDate.now());
 		lblStartDate = new Label("Begin datum:");
 		lblEndDate = new Label("Eind datum:");
 		addStudent = new Button("Toevoegen");
+		addStudent.setStyle("-fx-font: 18 arial; -fx-base: #e03e3e;");
 		CheckBox noEndDate = new CheckBox("Geen eind datum");
+		noEndDate.setSelected(true);
+		dpEndDate.setValue(LocalDate.of(9999, 12, 31));
+		
 		noEndDate.selectedProperty().addListener(new ChangeListener<Boolean>()
 		{
+			
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
 			{
 				dpEndDate.setDisable(newValue);
+
 				if(newValue == true)
 				{
 					dpEndDate.setValue(LocalDate.of(9999, 12, 31));
@@ -151,13 +170,8 @@ public class InputStudentSchedule extends Application
 			}
 		});
 
-		addStudent.setStyle("-fx-font: 18 arial; -fx-base: #e03e3e;");
 		gpBase.add(lblStartDate, 0, 3, 1, 1);
 		gpBase.add(lblEndDate, 1, 3, 1, 1);
-		dpStartDate = new DatePicker();
-		dpEndDate = new DatePicker();
-		dpStartDate.setValue(LocalDate.now());// shows the current date from the system clock
-		dpEndDate.setValue(LocalDate.now());
 		gpBase.add(dpStartDate, 0, 4, 1, 1);
 		gpBase.add(dpEndDate, 1, 4, 1, 1);
 		gpBase.add(addStudent, 2, 4, 1, 1);
@@ -165,6 +179,62 @@ public class InputStudentSchedule extends Application
 
 	}// setLabelDatePicker
 
+	/*
+	 *
+	 */
+	class comboBoxListener implements ChangeListener<String>
+	{
+		int i;
+
+		public comboBoxListener(int i)
+		{
+			this.i = i;
+		}
+
+		@Override
+		public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+		{
+			if(currentStudent != null)
+			{
+				switch (i)
+				{
+					case 0:
+						currentStudent.setMonMorning(newValue);
+						break;
+					case 1:
+						currentStudent.setMonAfternoon(newValue);
+						break;
+					case 2:
+						currentStudent.setTuesMorning(newValue);
+						break;
+					case 3:
+						currentStudent.setTuesAfternoon(newValue);
+						break;
+					case 4:
+						currentStudent.setWedMorning(newValue);
+						break;
+					case 5:
+						currentStudent.setWedAfternoon(newValue);
+						break;
+					case 6:
+						currentStudent.setThursMorning(newValue);
+						break;
+					case 7:
+						currentStudent.setThursAfternoon(newValue);
+						break;
+					case 8:
+						currentStudent.setFriMorning(newValue);
+						break;
+					case 9:
+						currentStudent.setFriAfternoon(newValue);
+						break;
+					default:
+						break;
+				}// end switch
+			}// end if
+		}// end method changed
+
+	}// end inner class myChangeListener
 
 	/**
 	 * Place labels days, day parts and sit place combo boxes into sitPlace GridPane
@@ -183,6 +253,8 @@ public class InputStudentSchedule extends Application
 
 		for (int i = 0; i < days.length * 2; i++) { // create combo boxes
 			cbSitPlace.add(new ComboBox<String>());
+			//cbSitPlace.get(i).valueProperty().addListener( (obs, oldValue, newValue) -> System.out.println("new value" + newValue ));
+			cbSitPlace.get(i).valueProperty().addListener(new comboBoxListener(i));
 		}
 
 		for (int i = 0; i < lblDay.length; i++) { // place labels day of week
@@ -212,9 +284,10 @@ public class InputStudentSchedule extends Application
 	/**
 	 * Place TableView occupation of current week of students with schedules
 	 */
+
 	public void setTableView()
 	{
-		TableView<Student> occupation = new TableView<Student>();// create new table object
+		occupation = new TableView<Student>();// create new table object
 		occupation.setMaxWidth(1214.0);
 		occupation.setMinHeight(300.0);
 		model.loadDataWithScheduleAndID();
@@ -236,12 +309,15 @@ public class InputStudentSchedule extends Application
 		 */
 		occupation.getSelectionModel().selectedItemProperty().addListener(new ChangeListener()
 		{
+			
 			@Override
 			public void changed(ObservableValue observable, Object oldValue, Object newValue)
 			{
+				
 				if(occupation.getSelectionModel().getSelectedItem() != null)
 				{
 			        setTextsAndCombos(newValue);
+			        currentStudent = (Student) newValue;
 				}
 			}
 		});
@@ -325,10 +401,11 @@ public class InputStudentSchedule extends Application
 
 		occupation.getColumns().addAll(colId, colFirstName, colPrefix, colLastName, colMonday, colTuesday,
 				colWed, colThursday, colFriday );
-
+		occupation.getSelectionModel().select(0);
 		scrollPane.setContent(occupation);
 
 		gpBase.add(occupation, 0, 8, 5, 4);
+		
 
 	}// end setTableView
 
