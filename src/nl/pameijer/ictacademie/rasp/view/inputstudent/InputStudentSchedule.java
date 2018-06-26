@@ -272,7 +272,7 @@ public class InputStudentSchedule extends Application
 			gpSitPlace.add(cbSitPlace.get(i * 2 + 1), i + 3, 4, columspan, 1);
 			cbSitPlace.get(i *2 + 1).setMaxWidth(100.0);
 		}
-
+		
 		for (ComboBox<String> comboBox : cbSitPlace) {
 			comboBox.setItems(model.getAvailablePlaces());
 			comboBox.getSelectionModel().selectFirst();

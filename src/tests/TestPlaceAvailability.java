@@ -1,9 +1,13 @@
 package tests;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javafx.collections.ObservableList;
 import nl.pameijer.ictacademie.rasp.model.DayPart;
 import nl.pameijer.ictacademie.rasp.model.Model;
+import nl.pameijer.ictacademie.rasp.model.Place;
 import nl.pameijer.ictacademie.rasp.model.Schedule;
 import nl.pameijer.ictacademie.rasp.model.Student;
 
@@ -12,7 +16,7 @@ import nl.pameijer.ictacademie.rasp.model.Student;
  * during certain DayParts, listing available places at certain dates and
  * DayParts and so on. 
  * @author  ttimmermans
- * @version 19-06-2018
+ * @version 26-06-2018
  */
 public class TestPlaceAvailability {
 	
@@ -47,6 +51,49 @@ public class TestPlaceAvailability {
 		}
 	}
 
+	/**
+	 * Get a list of all available places for this exact date and dayPart.
+	 */
+	public List<Place> getAvailablePlaces(LocalDate date, DayPart dayPart) {
+
+		List<Place> availablePlaces = new ArrayList<>();
+
+		List<Place> occupiedPlaces = new ArrayList<>();
+
+        // Make a list with all places that are occupied this dayPart and date
+		for (Student student: studentList) {
+			if (student.getActiveSchedule(date) == null) {
+				continue;
+			}
+			Map<DayPart, Place> map = student.getActiveSchedule(date).getMap();
+			for (DayPart part: map.keySet()) {
+				if (part == dayPart) {
+					occupiedPlaces.add(map.get(part));
+				}
+			}
+		}
+
+		// Loop over ALL existing places and add them to the available-list if 
+		// they are NOT found in the occupied-list.
+		for (Place place: Place.values()) {
+			boolean occupied = false;
+			for (Place occupiedPlace: occupiedPlaces) {
+				if (place == occupiedPlace) {
+					occupied = true;
+					break;
+				}
+			}
+			if (!occupied) {
+				availablePlaces.add(place);
+			}
+		}
+
+		return availablePlaces;
+	}
+	
+	/**
+	 * main. run some tests.
+	 */
 	public static void main(String[] args) {
 		
 		TestPlaceAvailability tpa = new TestPlaceAvailability();
@@ -62,6 +109,10 @@ public class TestPlaceAvailability {
 		// 30 april 2018 is a monday
 		tpa.showOccupiedPlaces(LocalDate.of(2018, 4, 30), DayPart.MONDAY_AFTERNOON);
 		
+		System.out.println();
+		
+		// At Monday 18 June Place 3, 4, 6 and 16 are occupied 
+		System.out.println(tpa.getAvailablePlaces(LocalDate.of(2018, 06, 18), DayPart.MONDAY_MORNING));
 		
 	}
 

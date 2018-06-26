@@ -47,7 +47,6 @@ public class Student {
 	 * As such these properties might be different each week and they should
 	 * be set again if a 'week-change' is initiated in the week overview.
 	 * 
-	 * @author ttimmermans
 	 * @param  weekDates  This should always be an array with length 5
 	 *                    and have a Monday as first day!
 	 */
