@@ -148,23 +148,35 @@ public class Controller {
 				TextField txt = (TextField) observable.getBean();
 				
 				if (txt.isFocused()) {
-					txt.setStyle(txt.getStyle() + " -fx-control-inner-background: #FAFFBD;");
+					txt.setStyle(txt.getStyle().substring(0, txt.getStyle().indexOf(";") + 1) +
+							" -fx-control-inner-background: #FAFFBD;");
 				}
 				else {
 					if (txt.getText().equals("")) {
-						txt.setStyle(txt.getStyle() + " -fx-control-inner-background: white;");
+						if (txt.getStyle().substring(0, txt.getStyle().indexOf(";")).contains("red")) {
+							txt.setStyle(txt.getStyle().substring(0, txt.getStyle().indexOf(";") + 1) +
+									" -fx-control-inner-background: white;");
+						}
+						else {
+							txt.setStyle(txt.getStyle().substring(0, txt.getStyle().indexOf(";") + 1) +
+									" -fx-control-inner-background: #ECECEC;");
+							}
 					}
 					else if (txt.getText().equals("X")) {
-						txt.setStyle(txt.getStyle() + " -fx-control-inner-background: #E6FFED;");
+						txt.setStyle(txt.getStyle().substring(0, txt.getStyle().indexOf(";") + 1) +
+								" -fx-control-inner-background: #E6FFED;");
 					}
 					else if (txt.getText().equals("Z")) {
-						txt.setStyle(txt.getStyle() + " -fx-control-inner-background: #FFF8CC;");
+						txt.setStyle(txt.getStyle().substring(0, txt.getStyle().indexOf(";") + 1) +
+								" -fx-control-inner-background: #FFF8CC;");
 					}
 					else if (txt.getText().equals("V")) {
-						txt.setStyle(txt.getStyle() + " -fx-control-inner-background: #F1F8FF;");
+						txt.setStyle(txt.getStyle().substring(0, txt.getStyle().indexOf(";") + 1) +
+								" -fx-control-inner-background: #F1F8FF;");
 					}
 					else if (txt.getText().equals("A")) {
-						txt.setStyle(txt.getStyle() + " -fx-control-inner-background: #FFEEF0;");
+						txt.setStyle(txt.getStyle().substring(0, txt.getStyle().indexOf(";") + 1) +
+								" -fx-control-inner-background: #FFEEF0;");
 					}
 				}
 			}

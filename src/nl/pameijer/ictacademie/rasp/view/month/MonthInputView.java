@@ -245,11 +245,11 @@ public class MonthInputView {
 							LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1),
 							dateModel.getDayPartList().get(index))) {
 
-						txt.setStyle("-fx-border-color: #073E70 #073E70 red #073E70;"/* +
-								" -fx-control-inner-background: #FAFFBD;"*/);
+						txt.setStyle("-fx-border-color: #073E70 #073E70 red #073E70;" +
+								" -fx-control-inner-background: white;");
 					} else {
-						txt.setStyle("-fx-border-color: #073E70;"/* +
-								" -fx-control-inner-background: #FAFFBD;"*/);
+						txt.setStyle("-fx-border-color: #073E70;" +
+								" -fx-control-inner-background: #ECECEC;");
 					}
 
 					txt.setId("" + students.get(row).getId() + "-"

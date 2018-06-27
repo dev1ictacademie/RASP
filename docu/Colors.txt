@@ -28,6 +28,9 @@ Github-commit light blue color:  #DBEDFF    H: 210, S: 14, B: 100
 Custom-made light yellow:  #FFF3A3    H: 52, S: 36, B: 100
 
 
+Peach/cream color used in monthview:  #FDE5C8    H: 33, S: 21, B: 99
+
+
 Hearthstone-login unselected TextField color:  #EBE4D4    H: 42, S: 10, B: 92
 
 
