@@ -10,14 +10,14 @@ import java.util.Set;
  * or she has during that DayPart.
  * 
  * @author ttimmermans
- * @version 19-06-2018
+ * @version 29-06-2018
  */
 
-public class Schedule {
+public class Schedule implements Comparable<Schedule> {
 	
 	/* Schedule is valid in this range of dates */
-	private final LocalDate startDate;
-	private final LocalDate endDate;
+	private LocalDate startDate;
+	private LocalDate endDate;
 	
 	/* The actual schedule is composed of a mapping between the DayParts that 
 	 * the participant is supposed to be present and the Place he or she has 
@@ -65,7 +65,7 @@ public class Schedule {
 				if (i >= 3 && scheduleData[i] != null) {
 					schedule.put(
 							DayPart.getDayPartByNumber(i - 3),
-							Place.getPlaceByString(scheduleData[i]));
+							Place.valueOf(scheduleData[i]));
 							//Place.getPlaceByNumber(Integer.parseInt(scheduleData[i])));
 				}
 			}
@@ -93,6 +93,22 @@ public class Schedule {
 	}
 	
 	/**
+	 * Set the starting date of this schedule.
+	 * @param  the start date
+	 */
+	public void setStartDate() {
+		// currently (29-06-2018) not in use
+	}
+
+	/**
+	 * Set the ending date of this schedule.
+	 * @param  the end date
+	 */
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
+	
+	/**
 	 * Test if a given date is within the period of this schedule.
 	 * So if true, the date should not be before the startDate of the schedule
 	 * and not after the endDate.
@@ -108,19 +124,10 @@ public class Schedule {
 	}
 	
 	/**
-	 * Is a certain dayPart in this schedule or not? 
+	 * Is a certain dayPart in this schedule or not?
 	 */
-	/* Using containsKey() method might be better??? (17-06-2018) */
 	public boolean isDayPartInSchedule(DayPart dayPart) {
-		
-		boolean dayPartFound = false;
-		
-		for (DayPart part: schedule.keySet()) {
-			if (part == dayPart) {
-				dayPartFound = true;
-			}
-		}
-		return dayPartFound;
+		return schedule.containsKey(dayPart);
 	}
 	
 	/**
@@ -135,6 +142,22 @@ public class Schedule {
 	 */
 	public Set<DayPart> getDayParts() {
 		return schedule.keySet();
+	}
+
+	/**
+	 * Simply comparing startDate of this schedule with the endDate
+	 * of another schedule for order is an acceptable way to compare
+	 * them because a schedule can never be added to the list without
+	 * the previous schedule's endDate being set to this schedule's
+	 * endDate minus 1 day (weekend days excluded).
+	 * 
+	 * This applies as long as schedules are only added to the student's
+	 * schedule list with the addSchedule method from Student class which
+	 * is the ONLY way schedules should be added to the list!
+	 */
+	@Override
+	public int compareTo(Schedule anotherSchedule) {
+		return this.startDate.compareTo(anotherSchedule.endDate);
 	}
 
 }

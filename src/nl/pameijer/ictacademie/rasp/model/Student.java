@@ -1,5 +1,6 @@
 package nl.pameijer.ictacademie.rasp.model;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.ArrayList;
@@ -159,11 +160,45 @@ public class Student {
 	
 	/**
 	 * Assign a schedule to a student (add it to the schedules list).
-	 */
+	 */ /*
 	public void addSchedule(Schedule schedule) {
 		schedules.add(schedule);
-	}
+	}*/
+	
+	/**
+	 * Assign a schedule to a student (add it to the schedules list).
+	 * If the ending date of the previous schedule is after the starting
+	 * date of this schedule or is the same, set the ending date of the
+	 * previous schedule to the date preceding the starting date of 
+	 * this schedule, excluding dates which fall in weekends.
+	 */
+	public void addSchedule(Schedule schedule) {
 
+		if (schedules.size() > 0) {
+
+			Schedule previousSchedule = schedules.get(schedules.size() - 1);
+			
+			if (!schedule.getStartDate().isAfter(previousSchedule.getStartDate())) {
+				throw new IllegalArgumentException("StartDate of new schedule " +
+						"should be after startDate of previous schedule!");
+			}
+
+			if (schedule.getStartDate().isBefore(previousSchedule.getEndDate())) {
+
+				LocalDate newEndingDate = schedule.getStartDate();
+
+				do {
+					newEndingDate = newEndingDate.minusDays(1);
+				} while ( ! newEndingDate.isBefore(schedule.getStartDate()) 
+						|| newEndingDate.getDayOfWeek() == DayOfWeek.SATURDAY
+						|| newEndingDate.getDayOfWeek() == DayOfWeek.SUNDAY);
+
+				previousSchedule.setEndDate(newEndingDate);
+			}
+		}
+		
+		schedules.add(schedule);
+	}
 	
 	// First Name
 	public final StringProperty fNameProperty() {
