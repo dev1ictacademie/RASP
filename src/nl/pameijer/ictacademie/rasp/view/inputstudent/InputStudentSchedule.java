@@ -23,6 +23,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.pameijer.ictacademie.rasp.model.Model;
+import nl.pameijer.ictacademie.rasp.model.Schedule;
 import nl.pameijer.ictacademie.rasp.model.Student;
 
 
@@ -113,7 +114,7 @@ public class InputStudentSchedule extends Application
 	 */
 	public void addStudentButton()
 	{
-		
+
 		addStudent.setDisable(false);
 		addStudent.setText("Nieuwe student");
 		currentStudent = null;
@@ -125,7 +126,7 @@ public class InputStudentSchedule extends Application
 	 */
 	public void setLabels_DatePickers()
 	{
-		
+
 		dpStartDate = new DatePicker();
 		dpEndDate = new DatePicker();
 		dpStartDate.setValue(LocalDate.now());// shows the current date from the system clock
@@ -137,10 +138,10 @@ public class InputStudentSchedule extends Application
 		CheckBox noEndDate = new CheckBox("Geen eind datum");
 		noEndDate.setSelected(true);
 		dpEndDate.setValue(LocalDate.of(9999, 12, 31));
-		
+
 		noEndDate.selectedProperty().addListener(new ChangeListener<Boolean>()
 		{
-			
+
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
 			{
@@ -165,7 +166,10 @@ public class InputStudentSchedule extends Application
 			@Override
 			public void handle(ActionEvent event)
 			{
+				Student student = new Student(txtFName.getText(), txtLName.getText(), txtPrefix.getText(), "");
 
+				model.getStudentList().add(student);
+				student.addSchedule(new Schedule(getPlaces()));
 
 			}
 		});
@@ -177,7 +181,18 @@ public class InputStudentSchedule extends Application
 		gpBase.add(addStudent, 2, 4, 1, 1);
 		gpBase.add(noEndDate, 1, 5, 1, 1);
 
-	}// setLabelDatePicker
+	}// end method setLabels_DatePickers
+
+	public String[] getPlaces()
+	{
+		String[] places = new String[10];
+
+		for (int i = 0; i < cbSitPlace.size(); i++)
+		{
+			places[i] = cbSitPlace.get(i).getValue();
+		}
+		return places;
+	}// end method getPlaces
 
 	/*
 	 *
@@ -272,7 +287,7 @@ public class InputStudentSchedule extends Application
 			gpSitPlace.add(cbSitPlace.get(i * 2 + 1), i + 3, 4, columspan, 1);
 			cbSitPlace.get(i *2 + 1).setMaxWidth(100.0);
 		}
-		
+
 		for (ComboBox<String> comboBox : cbSitPlace) {
 			comboBox.setItems(model.getAvailablePlaces());
 			comboBox.getSelectionModel().selectFirst();
@@ -309,11 +324,11 @@ public class InputStudentSchedule extends Application
 		 */
 		occupation.getSelectionModel().selectedItemProperty().addListener(new ChangeListener()
 		{
-			
+
 			@Override
 			public void changed(ObservableValue observable, Object oldValue, Object newValue)
 			{
-				
+
 				if(occupation.getSelectionModel().getSelectedItem() != null)
 				{
 			        setTextsAndCombos(newValue);
@@ -405,7 +420,7 @@ public class InputStudentSchedule extends Application
 		scrollPane.setContent(occupation);
 
 		gpBase.add(occupation, 0, 8, 5, 4);
-		
+
 
 	}// end setTableView
 
