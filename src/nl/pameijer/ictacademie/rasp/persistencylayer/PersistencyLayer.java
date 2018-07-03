@@ -101,7 +101,7 @@ public class PersistencyLayer {
 		for (String[] entry: arr) {
             for (Student student: students) {
             	if (student.hasThisID(entry[0])) {
-            		student.addSchedule(new Schedule(entry));
+            		student.addExistingSchedule(new Schedule(entry));
             		break;
             	}
             }

@@ -169,7 +169,7 @@ public class InputStudentSchedule extends Application
 				Student student = new Student(txtFName.getText(), txtLName.getText(), txtPrefix.getText(), "");
 
 				model.getStudentList().add(student);
-				student.addSchedule(new Schedule(getPlaces()));
+				student.addExistingSchedule(new Schedule(getPlaces()));
 
 			}
 		});

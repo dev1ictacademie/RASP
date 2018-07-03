@@ -1,5 +1,9 @@
 package nl.pameijer.ictacademie.rasp.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -69,9 +73,32 @@ public class Model {
 		
 	}
 
-
+	
 	public void saveDayPart(String id, String text) {
 		// TODO split id into studentid, date, daypart and the value from text
 		System.out.println("Day part saved to database. " + id + " " + text);
+	}
+	
+	/**
+	 * Temporary (for as long as the database doesn't handle this) method to 
+	 * generate Student ID's that may be required for testing purposes. 
+	 */
+	public String generateStudentID() {
+		
+		List<Integer> ids = new ArrayList<>();
+		
+		for (Student stu: studentList) {
+			ids.add(Integer.parseInt(stu.getId()));
+		}
+		
+		Collections.sort(ids);
+		
+		// Get last element from list which is highest value after sort
+		Integer highest = ids.get(ids.size() - 1);
+		
+		// increment by 1 to get a new, unique, Id-value
+		highest++;
+		
+		return highest.toString();
 	}
 }

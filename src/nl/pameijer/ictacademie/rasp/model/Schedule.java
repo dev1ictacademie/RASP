@@ -10,7 +10,7 @@ import java.util.Set;
  * or she has during that DayPart.
  * 
  * @author ttimmermans
- * @version 29-06-2018
+ * @version 03-07-2018
  */
 
 public class Schedule implements Comparable<Schedule> {
@@ -154,10 +154,47 @@ public class Schedule implements Comparable<Schedule> {
 	 * This applies as long as schedules are only added to the student's
 	 * schedule list with the addSchedule method from Student class which
 	 * is the ONLY way schedules should be added to the list!
+	 * 
+	 * Note 03-07-2018   Needs some more work!
 	 */
 	@Override
 	public int compareTo(Schedule anotherSchedule) {
 		return this.startDate.compareTo(anotherSchedule.endDate);
+	}
+	
+	/**
+	 * Override of equals method from Object class so schedules can be compared.
+	 */
+	@Override
+	public boolean equals(Object otherSchedule) {
+		
+		if (otherSchedule == this) {
+			return true;
+		}
+		
+	    if (!(otherSchedule instanceof Schedule)) {
+	        return false;
+	    }
+		
+		Schedule other = (Schedule)otherSchedule;
+		
+		return this.studentID.equals(other.studentID) &&
+		this.startDate.equals(other.startDate) &&
+		this.endDate.equals(other.endDate) &&
+		this.schedule.equals(other.schedule);
+	}
+
+    /**
+     * Override of hashCode method from Object class.
+     */
+	@Override
+	public int hashCode() {
+	    int code = 17;
+		code = 31 * code + studentID.hashCode();
+		code = 31 * code + startDate.hashCode();
+		code = 31 * code + endDate.hashCode();
+		code = 31 * code + schedule.hashCode();
+	    return code;
 	}
 
 }

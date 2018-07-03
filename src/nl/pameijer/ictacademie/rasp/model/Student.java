@@ -158,21 +158,36 @@ public class Student {
 		return this.getId().equals(ID);
 	}
 	
-	/**
-	 * Assign a schedule to a student (add it to the schedules list).
-	 */ /*
-	public void addSchedule(Schedule schedule) {
-		schedules.add(schedule);
-	}*/
 	
 	/**
-	 * Assign a schedule to a student (add it to the schedules list).
+	 * Assign an EXISTING schedule to a student (add it to the schedules list).
+	 * 
+	 * This is the method that should be used when a schedule is constructed
+	 * and when the ending date of previous schedule should not be modified.
+	 * 
+	 * This is, for example, the case when the application starts and data is
+	 * read from persistent memory (database) and schedule-objects are created
+	 * on the basis of that data.
+	 */
+	public void addExistingSchedule(Schedule schedule) {
+		schedules.add(schedule);
+	}
+	
+	
+	/**
+	 * Assign a NEW schedule to a student (add it to the schedules list).
+	 * 
+	 * This is the method that should be used when a schedule is made by the
+	 * user of the application through the GUI and then assigned to a student 
+	 * for the very first time. In this case the end date of the previous 
+	 * schedule should be modified.
+	 * 
 	 * If the ending date of the previous schedule is after the starting
 	 * date of this schedule or is the same, set the ending date of the
 	 * previous schedule to the date preceding the starting date of 
 	 * this schedule, excluding dates which fall in weekends.
 	 */
-	public void addSchedule(Schedule schedule) {
+	public void addNewSchedule(Schedule schedule) {
 
 		if (schedules.size() > 0) {
 
@@ -199,6 +214,7 @@ public class Student {
 		
 		schedules.add(schedule);
 	}
+	
 	
 	// First Name
 	public final StringProperty fNameProperty() {
