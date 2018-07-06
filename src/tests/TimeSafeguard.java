@@ -10,27 +10,24 @@ public class TimeSafeguard {
 	private static Timer timer = new Timer();
 	private static ExitTask exitTask = new ExitTask();
 	
-	static {
-		System.out.println("Hi, this is static init block of TimeSafeguard.");
+	/**
+	 * Constructor
+	 */
+	public TimeSafeguard() {
 		
 		validateTimeZone();
 		
 		c1.setLenient(false); 
-		// Setting leniency to false prevents autoExitTodayAtTime-method below 
+		// Setting leniency to false prevents autoExitTodayAt-method below 
 		// from accepting inappropriate arguments being passed to it.
 		
-		autoExitTodayAtTime(23, 45);
-		
-	}
-
-	public static void main(String[] args) {
-
+		autoExitTodayAt(23, 45);
 	}
 	
 	/**
 	 * Check if the application is executing in Central European TimeZone.
 	 */
-	public static void validateTimeZone() {
+	private static void validateTimeZone() {
 		Object requiredZone = "Europe/Amsterdam";
 		if (!c1.getTimeZone().getID().equals(requiredZone)) {
 			throw new IllegalTimeZoneException("Application should start in " +
@@ -46,7 +43,7 @@ public class TimeSafeguard {
 	 * @param minute  the minute (0-59) of today's time at which application 
 	 *                will terminate.
 	 */
-	public static void autoExitTodayAtTime(int hour, int minute) {
+	private static void autoExitTodayAt(int hour, int minute) {
 		c1.set(c1.get(Calendar.YEAR), c1.get(Calendar.MONTH), 
 				c1.get(Calendar.DAY_OF_MONTH), hour, minute, 0);
 		timer.schedule(exitTask, c1.getTime());
@@ -55,14 +52,13 @@ public class TimeSafeguard {
 }
 
 /**
- * An instance of this class will exit the application when run and is 
+ * An instance of this class will terminate the application when run and is 
  * suitable to be scheduled by a Timer.
  */
 class ExitTask extends TimerTask {
 	
 	@Override
 	public void run() {
-		System.out.println("Thread: " + Thread.currentThread().getName());
 		System.out.println("Terminating...");
 		System.exit(0);
 	}
