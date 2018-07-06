@@ -59,7 +59,8 @@ public class Model {
 	 * 
 	 *  1) Construct the student objects from the array and add them to the studentList
 	 *  2) Construct the schedules from the other array and assign them to the (right) students
-	 *  3) Set the dayPartProperties for the students so that correct places are shown in weekView
+	 *  3) Sort the schedules from a student's schedule-list to guarantee chronological order
+	 *  4) Set the dayPartProperties for the students so that correct places are shown in weekView
 	 */
 	public void loadDataWithScheduleAndID() {
 		
@@ -68,6 +69,7 @@ public class Model {
 		PersistencyLayer.constructSchedules(PersistencyLayer.schedulesMockArray, studentList);
 		
 		for (Student student: getStudentList()) {
+			Collections.sort(student.getSchedules());
 			student.setDayPartProperties(TableDates.getThisWeekDates());
 		}
 		

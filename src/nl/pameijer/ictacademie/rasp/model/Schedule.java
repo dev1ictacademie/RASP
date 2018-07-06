@@ -10,7 +10,7 @@ import java.util.Set;
  * or she has during that DayPart.
  * 
  * @author ttimmermans
- * @version 03-07-2018
+ * @version 06-07-2018
  */
 
 public class Schedule implements Comparable<Schedule> {
@@ -27,54 +27,67 @@ public class Schedule implements Comparable<Schedule> {
 	// Indicates to which student this schedule belongs.
 	private final String studentID;
 	
-	/**
-	 * Constructor. Arguments should be provided by the view (intermediate step
-	 * is constructing the HashMap based on the different DayParts and 
-	 * associated Places filled in).
-	 * @param  startDate   the schedule's start date
-	 * @param  endDate     the schedule's end date
-	 * @param  schedule    the schedule itself
-	 */
-	public Schedule(String studentID, LocalDate startDate, LocalDate endDate,
-			HashMap<DayPart, Place> schedule) {
-		this.studentID = studentID;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.schedule = schedule;
-	}
 	
-	/**
-	 * Constructor which accepts String array. Array MUST have length 13
-	 * with first element being StudentID (owner of the schedule), second
-	 * element being the starting date of the schedule, third element being
-	 * the end date and with the last 10 elements representing the place values
-	 * for the 10 day parts.
+	/** 
+	 * Schedule constructor. It accepts String array or varargs.
+	 * Length of this array/varargs MUST be 12 or 13. With the first element
+	 * being the studentID, the second and/or third element being the starting-
+	 * and ending date of the schedule (see explanation below) and with the 
+	 * last 10 elements representing the place values for the 10 day parts.
+	 *
+	 * Whenever a Schedule is constructed by the user through the GUI this 
+	 * constructor should be called with array or varargs with length 12.
+	 * If that length is 12 the Schedule is constructed with a default endDate.
+	 * 
+	 * Whenever a Schedule is constructed by reading values from persistent
+	 * memory (database) then this constructor should be called with an array
+	 * or varargs with length 13. In this case the third element should
+	 * provide the ending date of the schedule.
 	 * 
 	 * @param  scheduleData  The array describing properties of a schedule.
-	 * @throws IllegalArgumentException  if length of array is not 13.
+	 * @throws IllegalArgumentException  if length of array is not 12 or 13.
 	 * @throws DateTimeParseException    if element [1] and/or [2] cannot be 
 	 *                                   parsed to valid LocalDate objects.
 	 */
 	public Schedule(String... scheduleData) {
-		if (scheduleData.length != 13) {
+		if (scheduleData.length != 12 && scheduleData.length != 13) {
 			throw new IllegalArgumentException();
 		}
-		else {
+		
+		// This block constructs a Schedule with a default end date
+		if (scheduleData.length == 12) {
+			HashMap<DayPart, Place> schedule = new HashMap<>();
+			for (int i = 0; i < scheduleData.length; i++) {
+				if (i >= 2 && scheduleData[i] != null) {
+					schedule.put(
+							DayPart.getDayPartByNumber(i - 2),
+							Place.valueOf(scheduleData[i]));
+				}
+			}
+			this.studentID = scheduleData[0];
+			this.startDate = LocalDate.parse(scheduleData[1]);
+			this.endDate = LocalDate.of(9999, 12, 31);
+			this.schedule = schedule;
+
+		}
+		
+		// This block constructs a Schedule with an end date passed as argument
+		else { // scheduleData.length == 13
 			HashMap<DayPart, Place> schedule = new HashMap<>();
 			for (int i = 0; i < scheduleData.length; i++) {
 				if (i >= 3 && scheduleData[i] != null) {
 					schedule.put(
 							DayPart.getDayPartByNumber(i - 3),
 							Place.valueOf(scheduleData[i]));
-							//Place.getPlaceByNumber(Integer.parseInt(scheduleData[i])));
 				}
 			}
 			this.studentID = scheduleData[0];
 			this.startDate = LocalDate.parse(scheduleData[1]);
 			this.endDate = LocalDate.parse(scheduleData[2]);
 			this.schedule = schedule;
-		}	
+		}
 	}
+	
 	
 	/**
 	 * Get the starting date.
@@ -145,20 +158,19 @@ public class Schedule implements Comparable<Schedule> {
 	}
 
 	/**
+	 * Compare schedules to each other to get chronological order.
+	 * 
 	 * Simply comparing startDate of this schedule with the endDate
-	 * of another schedule for order is an acceptable way to compare
-	 * them because a schedule can never be added to the list without
-	 * the previous schedule's endDate being set to this schedule's
-	 * endDate minus 1 day (weekend days excluded).
-	 * 
-	 * This applies as long as schedules are only added to the student's
-	 * schedule list with the addSchedule method from Student class which
-	 * is the ONLY way schedules should be added to the list!
-	 * 
-	 * Note 03-07-2018   Needs some more work!
+	 * of another schedule for is an acceptable way to do this as long as 
+	 * new schedules are ONLY initially assigned to a student with the use
+	 * of the addNewSchedule method from Student class!
 	 */
 	@Override
 	public int compareTo(Schedule anotherSchedule) {
+		
+		if (anotherSchedule == null) {
+			throw new NullPointerException();
+		}
 		return this.startDate.compareTo(anotherSchedule.endDate);
 	}
 	
