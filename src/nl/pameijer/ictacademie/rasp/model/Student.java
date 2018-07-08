@@ -204,7 +204,7 @@ public class Student {
 
 				do {
 					newEndingDate = newEndingDate.minusDays(1);
-				} while ( ! newEndingDate.isBefore(schedule.getStartDate()) 
+				} while ( ! newEndingDate.isBefore(schedule.getStartDate()) // <--- This check not necessary???
 						|| newEndingDate.getDayOfWeek() == DayOfWeek.SATURDAY
 						|| newEndingDate.getDayOfWeek() == DayOfWeek.SUNDAY);
 

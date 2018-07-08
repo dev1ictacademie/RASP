@@ -1,8 +1,10 @@
 package nl.pameijer.ictacademie.rasp.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -51,6 +53,54 @@ public class Model {
 		list.add("SD_1");
 
     	return list;
+	}
+    
+	/**
+	 * Get a list of all available places for this exact date and dayPart.
+	 */
+	/* Doesn't work yet (08-07-2018) as supposed
+	 * Therefore 'old' code still available in method above.
+	 * But in some situations already works OK...
+	 * This method is overloaded so the previous method above
+	 * can be called again easily instead of this one for testing/debugging purposes. */
+	public ObservableList<String> getAvailablePlaces(LocalDate date, DayPart dayPart) {
+		
+		ObservableList<String> availablePlaces = FXCollections.observableArrayList();
+		availablePlaces.add("");
+
+		//List<Place> availablePlaces = new ArrayList<>();
+
+		List<Place> occupiedPlaces = new ArrayList<>();
+
+        // Make a list with all places that are occupied this dayPart and date
+		for (Student student: studentList) {
+			if (student.getActiveSchedule(date) == null) {
+				continue;
+			}
+			Map<DayPart, Place> map = student.getActiveSchedule(date).getMap();
+			for (DayPart part: map.keySet()) {
+				if (part == dayPart) {
+					occupiedPlaces.add(map.get(part));
+				}
+			}
+		}
+
+		// Loop over ALL existing places and add them to the available-list if 
+		// they are NOT found in the occupied-list.
+		for (Place place: Place.values()) {
+			boolean occupied = false;
+			for (Place occupiedPlace: occupiedPlaces) {
+				if (place == occupiedPlace) {
+					occupied = true;
+					break;
+				}
+			}
+			if (!occupied) {
+				availablePlaces.add(place.name());
+			}
+		}
+
+		return availablePlaces;
 	}
 
 

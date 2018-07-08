@@ -8,8 +8,7 @@ public class TableDates {
 	
 	static LocalDate now = LocalDate.now();
 
-	static LocalDate mostRecentMonday = 
-			now.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+	static LocalDate mostRecentMonday = getMostRecentMonday(now);
 	
 	static LocalDate[] thisWeekDates = new LocalDate[5];
 	
@@ -21,6 +20,16 @@ public class TableDates {
 			thisWeekDates[i] = mostRecentMonday.plusDays(i);
 			thisWeekStrings[i] = formatDate(thisWeekDates[i]);
 		}
+	}
+	
+	/**
+	 * Get the most recent monday since date or if date itself is a monday
+	 * return it's own value.
+	 * @param date
+	 * @return
+	 */
+	static LocalDate getMostRecentMonday(LocalDate date) {
+		return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 	}
 	
 	/**

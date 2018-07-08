@@ -2,6 +2,7 @@ package nl.pameijer.ictacademie.rasp.view.inputstudent;
 
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -23,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import nl.pameijer.ictacademie.rasp.model.DayPart;
 import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.model.Schedule;
 import nl.pameijer.ictacademie.rasp.model.Student;
@@ -61,7 +63,7 @@ public class InputStudentSchedule extends Application
 		gpBase.setVgap(20);
 
 		setLabelsTextFields();// make labels
-		setLabels_Buttons();;// make label and date pickers
+		setLabels_Buttons();;// make label and date picker
 		setLblDayLblDayPartCbSitPlace();// make combo boxes
 		setTableView();// make table view
 
@@ -149,14 +151,31 @@ public class InputStudentSchedule extends Application
 		txtLName.setText("");
 	}
 
-	/*
+	/**
 	 * Set combo boxes to first selection (empty)
 	 */
 	public void clearComboBoxes()
-	{
+	{/*
 		for (ComboBox<String> comboBox : cbSitPlace) {
 			comboBox.setItems(model.getAvailablePlaces());
 			comboBox.getSelectionModel().selectFirst();
+		}*/
+		
+		/* Doesn't work yet (08-07-2018) entirely as supposed.
+		 * Therefore 'old' code still available in comment above.
+		 * But in a few situations this DOES already work perfectly fine!
+		 * It's most likely a case of this method needing to be called
+		 * a few additional times at certain places */
+		for (int i = 0, j = 0; i < cbSitPlace.size(); i++) {
+			ComboBox<String> currentComboBox = cbSitPlace.get(i);
+			currentComboBox.setItems(model.getAvailablePlaces(TableDates.thisWeekDates[j],
+					DayPart.getDayPartByNumber(i)));
+			currentComboBox.getSelectionModel().selectFirst();
+			System.out.println("i: " + i + "    j: " + j + "    date[j]: " + 
+					TableDates.thisWeekDates[j] + "    dayPart(i): " + DayPart.getDayPartByNumber(i));
+			if (i % 2 == 1) {
+				j++;
+			}
 		}
 	}
 
@@ -165,8 +184,8 @@ public class InputStudentSchedule extends Application
 	 */
 	public void setLabels_Buttons()
 	{
-		dpStartDate = new DatePicker();
-		dpStartDate.setValue(LocalDate.now());// shows the current date from the system clock
+		dpStartDate = new DatePicker(LocalDate.now());
+		addDateListener();
 		lblStartDate = new Label("Begin datum:");
 
 		newStudent = new Button("Nieuw student");
@@ -228,6 +247,31 @@ public class InputStudentSchedule extends Application
 		gpBase.add(saveStudent, 5, 4, 1, 1);
 
 	}// end method setLabels_DatePickers
+	
+	/**
+	 * Add a ChangeListener to the DatePicker that changes the current week if
+	 * the newly picked date does not fall into the same week as current week.
+	 */
+	public void addDateListener() {
+		dpStartDate.valueProperty().addListener(new ChangeListener<LocalDate>() {
+			@Override
+			public void changed(ObservableValue<? extends LocalDate> observable,
+					LocalDate oldValue, LocalDate newValue) {
+				
+				LocalDate mostRecentMonday = TableDates.getMostRecentMonday(observable.getValue());
+				
+				// Calculate the number of weeks between the "current" mostRecentMonday and 
+				// the Monday which is the most recently passed one at the picked date.
+				long weeksBetween = ChronoUnit.WEEKS.between(TableDates.thisWeekDates[0], mostRecentMonday);
+				
+				if (weeksBetween != 0) {
+					TableDates.changeWeek((int)weeksBetween);
+					updateTableView();
+					clearComboBoxes();
+				}
+			}
+		});
+	}
 
 	/*
 	 * save student
@@ -356,13 +400,20 @@ public class InputStudentSchedule extends Application
 			gpSitPlace.add(cbSitPlace.get(i * 2), i + 3, 3, columspan, 1);
 			cbSitPlace.get(i * 2).setMaxWidth(100.0);
 			gpSitPlace.add(cbSitPlace.get(i * 2 + 1), i + 3, 4, columspan, 1);
-			cbSitPlace.get(i *2 + 1).setMaxWidth(100.0);
+			cbSitPlace.get(i * 2 + 1).setMaxWidth(100.0);
 		}
-
+		
+        /* Below code is exactly the same as: clearComboBoxes()  (at least as 
+         * it was prior to 08-07-2018 ;)
+         * and therefore replaced with a call to clearComboBoxes()
+        //////////
 		for (ComboBox<String> comboBox : cbSitPlace) {
 			comboBox.setItems(model.getAvailablePlaces());
 			comboBox.getSelectionModel().selectFirst();
-		}
+		//////////	
+		}*/
+		
+		clearComboBoxes();
 
 		gpBase.add(gpSitPlace, 2, 0, 3, 4);
 	}// end setLblDayLblDayPartCbSitPlace
