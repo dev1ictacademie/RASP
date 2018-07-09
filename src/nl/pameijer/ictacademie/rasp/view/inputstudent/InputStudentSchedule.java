@@ -28,6 +28,8 @@ import nl.pameijer.ictacademie.rasp.model.DayPart;
 import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.model.Schedule;
 import nl.pameijer.ictacademie.rasp.model.Student;
+import nl.pameijer.ictacademie.rasp.view.tools.ConfirmationBox;
+import nl.pameijer.ictacademie.rasp.view.tools.MessageBox;
 
 
 public class InputStudentSchedule extends Application
@@ -41,12 +43,12 @@ public class InputStudentSchedule extends Application
 	private DatePicker dpStartDate;
 	private String days[] = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"};
 	private Model model = new Model();
-	private Button newStudent, editStudent, deleteStudent, saveStudent;
+	private Button btnNewStudent, btnEditStudent, btnDeleteStudent, btnSaveStudent;
 	TableView<Student> occupation;
 	private ArrayList<TableColumn<Student, String>> weekDayColumns = new ArrayList<>();
 	private Student currentStudent;
-
-
+	private boolean canBeSaved = false;
+	private boolean isSelected = false;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -117,7 +119,7 @@ public class InputStudentSchedule extends Application
 	 */
 	public void addStudentButton()
 	{
-
+		canBeSaved = true;
 	}
 
 	/*
@@ -160,7 +162,7 @@ public class InputStudentSchedule extends Application
 			comboBox.setItems(model.getAvailablePlaces());
 			comboBox.getSelectionModel().selectFirst();
 		}*/
-		
+
 		/* Doesn't work yet (08-07-2018) entirely as supposed.
 		 * Therefore 'old' code still available in comment above.
 		 * But in a few situations this DOES already work perfectly fine!
@@ -171,7 +173,7 @@ public class InputStudentSchedule extends Application
 			currentComboBox.setItems(model.getAvailablePlaces(TableDates.thisWeekDates[j],
 					DayPart.getDayPartByNumber(i)));
 			currentComboBox.getSelectionModel().selectFirst();
-			System.out.println("i: " + i + "    j: " + j + "    date[j]: " + 
+			System.out.println("i: " + i + "    j: " + j + "    date[j]: " +
 					TableDates.thisWeekDates[j] + "    dayPart(i): " + DayPart.getDayPartByNumber(i));
 			if (i % 2 == 1) {
 				j++;
@@ -188,9 +190,9 @@ public class InputStudentSchedule extends Application
 		addDateListener();
 		lblStartDate = new Label("Begin datum:");
 
-		newStudent = new Button("Nieuw student");
-		newStudent.setStyle("-fx-font: 18 arial; -fx-base: #72bfff;");
-		newStudent.setOnAction(new EventHandler<ActionEvent>()
+		btnNewStudent = new Button("Nieuw student");
+		//newStudent.setStyle("-fx-font: 18 arial; -fx-base: #72bfff;");
+		btnNewStudent.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent event)
@@ -203,33 +205,31 @@ public class InputStudentSchedule extends Application
 			}
 		});
 
-		editStudent = new Button("Bewerk student");
-		editStudent.setStyle("-fx-font: 18 arial; -fx-base: #3ee086;");
-		editStudent.setOnAction(new EventHandler<ActionEvent>()
+		btnEditStudent = new Button("Bewerk student");
+		//editStudent.setStyle("-fx-font: 18 arial; -fx-base: #3ee086;");
+		btnEditStudent.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent event)
 			{
 				setTextFieldsDisabled();
-
 			}
 		});
 
-		deleteStudent = new Button("Verwijder student");
-		deleteStudent.setStyle("-fx-font: 18 arial; -fx-base: #e03e3e;");
-		deleteStudent.setOnAction(new EventHandler<ActionEvent>()
+		btnDeleteStudent = new Button("Verwijder student");
+		//deleteStudent.setStyle("-fx-font: 18 arial; -fx-base: #e03e3e;");
+		btnDeleteStudent.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent event)
 			{
-				setTextFieldsDisabled();
-
+				deleteStudent();
 			}
 		});
 
-		saveStudent = new Button("Opslaan");
-		saveStudent.setStyle("-fx-font: 18 arial; -fx-base: #ff84fc;");
-		saveStudent.setOnAction(new EventHandler<ActionEvent>()
+		btnSaveStudent = new Button("Opslaan");
+		//saveStudent.setStyle("-fx-font: 18 arial; -fx-base: #ff84fc;");
+		btnSaveStudent.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent event)
@@ -241,13 +241,39 @@ public class InputStudentSchedule extends Application
 
 		gpBase.add(lblStartDate, 0, 3, 1, 1);
 		gpBase.add(dpStartDate, 0, 4, 1, 1);
-		gpBase.add(newStudent, 2, 4, 1, 1);
-		gpBase.add(editStudent, 3, 4, 1, 1);
-		gpBase.add(deleteStudent, 4, 4, 1, 1);
-		gpBase.add(saveStudent, 5, 4, 1, 1);
+		gpBase.add(btnNewStudent, 2, 4, 1, 1);
+		gpBase.add(btnEditStudent, 3, 4, 1, 1);
+		gpBase.add(btnDeleteStudent, 4, 4, 1, 1);
+		gpBase.add(btnSaveStudent, 5, 4, 1, 1);
 
 	}// end method setLabels_DatePickers
-	
+
+	/**
+	 * Delete selected student from table view occupation
+	 */
+	public void deleteStudent()
+	{
+		setTextFieldsDisabled();
+		if(isSelected == false)
+		{
+			MessageBox.show("Select eerst een student in tabele view!", "Verwijder fout.");
+		}
+		
+		if(isSelected)// if student is selected in occupation table view
+		{
+			// delete confirmation dialog shows
+			if(ConfirmationBox.show("Weet u het zeker?", "Verdwijder bevestiging", "Ja", "Nee"))
+			{
+				int index = occupation.getSelectionModel().getSelectedIndex();
+				model.getStudentList().remove(index);
+				clearTextFields();
+				occupation.getSelectionModel().clearSelection();
+				isSelected = false;
+				MessageBox.show("Student is verwijderd.", "Verwijder bevestiging");
+			}
+		}
+	}// end method deleteStudent
+
 	/**
 	 * Add a ChangeListener to the DatePicker that changes the current week if
 	 * the newly picked date does not fall into the same week as current week.
@@ -257,13 +283,13 @@ public class InputStudentSchedule extends Application
 			@Override
 			public void changed(ObservableValue<? extends LocalDate> observable,
 					LocalDate oldValue, LocalDate newValue) {
-				
+
 				LocalDate mostRecentMonday = TableDates.getMostRecentMonday(observable.getValue());
-				
-				// Calculate the number of weeks between the "current" mostRecentMonday and 
+
+				// Calculate the number of weeks between the "current" mostRecentMonday and
 				// the Monday which is the most recently passed one at the picked date.
 				long weeksBetween = ChronoUnit.WEEKS.between(TableDates.thisWeekDates[0], mostRecentMonday);
-				
+
 				if (weeksBetween != 0) {
 					TableDates.changeWeek((int)weeksBetween);
 					updateTableView();
@@ -278,20 +304,26 @@ public class InputStudentSchedule extends Application
 	 */
 	public void saveStudent()
 	{
-		if( !txtFName.getText().equals("") & !txtLName.getText().equals("") )
+		if(canBeSaved)
 		{
-			Student student = new Student(txtFName.getText(), txtLName.getText(),
-					txtPrefix.getText(), model.generateStudentID());
-			model.getStudentList().add(student);
-			//String[] s = { student.getId(), dpStartDate.getValue().toString(),  };
-			//student.addNewSchedule(new Schedule(getPlaces()));
-			clearTextFields();
-			clearComboBoxes();
+			if( !txtFName.getText().equals("") & !txtLName.getText().equals("") )
+			{
+				Student student = new Student(txtFName.getText(), txtLName.getText(),
+						txtPrefix.getText(), model.generateStudentID());
+				model.getStudentList().add(student);
+				//String[] s = { student.getId(), dpStartDate.getValue().toString(),  };
+				//student.addNewSchedule(new Schedule(getPlaces()));
+				clearTextFields();
+				clearComboBoxes();
+			}
+			else
+			{
+				MessageBox.show("Je moet een voornaam en of achernaam invoeren.", "Invoer fout");
+			}
+
+			canBeSaved = false;
 		}
-		else
-		{
-			
-		}
+
 	}// end method saveStudent
 
 
@@ -402,17 +434,17 @@ public class InputStudentSchedule extends Application
 			gpSitPlace.add(cbSitPlace.get(i * 2 + 1), i + 3, 4, columspan, 1);
 			cbSitPlace.get(i * 2 + 1).setMaxWidth(100.0);
 		}
-		
-        /* Below code is exactly the same as: clearComboBoxes()  (at least as 
+
+        /* Below code is exactly the same as: clearComboBoxes()  (at least as
          * it was prior to 08-07-2018 ;)
          * and therefore replaced with a call to clearComboBoxes()
         //////////
 		for (ComboBox<String> comboBox : cbSitPlace) {
 			comboBox.setItems(model.getAvailablePlaces());
 			comboBox.getSelectionModel().selectFirst();
-		//////////	
+		//////////
 		}*/
-		
+
 		clearComboBoxes();
 
 		gpBase.add(gpSitPlace, 2, 0, 3, 4);
@@ -454,6 +486,8 @@ public class InputStudentSchedule extends Application
 			        setTextsAndCombos(newValue);
 			        currentStudent = (Student) newValue;
 			        setTextFieldsDisabled();
+			        canBeSaved = true;
+			        isSelected = true;
 				}
 			}
 		});
