@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -47,6 +49,7 @@ public class InputStudentSchedule extends Application
 	TableView<Student> occupation;
 	private ArrayList<TableColumn<Student, String>> weekDayColumns = new ArrayList<>();
 	private Student currentStudent;
+	private Student student;
 	private boolean canBeSaved = false;
 	private boolean isSelected = false;
 
@@ -258,7 +261,7 @@ public class InputStudentSchedule extends Application
 		{
 			MessageBox.show("Select eerst een student in tabele view!", "Verwijder fout.");
 		}
-		
+
 		if(isSelected)// if student is selected in occupation table view
 		{
 			// delete confirmation dialog shows
@@ -306,15 +309,18 @@ public class InputStudentSchedule extends Application
 	{
 		if(canBeSaved)
 		{
-			if( !txtFName.getText().equals("") & !txtLName.getText().equals("") )
-			{
-				Student student = new Student(txtFName.getText(), txtLName.getText(),
-						txtPrefix.getText(), model.generateStudentID());
-				model.getStudentList().add(student);
-				//String[] s = { student.getId(), dpStartDate.getValue().toString(),  };
-				//student.addNewSchedule(new Schedule(getPlaces()));
-				clearTextFields();
-				clearComboBoxes();
+			if(ConfirmationBox.show("Weet u het zeker?", "Opslaan bevestiging", "Ja", "Nee"))
+			{			
+				if( !txtFName.getText().equals("") & !txtLName.getText().equals("") )
+				{
+					Student student = new Student(txtFName.getText(), txtLName.getText(),
+							txtPrefix.getText(), model.generateStudentID());
+					model.getStudentList().add(student);
+					//String[] s = { student.getId(), dpStartDate.getValue().toString(),  };
+					//student.addNewSchedule(new Schedule(getPlaces()));
+					clearTextFields();
+					clearComboBoxes();
+				}
 			}
 			else
 			{
@@ -483,7 +489,7 @@ public class InputStudentSchedule extends Application
 			{
 				if(occupation.getSelectionModel().getSelectedItem() != null)
 				{
-			        setTextsAndCombos(newValue);
+			        setTextFieldsAndComboBoxes(newValue);
 			        currentStudent = (Student) newValue;
 			        setTextFieldsDisabled();
 			        canBeSaved = true;
@@ -582,9 +588,9 @@ public class InputStudentSchedule extends Application
 	/**
 	 * Fills text fields and combo boxes.
 	 */
-	public void setTextsAndCombos( Object newValue )
+	public void setTextFieldsAndComboBoxes( Object newValue )
 	{
-		Student student = (Student) newValue;
+		student = (Student) newValue;
         txtFName.setText(student.getFName());
         txtPrefix.setText(student.getNamePrefix());
         txtLName.setText(student.getLName());
@@ -598,8 +604,29 @@ public class InputStudentSchedule extends Application
         cbSitPlace.get(7).setValue(student.getThursAfternoon());
         cbSitPlace.get(8).setValue(student.getFriMorning());
         cbSitPlace.get(9).setValue(student.getFriAfternoon());
-
 	}// end method setTextsAndCombos
+
+	/**
+	 * Update combo boxes
+	 */
+	public void updateComboBoxes()
+	{
+		LocalDate weekDays[] = TableDates.getThisWeekDates();
+				
+		cbSitPlace.get(0).setItems(model.getAvailablePlaces(weekDays[0], DayPart.MONDAY_MORNING));
+        cbSitPlace.get(1).setItems(model.getAvailablePlaces(weekDays[0], DayPart.MONDAY_AFTERNOON));
+        cbSitPlace.get(2).setItems(model.getAvailablePlaces(weekDays[1], DayPart.TUESDAY_MORNING));
+        cbSitPlace.get(3).setItems(model.getAvailablePlaces(weekDays[1], DayPart.TUESDAY_AFTERNOON));
+        cbSitPlace.get(4).setItems(model.getAvailablePlaces(weekDays[2], DayPart.WEDNESDAY_MORNING));
+        cbSitPlace.get(5).setItems(model.getAvailablePlaces(weekDays[2], DayPart.WEDNESDAY_AFTERNOON));
+        cbSitPlace.get(6).setItems(model.getAvailablePlaces(weekDays[3], DayPart.THURSDAY_MORNING));
+        cbSitPlace.get(7).setItems(model.getAvailablePlaces(weekDays[3], DayPart.THURSDAY_AFTERNOON));
+        cbSitPlace.get(8).setItems(model.getAvailablePlaces(weekDays[4], DayPart.FRIDAY_MORNING));
+        cbSitPlace.get(9).setItems(model.getAvailablePlaces(weekDays[4], DayPart.FRIDAY_AFTERNOON));
+
+	}// end updateTextFieldsAndComboBoxes
+
+
 
 	/**
 	 * Three buttons: to switch to month-view, to move 1 week forward
@@ -634,6 +661,7 @@ public class InputStudentSchedule extends Application
 				System.out.println("Showing previous week!");
 				TableDates.changeWeek(-1);
 				updateTableView();
+				updateComboBoxes();
 			}
 		});
 
@@ -644,6 +672,7 @@ public class InputStudentSchedule extends Application
 				System.out.println("Showing next week!");
 				TableDates.changeWeek(1);
 				updateTableView();
+				updateComboBoxes();
 			}
 		});
 
