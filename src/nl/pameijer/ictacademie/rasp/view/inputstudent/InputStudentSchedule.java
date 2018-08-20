@@ -23,7 +23,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -70,7 +69,7 @@ public class InputStudentSchedule extends Application
 		gpBase.setPadding(new Insets(30, 30, 30, 30));
 		gpBase.setHgap(10);
 		gpBase.setVgap(20);
-
+		currentStudent = new Student();
 		setLabelsTextFields();// make labels
 		setLabels_Buttons();// make label and date picker
 		setLblDayLblDayPartCbSitPlace();// make combo boxes
@@ -78,6 +77,7 @@ public class InputStudentSchedule extends Application
 
 		setButtonBar(); // Right now (16-06-2018) layout not correct at all!
 		setTextFieldsDisabled();
+		
 		// Add the gridPane to a scene
 		Scene scene = new Scene(gpBase, 1300, 700);
 		// Finalize and show the stage
@@ -103,14 +103,12 @@ public class InputStudentSchedule extends Application
 		gpBase.add(lblOverview, 0, 6, 2, 1);
 		// make text fields
 		txtFName = new TextField();
-		txtFName.setMinWidth(100.0);//lblDayPart = new Label[2];
+		txtFName.setMinWidth(100.0);
 		txtFName.setMaxWidth(150);
 		txtLName = new TextField();
 		txtLName.setMinWidth(200.0);
 		txtPrefix = new TextField();
 		txtPrefix.setMaxWidth(130.0);
-
-		// if text fields first name, last name or prefix changed then change addStudent button
 		txtFName.textProperty().addListener((e, oldValue, newValue) -> addStudentButton("firstName"));
 		txtLName.textProperty().addListener((e, oldValue, newValue) -> addStudentButton("lastName"));
 		txtPrefix.textProperty().addListener((e, oldValue, newValue) -> addStudentButton(""));
@@ -152,6 +150,7 @@ public class InputStudentSchedule extends Application
 		txtPrefix.setDisable(true);
 		txtLName.setDisable(true);
 		dpStartDate.setDisable(true);
+		btnSaveStudent.setDisable(true);
 	}
 
 	/*
@@ -207,19 +206,12 @@ public class InputStudentSchedule extends Application
 	 */
 	public void setLabels_Buttons()
 	{
-		Tooltip ttPhone = new Tooltip("Plaats hier eerste telefoon nummer.");
 		dpStartDate = new DatePicker(LocalDate.now());
 		addDateListener();
 		lblStartDate = new Label("Begin datum:");
-		lblPhone = new Label("Telefoon:");
-		txtPhone_1 = new TextField();
-		txtPhone_1.setMaxWidth(150.0);
 
-		txtPhone_2 = new TextField();
-		txtPhone_2.setMaxWidth(150.0);
-		txtPhone_2.setEditable(true);
 		btnNewStudent = new Button("Nieuw student");
-		//btnNewStudent.setStyle("-fx-font: 18 arial; -fx-base: #72bfff;");
+
 		btnNewStudent.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -232,11 +224,11 @@ public class InputStudentSchedule extends Application
 				fName = false;
 				lName = false;
 				isNewStudent = true;
+				btnSaveStudent.setDisable(false);
 			}
 		});
 
 		btnEditStudent = new Button("Bewerk student");
-		//btnEditStudent.setStyle("-fx-font: 18 arial; -fx-base: #3ee086;");
 		btnEditStudent.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -248,7 +240,6 @@ public class InputStudentSchedule extends Application
 		});
 
 		btnDeleteStudent = new Button("Verwijder student");
-		//btnDeleteStudent.setStyle("-fx-font: 18 arial; -fx-base: #e03e3e;");
 		btnDeleteStudent.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -259,7 +250,6 @@ public class InputStudentSchedule extends Application
 		});
 
 		btnSaveStudent = new Button("Opslaan");
-		//btnSaveStudent.setStyle("-fx-font: 18 arial; -fx-base: #ff84fc;");
 		btnSaveStudent.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -271,12 +261,8 @@ public class InputStudentSchedule extends Application
 		});
 
 		gpBase.add(lblStartDate, 0, 3, 1, 1);
-		//gpBase.add(lblPhone, 2, 3, 1, 1);
-		//gpBase.add(txtPhone_1, 3, 3, 1, 1);
-		//gpBase.add(txtPhone_2, 4, 3, 1, 1);
 		gpBase.add(dpStartDate, 0, 4, 1, 1);
 		gpBase.add(btnNewStudent, 2, 4, 1, 1);
-		//gpBase.add(btnEditStudent, 3, 4, 1, 1);
 		gpBase.add(btnDeleteStudent, 3, 4, 1, 1);
 		gpBase.add(btnSaveStudent, 4, 4, 1, 1);
 
@@ -342,9 +328,11 @@ public class InputStudentSchedule extends Application
 		{
 			if( ConfirmationBox.show("Weet u het zeker?", "Opslaan bevestiging", "Ja", "Nee") )
 			{
-				Student student = new Student(txtFName.getText(), txtLName.getText(),
-						txtPrefix.getText(), model.generateStudentID());
-				model.getStudentList().add(student);
+				currentStudent.setFName(txtFName.getText());
+				currentStudent.setNamePrefix(txtPrefix.getText());
+				currentStudent.setLName(txtLName.getText());
+
+				model.getStudentList().add(currentStudent);
 				//String[] s = { student.getId(), dpStartDate.getValue().toString(),  };
 				//student.addNewSchedule(new Schedule(getPlaces()));
 				clearTextFields();
@@ -368,8 +356,15 @@ public class InputStudentSchedule extends Application
 		}
 
 		canBeSaved = false;
-
-
+		
+		if(btnSaveStudent.getText().equals("Vervangen"))
+		{
+			btnSaveStudent.setText("Opslaan");
+		}
+		
+		setTextFieldsDisabled();
+		btnSaveStudent.setDisable(true);
+		
 	}// end method saveStudent
 
 
@@ -463,7 +458,6 @@ public class InputStudentSchedule extends Application
 
 		for (int i = 0; i < days.length * 2; i++) { // create combo boxes
 			cbSitPlace.add(new ComboBox<String>());
-			//cbSitPlace.get(i).valueProperty().addListener( (obs, oldValue, newValue) -> System.out.println("new value" + newValue ));
 			cbSitPlace.get(i).valueProperty().addListener(new comboBoxListener(i));
 		}
 
@@ -482,16 +476,6 @@ public class InputStudentSchedule extends Application
 			gpSitPlace.add(cbSitPlace.get(i * 2 + 1), i + 3, 4, columspan, 1);
 			cbSitPlace.get(i * 2 + 1).setMaxWidth(100.0);
 		}
-
-        /* Below code is exactly the same as: clearComboBoxes()  (at least as
-         * it was prior to 08-07-2018 ;)
-         * and therefore replaced with a call to clearComboBoxes()
-        //////////
-		for (ComboBox<String> comboBox : cbSitPlace) {
-			comboBox.setItems(model.getAvailablePlaces());
-			comboBox.getSelectionModel().selectFirst();
-		//////////
-		}*/
 
 		clearComboBoxes();
 
@@ -512,12 +496,6 @@ public class InputStudentSchedule extends Application
 		scrollPane.setFitToHeight(true);
 		scrollPane.setFitToWidth(true);
 
-//		ObservableList<Student> students = (ObservableList<Student>) model.getStudentList();
-//		for(int i = 0; i < students.size(); i++)
-//		{
-//			System.out.println(students.get(i).getSchedules().get(0).getDayParts());
-//		}
-
 		occupation.setItems(model.getStudentList());
 
 		/*
@@ -534,8 +512,9 @@ public class InputStudentSchedule extends Application
 			        setTextFieldsAndComboBoxes(newValue);
 			        currentStudent = (Student) newValue;
 			        setTextFieldsDisabled();
-			        canBeSaved = true;
 			        isSelected = true;
+			        btnSaveStudent.setDisable(false);
+			        btnSaveStudent.setText("Vervangen");
 				}
 			}
 		});
@@ -615,7 +594,6 @@ public class InputStudentSchedule extends Application
 		colFriAfternoon.setMinWidth(COL_MON_FRI_WIDTH);
 		colFriAfternoon.setCellValueFactory(new PropertyValueFactory<Student, String>("friAfternoon"));
 		colFriday.getColumns().addAll(colFriMorning, colFriAfternoon);
-
 
 		occupation.getColumns().addAll(colId, colFirstName, colPrefix, colLastName, colMonday, colTuesday,
 				colWed, colThursday, colFriday );
@@ -746,7 +724,7 @@ public class InputStudentSchedule extends Application
 			student.setDayPartProperties(TableDates.thisWeekDates);
 		}
 
-	}
+	}// end updateTableView
 
 
-}// InputStudentSchedule
+}// End class InputStudentSchedule
