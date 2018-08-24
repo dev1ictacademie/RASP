@@ -14,16 +14,17 @@ public class StartApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		new TimeGuard();
 		Model model = new Model();
-
-        Controller controller = new Controller(model);
+		Controller controller = new Controller(model);
+        
 		Scene scene = new Scene(controller.getView().asParent(), 1000, 400);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setTitle("Aanwezigheidsoverzicht ICT Academie per maand" );
 	    primaryStage.setScene(scene);
 	    primaryStage.setResizable(true);
 	    primaryStage.show();
-
 
 	}
 
