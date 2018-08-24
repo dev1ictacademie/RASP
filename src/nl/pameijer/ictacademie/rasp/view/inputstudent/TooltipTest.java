@@ -30,6 +30,9 @@ public class TooltipTest extends Application {
 		
 		TextField textField = new TextField();
 		textField.setTooltip(new Tooltip("add some text"));
+		textField.setPromptText("Place text here.");
+		textField.setFocusTraversable(false);
+		
 		root.getChildren().addAll(textField, btn);
 		Scene scene = new Scene(root,300,300);
 		primaryStage.setScene(scene);

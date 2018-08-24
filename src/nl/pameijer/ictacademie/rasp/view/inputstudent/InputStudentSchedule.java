@@ -38,8 +38,8 @@ public class InputStudentSchedule extends Application
 {
 	private GridPane gpBase;// base grid pane
 	private GridPane gpSitPlace;// grid pane to hold sit places, day parts labels and combo boxes
-	private Label lblFName, lblLName, lblPrefix , lblOverview, lblStartDate, lblPhone;
-	private TextField txtFName, txtLName, txtPrefix, txtPhone_1, txtPhone_2;
+	private Label lblFName, lblLName, lblPrefix , lblOverview, lblStartDate;
+	private TextField txtFName, txtLName, txtPrefix;
 	private ArrayList<ComboBox<String>> cbSitPlace;
 	private Label[] lblDay;
 	private DatePicker dpStartDate;
@@ -55,6 +55,7 @@ public class InputStudentSchedule extends Application
 	private boolean fName = false;
 	private boolean lName = false;
 	private boolean isNewStudent = false;
+
 
 	public static void main(String[] args) {
 		launch(args);
@@ -77,7 +78,7 @@ public class InputStudentSchedule extends Application
 
 		setButtonBar(); // Right now (16-06-2018) layout not correct at all!
 		setTextFieldsDisabled();
-		
+
 		// Add the gridPane to a scene
 		Scene scene = new Scene(gpBase, 1300, 700);
 		// Finalize and show the stage
@@ -96,6 +97,8 @@ public class InputStudentSchedule extends Application
 		lblLName = new Label("Achternaam:");
 		lblPrefix = new Label("Tussenvoegsel:");
 		lblOverview = new Label("Bezetting:");
+
+
 		// add labels to gridPane
 		gpBase.add(lblFName, 0, 0, 2, 1);
 		gpBase.add(lblPrefix, 0, 1, 2, 1);
@@ -209,7 +212,6 @@ public class InputStudentSchedule extends Application
 		dpStartDate = new DatePicker(LocalDate.now());
 		addDateListener();
 		lblStartDate = new Label("Begin datum:");
-
 		btnNewStudent = new Button("Nieuw student");
 
 		btnNewStudent.setOnAction(new EventHandler<ActionEvent>()
@@ -225,21 +227,12 @@ public class InputStudentSchedule extends Application
 				lName = false;
 				isNewStudent = true;
 				btnSaveStudent.setDisable(false);
-			}
-		});
-
-		btnEditStudent = new Button("Bewerk student");
-		btnEditStudent.setOnAction(new EventHandler<ActionEvent>()
-		{
-			@Override
-			public void handle(ActionEvent event)
-			{
-				setTextFieldsDisabled();
-				canBeSaved = false;
+				btnDeleteStudent.setDisable(true);
 			}
 		});
 
 		btnDeleteStudent = new Button("Verwijder student");
+		btnDeleteStudent.setDisable(true);
 		btnDeleteStudent.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -356,15 +349,15 @@ public class InputStudentSchedule extends Application
 		}
 
 		canBeSaved = false;
-		
+
 		if(btnSaveStudent.getText().equals("Vervangen"))
 		{
 			btnSaveStudent.setText("Opslaan");
 		}
-		
+
 		setTextFieldsDisabled();
 		btnSaveStudent.setDisable(true);
-		
+
 	}// end method saveStudent
 
 
@@ -515,22 +508,23 @@ public class InputStudentSchedule extends Application
 			        isSelected = true;
 			        btnSaveStudent.setDisable(false);
 			        btnSaveStudent.setText("Vervangen");
+			        btnDeleteStudent.setDisable(false);
+			        //btnNewStudent.setDisable(true);
 				}
 			}
 		});
-
 
 		TableColumn<Student, String> colId = new TableColumn("Id");
 		colId.setMinWidth(20.0);
 		colId.setCellValueFactory(new PropertyValueFactory<Student, String>("id"));
 
 		// first name column
-		TableColumn<Student, String> colFirstName = new TableColumn("Voornaam");
+		TableColumn<Student, String> colFirstName;colFirstName = new TableColumn("Voornaam");
 		colFirstName.setMinWidth(130.0);
 		colFirstName.setCellValueFactory(new PropertyValueFactory<Student, String>("fName"));
 
 		// name prefix column
-		TableColumn<Student, String> colPrefix = new TableColumn("Tussenv.");
+		TableColumn<Student, String> colPrefix;colPrefix = new TableColumn("Tussenv.");
 		colPrefix.setMinWidth(120.0);
 		colPrefix.setCellValueFactory(new PropertyValueFactory<Student, String>("namePrefix"));
 
@@ -595,8 +589,8 @@ public class InputStudentSchedule extends Application
 		colFriAfternoon.setCellValueFactory(new PropertyValueFactory<Student, String>("friAfternoon"));
 		colFriday.getColumns().addAll(colFriMorning, colFriAfternoon);
 
-		occupation.getColumns().addAll(colId, colFirstName, colPrefix, colLastName, colMonday, colTuesday,
-				colWed, colThursday, colFriday );
+		occupation.getColumns().addAll(colId, colFirstName, colPrefix, colLastName, colMonday,
+				colTuesday, colWed, colThursday, colFriday );
 
 		scrollPane.setContent(occupation);
 
@@ -723,6 +717,8 @@ public class InputStudentSchedule extends Application
 		for (Student student: model.getStudentList()) {
 			student.setDayPartProperties(TableDates.thisWeekDates);
 		}
+
+
 
 	}// end updateTableView
 
