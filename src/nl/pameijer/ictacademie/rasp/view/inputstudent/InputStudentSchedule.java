@@ -517,8 +517,8 @@ public class InputStudentSchedule extends Application
 			        student = (Student) newValue;
 			        setTextFieldsDisabled();
 			        isSelected = true;
-			        btnSaveStudent.setDisable(false);
-			        btnSaveStudent.setText("Vervangen");
+			        btnSaveStudent.setDisable(true);
+			        
 			        btnDeleteStudent.setDisable(false);
 
 				}
