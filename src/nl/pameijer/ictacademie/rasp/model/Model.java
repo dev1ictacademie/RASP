@@ -22,7 +22,7 @@ public class Model {
 	public ObjectProperty<Student> currentStudentProperty() {
         return currentStudent ;
     }
-	
+
 	public final Student getCurrentStudent() {
         return currentStudentProperty().get();
     }
@@ -37,6 +37,14 @@ public class Model {
     public ObservableList<Student> getStudentList() {
         return studentList ;
     }
+
+    /**
+     * Add new student to observable ArrayList studentList
+     */
+    public void setStudent( Student newStudent )
+    {
+		studentList.add(newStudent);
+	}
 
     /**
      * Method for testing combo boxes sit places
@@ -54,7 +62,7 @@ public class Model {
 
     	return list;
 	}
-    
+
 	/**
 	 * Get a list of all available places for this exact date and dayPart.
 	 */
@@ -64,7 +72,7 @@ public class Model {
 	 * This method is overloaded so the previous method above
 	 * can be called again easily instead of this one for testing/debugging purposes. */
 	public ObservableList<String> getAvailablePlaces(LocalDate date, DayPart dayPart) {
-		
+
 		ObservableList<String> availablePlaces = FXCollections.observableArrayList();
 		availablePlaces.add("");
 
@@ -85,7 +93,7 @@ public class Model {
 			}
 		}
 
-		// Loop over ALL existing places and add them to the available-list if 
+		// Loop over ALL existing places and add them to the available-list if
 		// they are NOT found in the occupied-list.
 		for (Place place: Place.values()) {
 			boolean occupied = false;
@@ -106,51 +114,51 @@ public class Model {
 
 	/**
 	 * Load the data from the PersistencyLayer class:
-	 * 
+	 *
 	 *  1) Construct the student objects from the array and add them to the studentList
 	 *  2) Construct the schedules from the other array and assign them to the (right) students
 	 *  3) Sort the schedules from a student's schedule-list to guarantee chronological order
 	 *  4) Set the dayPartProperties for the students so that correct places are shown in weekView
 	 */
 	public void loadDataWithScheduleAndID() {
-		
+
 		studentList.setAll(PersistencyLayer.constructStudentList(PersistencyLayer.studentsMockArray));
-		
+
 		PersistencyLayer.constructSchedules(PersistencyLayer.schedulesMockArray, studentList);
-		
+
 		for (Student student: getStudentList()) {
 			Collections.sort(student.getSchedules());
 			student.setDayPartProperties(TableDates.getThisWeekDates());
 		}
-		
+
 	}
 
-	
+
 	public void saveDayPart(String id, String text) {
 		// TODO split id into studentid, date, daypart and the value from text
 		System.out.println("Day part saved to database. " + id + " " + text);
 	}
-	
+
 	/**
-	 * Temporary (for as long as the database doesn't handle this) method to 
-	 * generate Student ID's that may be required for testing purposes. 
+	 * Temporary (for as long as the database doesn't handle this) method to
+	 * generate Student ID's that may be required for testing purposes.
 	 */
 	public String generateStudentID() {
-		
+
 		List<Integer> ids = new ArrayList<>();
-		
+
 		for (Student stu: studentList) {
 			ids.add(Integer.parseInt(stu.getId()));
 		}
-		
+
 		Collections.sort(ids);
-		
+
 		// Get last element from list which is highest value after sort
 		Integer highest = ids.get(ids.size() - 1);
-		
+
 		// increment by 1 to get a new, unique, Id-value
 		highest++;
-		
+
 		return highest.toString();
 	}
 }

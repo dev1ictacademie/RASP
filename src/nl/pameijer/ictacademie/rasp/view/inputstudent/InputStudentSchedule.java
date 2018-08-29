@@ -5,11 +5,14 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+import com.sun.org.apache.xerces.internal.impl.dv.ValidatedInfo;
+
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.SetChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -45,11 +48,11 @@ public class InputStudentSchedule extends Application
 	private DatePicker dpStartDate;
 	private String days[] = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag"};
 	private Model model = new Model();
-	private Button btnNewStudent, btnEditStudent, btnDeleteStudent, btnSaveStudent;
+	private Button btnNewStudent, btnDeleteStudent, btnSaveStudent;
 	TableView<Student> occupation;
 	private ArrayList<TableColumn<Student, String>> weekDayColumns = new ArrayList<>();
-	private Student currentStudent;
 	private Student student;
+
 	private boolean canBeSaved = false;
 	private boolean isSelected = false;
 	private boolean fName = false;
@@ -70,7 +73,7 @@ public class InputStudentSchedule extends Application
 		gpBase.setPadding(new Insets(30, 30, 30, 30));
 		gpBase.setHgap(10);
 		gpBase.setVgap(20);
-		currentStudent = new Student();
+
 		setLabelsTextFields();// make labels
 		setLabels_Buttons();// make label and date picker
 		setLblDayLblDayPartCbSitPlace();// make combo boxes
@@ -219,15 +222,7 @@ public class InputStudentSchedule extends Application
 			@Override
 			public void handle(ActionEvent event)
 			{
-				setTextFieldsEnabled();
-				clearTextFields();
-				clearComboBoxes();
-				dpStartDate.setDisable(false);
-				fName = false;
-				lName = false;
-				isNewStudent = true;
-				btnSaveStudent.setDisable(false);
-				btnDeleteStudent.setDisable(true);
+				newStudent();
 			}
 		});
 
@@ -261,6 +256,22 @@ public class InputStudentSchedule extends Application
 
 	}// end method setLabels_DatePickers
 
+
+	public void newStudent()
+	{
+		student = new Student();
+		setTextFieldsEnabled();
+		clearTextFields();
+		clearComboBoxes();
+		dpStartDate.setDisable(false);
+		fName = false;
+		lName = false;
+		isNewStudent = true;
+		btnSaveStudent.setDisable(false);
+		btnDeleteStudent.setDisable(true);
+		btnSaveStudent.setText("Opslaan");
+	}
+
 	/**
 	 * Delete selected student from table view occupation
 	 */
@@ -269,7 +280,7 @@ public class InputStudentSchedule extends Application
 		setTextFieldsDisabled();
 		if(!isSelected)
 		{
-			MessageBox.show("Select eerst een student in tabele view!", "Verwijder fout.");
+			MessageBox.show("Select eerst een student in de tabel!", "Verwijder fout.");
 		}
 
 		if(isSelected)// if student is selected in occupation table view
@@ -282,6 +293,7 @@ public class InputStudentSchedule extends Application
 				clearTextFields();
 				occupation.getSelectionModel().clearSelection();
 				isSelected = false;
+				btnSaveStudent.setDisable(true);
 				MessageBox.show("Student is verwijderd.", "Verwijder bevestiging");
 			}
 		}
@@ -319,33 +331,30 @@ public class InputStudentSchedule extends Application
 	{
 		if(canBeSaved)
 		{
-			if( ConfirmationBox.show("Weet u het zeker?", "Opslaan bevestiging", "Ja", "Nee") )
+			if(isNewStudent)// new student
 			{
-				currentStudent.setFName(txtFName.getText());
-				currentStudent.setNamePrefix(txtPrefix.getText());
-				currentStudent.setLName(txtLName.getText());
-
-				model.getStudentList().add(currentStudent);
-				//String[] s = { student.getId(), dpStartDate.getValue().toString(),  };
-				//student.addNewSchedule(new Schedule(getPlaces()));
-				clearTextFields();
-				clearComboBoxes();
-			}
-		}
-		else
-		{
-			if(!isNewStudent)
-			{
-				if(!isSelected)
+				if( ConfirmationBox.show("Weet u het zeker?", "Opslaan bevestiging", "Ja", "Nee") )
 				{
-					MessageBox.show("Je moet een student selecteren.", "Invoer fout");
+					student = new Student();
+					student.setFName(txtFName.getText());
+					student.setNamePrefix(txtPrefix.getText());
+					student.setLName(txtLName.getText());
+
+					model.setStudent(student);
+
+					//String[] s = { student.getId(), dpStartDate.getValue().toString(),  };
+					//student.addNewSchedule(new Schedule(getPlaces()));
+					clearTextFields();
+					clearComboBoxes();
+					occupation.setItems(model.getStudentList());
+
 				}
 			}
-			else
+			else // existing student
 			{
-				MessageBox.show("Je moet een voornaam en of achernaam invoeren.", "Invoer fout");
-			}
+				//student.setMonMorning(cbSitPlace.get(0).getValue());
 
+			}
 		}
 
 		canBeSaved = false;
@@ -357,6 +366,7 @@ public class InputStudentSchedule extends Application
 
 		setTextFieldsDisabled();
 		btnSaveStudent.setDisable(true);
+
 
 	}// end method saveStudent
 
@@ -391,40 +401,40 @@ public class InputStudentSchedule extends Application
 		@Override
 		public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
 		{
-			if(currentStudent != null)
+			if(student != null)
 			{
 
 				switch (i)
 				{
 					case 0:
-						currentStudent.setMonMorning(newValue);
+						student.setMonMorning(newValue);
 						break;
 					case 1:
-						currentStudent.setMonAfternoon(newValue);
+						student.setMonAfternoon(newValue);
 						break;
 					case 2:
-						currentStudent.setTuesMorning(newValue);
+						student.setTuesMorning(newValue);
 						break;
 					case 3:
-						currentStudent.setTuesAfternoon(newValue);
+						student.setTuesAfternoon(newValue);
 						break;
 					case 4:
-						currentStudent.setWedMorning(newValue);
+						student.setWedMorning(newValue);
 						break;
 					case 5:
-						currentStudent.setWedAfternoon(newValue);
+						student.setWedAfternoon(newValue);
 						break;
 					case 6:
-						currentStudent.setThursMorning(newValue);
+						student.setThursMorning(newValue);
 						break;
 					case 7:
-						currentStudent.setThursAfternoon(newValue);
+						student.setThursAfternoon(newValue);
 						break;
 					case 8:
-						currentStudent.setFriMorning(newValue);
+						student.setFriMorning(newValue);
 						break;
 					case 9:
-						currentStudent.setFriAfternoon(newValue);
+						student.setFriAfternoon(newValue);
 						break;
 					default:
 						break;
@@ -503,13 +513,14 @@ public class InputStudentSchedule extends Application
 				if(occupation.getSelectionModel().getSelectedItem() != null)
 				{
 			        setTextFieldsAndComboBoxes(newValue);
-			        currentStudent = (Student) newValue;
+
+			        student = (Student) newValue;
 			        setTextFieldsDisabled();
 			        isSelected = true;
 			        btnSaveStudent.setDisable(false);
 			        btnSaveStudent.setText("Vervangen");
 			        btnDeleteStudent.setDisable(false);
-			        //btnNewStudent.setDisable(true);
+
 				}
 			}
 		});
@@ -717,7 +728,6 @@ public class InputStudentSchedule extends Application
 		for (Student student: model.getStudentList()) {
 			student.setDayPartProperties(TableDates.thisWeekDates);
 		}
-
 
 
 	}// end updateTableView

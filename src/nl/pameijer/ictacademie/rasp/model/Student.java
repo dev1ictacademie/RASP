@@ -39,6 +39,7 @@ public class Student {
 		setLName(lName);
 		setNamePrefix(namePrefix);
 		setId(id);
+		
 	}
 
 
