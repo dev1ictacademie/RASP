@@ -15,13 +15,13 @@ import nl.pameijer.ictacademie.rasp.view.inputstudent.TableDates;
 import nl.pameijer.ictacademie.rasp.time.TimeGuard;
 
 public class Model {
-	
+
 	private final TimeGuard timeGuardian = new TimeGuard();
 
 	private final ObservableList<Student> studentList = FXCollections.observableArrayList();
 
 	private final ObjectProperty<Student> currentStudent = new SimpleObjectProperty<>(null);
-	
+
 	public Model() {
 		timeGuardian.start();
 	}
@@ -53,22 +53,6 @@ public class Model {
 		studentList.add(newStudent);
 	}
 
-    /**
-     * Method for testing combo boxes sit places
-     * @return Array list Strings of sit places
-     */
-    public ObservableList<String> getAvailablePlaces() {
-
-		ObservableList<String> list = FXCollections.observableArrayList();
-		list.add("");
-		list.add("ICT_2");
-		list.add("ICT_3");
-		list.add("ECDL_1");
-		list.add("ECDL_2");
-		list.add("SD_1");
-
-    	return list;
-	}
 
 	/**
 	 * Get a list of all available places for this exact date and dayPart.

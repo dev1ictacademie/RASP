@@ -29,6 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import nl.pameijer.ictacademie.rasp.model.DayPart;
 import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.model.Schedule;
@@ -51,7 +52,7 @@ public class InputStudentSchedule extends Application
 	private Button btnNewStudent, btnDeleteStudent, btnSaveStudent;
 	TableView<Student> occupation;
 	private ArrayList<TableColumn<Student, String>> weekDayColumns = new ArrayList<>();
-	private Student student;
+	private Student student = new Student();
 
 	private boolean canBeSaved = false;
 	private boolean isSelected = false;
@@ -89,6 +90,17 @@ public class InputStudentSchedule extends Application
 		primaryStage.setTitle("Overzicht bezetting");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>()
+		{
+	          public void handle(WindowEvent we)
+	          {
+	              System.out.println("Stage is closing");
+	              System.exit(0);
+	              primaryStage.close();
+	          }
+		});
+
 	}// end start
 
 	/**
@@ -286,7 +298,7 @@ public class InputStudentSchedule extends Application
 		if(isSelected)// if student is selected in occupation table view
 		{
 			// delete confirmation dialog shows
-			if(ConfirmationBox.show("Weet u het zeker?", "Verdwijder bevestiging", "Ja", "Nee"))
+			if(ConfirmationBox.show("Deze student verwijderen?", "Verdwijder bevestiging", "Ja", "Nee"))
 			{
 				int index = occupation.getSelectionModel().getSelectedIndex();
 				model.getStudentList().remove(index);
@@ -294,7 +306,7 @@ public class InputStudentSchedule extends Application
 				occupation.getSelectionModel().clearSelection();
 				isSelected = false;
 				btnSaveStudent.setDisable(true);
-				MessageBox.show("Student is verwijderd.", "Verwijder bevestiging");
+				btnDeleteStudent.setDisable(true);
 			}
 		}
 	}// end method deleteStudent
@@ -333,22 +345,19 @@ public class InputStudentSchedule extends Application
 		{
 			if(isNewStudent)// new student
 			{
-				if( ConfirmationBox.show("Weet u het zeker?", "Opslaan bevestiging", "Ja", "Nee") )
-				{
-					student = new Student();
-					student.setFName(txtFName.getText());
-					student.setNamePrefix(txtPrefix.getText());
-					student.setLName(txtLName.getText());
+				student = new Student();
+				student.setFName(txtFName.getText());
+				student.setNamePrefix(txtPrefix.getText());
+				student.setLName(txtLName.getText());
 
-					model.setStudent(student);
+				model.setStudent(student);
 
-					//String[] s = { student.getId(), dpStartDate.getValue().toString(),  };
-					//student.addNewSchedule(new Schedule(getPlaces()));
-					clearTextFields();
-					clearComboBoxes();
-					occupation.setItems(model.getStudentList());
+				//String[] s = { student.getId(), dpStartDate.getValue().toString(),  };
+				//student.addNewSchedule(new Schedule(getPlaces()));
+				clearTextFields();
+				clearComboBoxes();
+				occupation.setItems(model.getStudentList());
 
-				}
 			}
 			else // existing student
 			{
@@ -518,7 +527,7 @@ public class InputStudentSchedule extends Application
 			        setTextFieldsDisabled();
 			        isSelected = true;
 			        btnSaveStudent.setDisable(true);
-			        
+
 			        btnDeleteStudent.setDisable(false);
 
 				}
@@ -670,8 +679,24 @@ public class InputStudentSchedule extends Application
 	public void setButtonBar() {
 
 		GridPane buttonBar = new GridPane();
+		buttonBar.setHgap(50.0);
+		Button btnClose = new Button("Afsluiten"); 
+		btnClose.setMinWidth(100.0);
+		
+//		btnClose.setOnAction(new EventHandler<ActionEvent>()
+//		{
+//			@Override
+//			public void handle(ActionEvent event) 
+//			{
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
+		
+		btnClose.setOnAction(e -> { System.out.println("Closing");System.exit(0); });
 
 		Button monthViewButton = new Button("Maand overzicht");
+		monthViewButton.setMinWidth(150.0);
 		monthViewButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -680,6 +705,7 @@ public class InputStudentSchedule extends Application
 		});
 
 		Button previousWeekButton = new Button("Vorige Week");
+		previousWeekButton.setMinWidth(150.0);
 		previousWeekButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -691,6 +717,7 @@ public class InputStudentSchedule extends Application
 		});
 
 		Button nextWeekButton = new Button("Volgende Week");
+		nextWeekButton.setMinWidth(150.0);
 		nextWeekButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -702,8 +729,9 @@ public class InputStudentSchedule extends Application
 		});
 
 		buttonBar.add(monthViewButton, 0, 0, 2, 1);
-		buttonBar.add(previousWeekButton, 3, 0, 2, 1);
-		buttonBar.add(nextWeekButton, 6, 0, 2, 1);
+		buttonBar.add(previousWeekButton, 4, 0, 2, 1);
+		buttonBar.add(nextWeekButton, 8, 0, 2, 1);
+		buttonBar.add(btnClose, 14, 0, 2, 1);
 
 		gpBase.add(buttonBar, 0, 13, 2, 1);
 	}
@@ -719,7 +747,8 @@ public class InputStudentSchedule extends Application
 	 * Reassign DayPartProperties to students so that the correct places are
 	 * shown in the week overview.
 	 */
-	public void updateTableView() {
+	public void updateTableView()
+	{
 
 		for (int i = 0; i < weekDayColumns.size(); i++) {
 			weekDayColumns.get(i).setText(TableDates.thisWeekStrings[i]);
@@ -729,6 +758,7 @@ public class InputStudentSchedule extends Application
 			student.setDayPartProperties(TableDates.thisWeekDates);
 		}
 
+		System.out.println( "get monday morning: " + student.getMonMorning());
 
 	}// end updateTableView
 
