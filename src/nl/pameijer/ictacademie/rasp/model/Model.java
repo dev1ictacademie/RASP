@@ -12,12 +12,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import nl.pameijer.ictacademie.rasp.persistencylayer.PersistencyLayer;
 import nl.pameijer.ictacademie.rasp.view.inputstudent.TableDates;
+import nl.pameijer.ictacademie.rasp.time.TimeGuard;
 
 public class Model {
+	
+	private final TimeGuard timeGuardian = new TimeGuard();
 
 	private final ObservableList<Student> studentList = FXCollections.observableArrayList();
 
 	private final ObjectProperty<Student> currentStudent = new SimpleObjectProperty<>(null);
+	
+	public Model() {
+		timeGuardian.start();
+	}
 
 	public ObjectProperty<Student> currentStudentProperty() {
         return currentStudent ;

@@ -1,4 +1,4 @@
-package application;
+package nl.pameijer.ictacademie.rasp.time;
 
 import java.util.Calendar;
 import java.util.Timer;
@@ -18,7 +18,7 @@ import java.util.TimerTask;
  * are made when instances of these classes initialize.
  * 
  * @author ttimmermans
- * @version 24-08-2018
+ * @version 28-08-2018
  */
 public class TimeGuard {
 	
@@ -27,9 +27,9 @@ public class TimeGuard {
 	private ExitTask exitTask = new ExitTask();
 	
 	/**
-	 * Constructor
+	 * Check the system's time zone and schedule the auto-shutdown.
 	 */
-	public TimeGuard() {
+	public void start() {
 		
 		validateTimeZone();
 		

@@ -15,7 +15,6 @@ public class StartApp extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		new TimeGuard();
 		Model model = new Model();
 		Controller controller = new Controller(model);
         
