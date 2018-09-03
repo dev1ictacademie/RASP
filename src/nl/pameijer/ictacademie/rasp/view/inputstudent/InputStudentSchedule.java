@@ -58,7 +58,6 @@ public class InputStudentSchedule extends Application
 	private boolean isSelected = false;
 	private boolean fName = false;
 	private boolean lName = false;
-	private boolean isNewStudent = false;
 
 
 	public static void main(String[] args) {
@@ -127,9 +126,9 @@ public class InputStudentSchedule extends Application
 		txtLName.setMinWidth(200.0);
 		txtPrefix = new TextField();
 		txtPrefix.setMaxWidth(130.0);
-		txtFName.textProperty().addListener((e, oldValue, newValue) -> addStudentButton("firstName"));
-		txtLName.textProperty().addListener((e, oldValue, newValue) -> addStudentButton("lastName"));
-		txtPrefix.textProperty().addListener((e, oldValue, newValue) -> addStudentButton(""));
+		txtFName.textProperty().addListener((e, oldValue, newValue) -> textFieldCheck());
+		txtLName.textProperty().addListener((e, oldValue, newValue) -> textFieldCheck());
+
 
 		// add text fields to grid pane
 		gpBase.add(txtFName, 1, 0, 1, 1);
@@ -138,21 +137,21 @@ public class InputStudentSchedule extends Application
 	}// end setLabels
 
 	/**
-	 * Check if first and last name text fields are changed so it can be saved
+	 * Check if first and last name text fields are not empty
 	 */
-	public void addStudentButton(String buttonName)
+	public void textFieldCheck()
 	{
-		if(buttonName.equals("firstName"))
+		if( !txtFName.getText().equals("") & !txtFName.getText().equals(" ") )
 		{
 			fName = true;
 		}
 
-		if(buttonName.equals("lastName"))
+		if( !txtLName.getText().equals("") & !txtLName.getText().equals(" "))
 		{
 			lName = true;
 		}
 
-		if(fName && lName)
+		if( fName & lName )
 		{
 			canBeSaved = true;
 		}
@@ -278,7 +277,7 @@ public class InputStudentSchedule extends Application
 		dpStartDate.setDisable(false);
 		fName = false;
 		lName = false;
-		isNewStudent = true;
+
 		btnSaveStudent.setDisable(false);
 		btnDeleteStudent.setDisable(true);
 		btnSaveStudent.setText("Opslaan");
@@ -336,45 +335,43 @@ public class InputStudentSchedule extends Application
 		});
 	}
 
-	/*
-	 * save student
+	/**
+	 * Save new student method
+	 * If first and or last name isn't filled a message will be  displayed
+	 * to inform the user what is missing
 	 */
 	public void saveStudent()
 	{
-		if(canBeSaved)
+		if( canBeSaved )
 		{
-			if(isNewStudent)// new student
-			{
-				student = new Student();
-				student.setFName(txtFName.getText());
-				student.setNamePrefix(txtPrefix.getText());
-				student.setLName(txtLName.getText());
+			student = new Student();
+			student.setFName(txtFName.getText());
+			student.setNamePrefix(txtPrefix.getText());
+			student.setLName(txtLName.getText());
 
-				model.setStudent(student);
+			model.setStudent(student);
 
-				//String[] s = { student.getId(), dpStartDate.getValue().toString(),  };
-				//student.addNewSchedule(new Schedule(getPlaces()));
-				clearTextFields();
-				clearComboBoxes();
-				occupation.setItems(model.getStudentList());
+			clearTextFields();
+			clearComboBoxes();
+			occupation.setItems(model.getStudentList());
 
-			}
-			else // existing student
-			{
-				//student.setMonMorning(cbSitPlace.get(0).getValue());
+			canBeSaved = false;
 
-			}
+			setTextFieldsDisabled();
+			btnSaveStudent.setDisable(true);
 		}
-
-		canBeSaved = false;
-
-		if(btnSaveStudent.getText().equals("Vervangen"))
+		else if( !fName & !lName )
 		{
-			btnSaveStudent.setText("Opslaan");
+			MessageBox.show("Geen voor- en achternaam ingevuld!", "Invoer fout");
 		}
-
-		setTextFieldsDisabled();
-		btnSaveStudent.setDisable(true);
+		else if( !fName )
+		{
+			MessageBox.show("Geen voornaam ingevuld!", "Invoer fout");
+		}
+		else if( !lName )
+		{
+			MessageBox.show("Geen achternaam ingevuld!", "Invoer fout");
+		}
 
 
 	}// end method saveStudent
@@ -680,19 +677,18 @@ public class InputStudentSchedule extends Application
 
 		GridPane buttonBar = new GridPane();
 		buttonBar.setHgap(50.0);
-		Button btnClose = new Button("Afsluiten"); 
+		Button btnClose = new Button("Afsluiten");
 		btnClose.setMinWidth(100.0);
-		
+
 //		btnClose.setOnAction(new EventHandler<ActionEvent>()
 //		{
 //			@Override
-//			public void handle(ActionEvent event) 
+//			public void handle(ActionEvent event)
 //			{
-//				// TODO Auto-generated method stub
-//				
+//
 //			}
 //		});
-		
+
 		btnClose.setOnAction(e -> { System.out.println("Closing");System.exit(0); });
 
 		Button monthViewButton = new Button("Maand overzicht");
@@ -758,7 +754,6 @@ public class InputStudentSchedule extends Application
 			student.setDayPartProperties(TableDates.thisWeekDates);
 		}
 
-		System.out.println( "get monday morning: " + student.getMonMorning());
 
 	}// end updateTableView
 

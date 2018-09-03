@@ -50,7 +50,7 @@ public class PersistencyLayer {
 			{"119", "2018-02-06", "9999-12-31", "ICT_6", "ICT_6", null, null, "ICT_1", "ICT_1", null, null, null, null},
 			{"162", "2018-04-19", "2018-05-31", null, null, "ICT_8", "ECDL_1", null, null, "ICT_14", "ICT_14", null, null},
 			{"162", "2018-06-01", "9999-12-31", null, null, "ICT_8", "ECDL_1", null, null, null, null, "ICT_16", "ICT_16"},
-			{"101", "2017-11-29", "9999-12-31", "ICT_3", "ICT_3", null, null, "ICT_5", "ICT_7", null, null, null, null},
+			{"101", "2018-09-10", "9999-12-31", "ICT_3", "ICT_3", null, null, "ICT_5", "ICT_7", null, null, null, null},
 			{"184", "2017-06-21", "2018-03-14", "ICT_11", "ICT_11", null, null, null, null, null, null, "ICT_9", "ICT_5"},
 			{"184", "2018-03-15", "9999-12-31", null, null, null, "ICT_18", null, null, null, null, null, "ICT_18"},
 			{"189", "2018-02-12", "2018-05-23", null, null, "ICT_14", "ECDL_3", null, null, null, null, "ICT_7", "ICT_7"},
