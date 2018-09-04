@@ -3,11 +3,11 @@ package nl.pameijer.ictacademie.rasp.model;
 /**
  * This enum represents a workplace for an attendee at ICT Academie.
  * It lists the available spots (and their corresponding numbers)
- * at ICT, ECDL and ServiceDesk. At ICT these numbers also are actual
+ * at ICT and ServiceDesk. At ICT these numbers also are actual
  * seating places.
  *
  * @author ttimmermans
- * @version 23-03-2018
+ * @version 04-09-2018
  */
 
 public enum Place {
@@ -16,16 +16,15 @@ public enum Place {
 	ICT_7, ICT_8, ICT_9, ICT_10, ICT_11, ICT_12,
 	ICT_13, ICT_14, ICT_15, ICT_16, ICT_17, ICT_18,
 
-	ECDL_1, ECDL_2, ECDL_3, ECDL_4, ECDL_5, ECDL_6,
-
 	SERVICEDESK_1, SERVICEDESK_2, SERVICEDESK_3;
 
 	private int spot; // indicates the numbered workplace/seating place
 	private String type; // a string describing the type of this place
 	
 	/**
-	 * Constructor. Assign spot numbers (ICT_2 Should have spot number 2,
-	 * ECDL_5 spot number 5 and so on).
+	 * Constructor. Assign spot numbers and type (for example, ICT_2 Should have
+	 * spot number 2 and type ICT, SERVICEDESK_3 should have spot number 3 and 
+	 * type SERVICEDESK).
 	 */
 	private Place() {
 		assignSpot();
@@ -46,7 +45,7 @@ public enum Place {
 	}
 	
 	/**
-	 * Assign a string describing the type of this place (i.e. ICT or ECDL).
+	 * Assign a string describing the type of this place (i.e. SERVICEDESK).
 	 * Do this by 'looking' at the string before the underscore.
 	 * Get the particular enum's name (exactly as declared) and then strip the
 	 * underscore (and everything thereafter) from this string.
@@ -55,6 +54,31 @@ public enum Place {
 		
 			int underscore = this.name().indexOf("_");
 			type = this.name().substring(0, underscore);
+	}
+	
+	/**
+	 * Return the spot number of this place.
+	 * @return the spot number
+	 */
+	public int getSpot() {
+		return this.spot;
+	}
+	
+	/**
+	 * Return the type of this place.
+	 * @return the string describing what type of place this is. 
+	 */
+	public String getType() {
+		return this.type;
+	}
+	
+	/**
+	 * Check if this place is of a certain type.
+	 * @param  type Is this a place of this type?
+	 * @return true if this place is from that type, false if not.
+	 */
+	public boolean isOfType(String type) {
+		return this.type.equals(type);
 	}
 	
 	/**
@@ -84,16 +108,9 @@ public enum Place {
 		case 17: place = Place.ICT_17; break;
 		case 18: place = Place.ICT_18; break;
 
-		case 19: place = Place.ECDL_1; break;
-		case 20: place = Place.ECDL_2; break;
-		case 21: place = Place.ECDL_3; break;
-		case 22: place = Place.ECDL_4; break;
-		case 23: place = Place.ECDL_5; break;
-		case 24: place = Place.ECDL_6; break;
-
-		case 25: place = Place.SERVICEDESK_1; break;
-		case 26: place = Place.SERVICEDESK_2; break;
-		case 27: place = Place.SERVICEDESK_3; break;
+		case 19: place = Place.SERVICEDESK_1; break;
+		case 20: place = Place.SERVICEDESK_2; break;
+		case 21: place = Place.SERVICEDESK_3; break;
 		
 		default: throw new IllegalArgumentException();
 		}
