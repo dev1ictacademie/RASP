@@ -88,15 +88,14 @@ public class InputStudentSchedule extends Application
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Overzicht bezetting");
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.show();
 
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>()
 		{
 	          public void handle(WindowEvent we)
 	          {
-	              System.out.println("Stage is closing");
-	              System.exit(0);
-	              primaryStage.close();
+	              closeApplication();
 	          }
 		});
 
@@ -137,24 +136,15 @@ public class InputStudentSchedule extends Application
 	}// end setLabels
 
 	/**
-	 * Check if first and last name text fields are not empty
+	 * Check first and last name text fields are not empty
 	 */
 	public void textFieldCheck()
 	{
-		if( !txtFName.getText().equals("") & !txtFName.getText().equals(" ") )
-		{
-			fName = true;
-		}
+		fName = !txtFName.getText().equals("") & !txtFName.getText().equals(" ") ? true : false;
 
-		if( !txtLName.getText().equals("") & !txtLName.getText().equals(" "))
-		{
-			lName = true;
-		}
+		lName = !txtLName.getText().equals("") & !txtLName.getText().equals(" ") ? true : false;
 
-		if( fName & lName )
-		{
-			canBeSaved = true;
-		}
+		canBeSaved = fName & lName ? true : false;
 
 	}// end method addStudentButton
 
@@ -676,20 +666,15 @@ public class InputStudentSchedule extends Application
 	public void setButtonBar() {
 
 		GridPane buttonBar = new GridPane();
-		buttonBar.setHgap(50.0);
+		buttonBar.setHgap(30.0);
+
 		Button btnClose = new Button("Afsluiten");
 		btnClose.setMinWidth(100.0);
+		btnClose.setOnAction( e -> { closeApplication(); } );
 
-//		btnClose.setOnAction(new EventHandler<ActionEvent>()
-//		{
-//			@Override
-//			public void handle(ActionEvent event)
-//			{
-//
-//			}
-//		});
-
-		btnClose.setOnAction(e -> { System.out.println("Closing");System.exit(0); });
+		Button btnPrint = new Button("Print bezetting");
+		btnPrint.setMinWidth(130.0);
+		btnPrint.setOnAction(e -> { System.out.println("Print"); printOverview(); });
 
 		Button monthViewButton = new Button("Maand overzicht");
 		monthViewButton.setMinWidth(150.0);
@@ -706,6 +691,7 @@ public class InputStudentSchedule extends Application
 			@Override
 			public void handle(ActionEvent e) {
 				System.out.println("Showing previous week!");
+				occupation.getSelectionModel().select(null);
 				TableDates.changeWeek(-1);
 				updateTableView();
 				updateComboBoxes();
@@ -718,6 +704,7 @@ public class InputStudentSchedule extends Application
 			@Override
 			public void handle(ActionEvent e) {
 				System.out.println("Showing next week!");
+				occupation.getSelectionModel().select(null);
 				TableDates.changeWeek(1);
 				updateTableView();
 				updateComboBoxes();
@@ -727,11 +714,23 @@ public class InputStudentSchedule extends Application
 		buttonBar.add(monthViewButton, 0, 0, 2, 1);
 		buttonBar.add(previousWeekButton, 4, 0, 2, 1);
 		buttonBar.add(nextWeekButton, 8, 0, 2, 1);
-		buttonBar.add(btnClose, 14, 0, 2, 1);
+		buttonBar.add(btnPrint, 12, 0, 2, 1);
+		buttonBar.add(btnClose, 18, 0, 2, 1);
 
 		gpBase.add(buttonBar, 0, 13, 2, 1);
 	}
 
+	/**
+	 * Print over view of sit places in pdf format to an email address
+	 *
+	 */
+	public void printOverview()
+	{
+		// TODO print overview to an email
+
+		Print.show();
+
+	}// end method printOverview
 
 	/**
 	 * Update the TableView after a week change, after the studentList has
@@ -756,6 +755,15 @@ public class InputStudentSchedule extends Application
 
 
 	}// end updateTableView
+
+	/**
+	 * Closing this application if cross in frame or close button is pressed
+	 */
+	public void closeApplication()
+	{
+		System.out.println("Closing InputStudentSchedule");
+        System.exit(0);
+	}// end
 
 
 }// End class InputStudentSchedule
