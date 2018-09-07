@@ -519,12 +519,10 @@ public class InputStudentSchedule extends Application
 				if(occupation.getSelectionModel().getSelectedItem() != null)
 				{
 			        setTextFieldsAndComboBoxes(newValue);
-
 			        student = (Student) newValue;
 			        setTextFieldsDisabled();
 			        isSelected = true;
 			        btnSaveStudent.setDisable(true);
-
 			        btnDeleteStudent.setDisable(false);
 
 				}
@@ -655,6 +653,21 @@ public class InputStudentSchedule extends Application
         cbSitPlace.get(8).setItems(model.getAvailablePlaces(weekDays[4], DayPart.FRIDAY_MORNING));
         cbSitPlace.get(9).setItems(model.getAvailablePlaces(weekDays[4], DayPart.FRIDAY_AFTERNOON));
 
+        txtFName.setText(student.getFName());
+        txtPrefix.setText(student.getNamePrefix());
+        txtLName.setText(student.getLName());
+        cbSitPlace.get(0).setValue(student.getMonMorning());
+        cbSitPlace.get(1).setValue(student.getMonAfternoon());
+        cbSitPlace.get(2).setValue(student.getTuesMorning());
+        cbSitPlace.get(3).setValue(student.getTuesAfternoon());
+        cbSitPlace.get(4).setValue(student.getWedMorning());
+        cbSitPlace.get(5).setValue(student.getWedAfternoon());
+        cbSitPlace.get(6).setValue(student.getThursMorning());
+        cbSitPlace.get(7).setValue(student.getThursAfternoon());
+        cbSitPlace.get(8).setValue(student.getFriMorning());
+        cbSitPlace.get(9).setValue(student.getFriAfternoon());
+        
+
 	}// end updateTextFieldsAndComboBoxes
 
 
@@ -680,15 +693,6 @@ public class InputStudentSchedule extends Application
 		Button btnClose = new Button("Afsluiten");
 		btnClose.setMinWidth(100.0);
 
-//		btnClose.setOnAction(new EventHandler<ActionEvent>()
-//		{
-//			@Override
-//			public void handle(ActionEvent event)
-//			{
-//
-//			}
-//		});
-
 		btnClose.setOnAction(e -> { System.out.println("Closing");System.exit(0); });
 
 		Button monthViewButton = new Button("Maand overzicht");
@@ -709,6 +713,8 @@ public class InputStudentSchedule extends Application
 				TableDates.changeWeek(-1);
 				updateTableView();
 				updateComboBoxes();
+				updateTableView();
+				updateComboBoxes();
 			}
 		});
 
@@ -719,6 +725,8 @@ public class InputStudentSchedule extends Application
 			public void handle(ActionEvent e) {
 				System.out.println("Showing next week!");
 				TableDates.changeWeek(1);
+				updateTableView();
+				updateComboBoxes();
 				updateTableView();
 				updateComboBoxes();
 			}
