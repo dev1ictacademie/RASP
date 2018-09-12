@@ -27,71 +27,144 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.util.Matrix;
 
+import nl.pameijer.ictacademie.rasp.model.DayPart;
+import nl.pameijer.ictacademie.rasp.view.tools.ExportToPDF;
+
 /**
- * This is an example of how to create a page with a landscape orientation.
+ * This create a page with a landscape orientation.
  */
 public class CreateLandscapePDF
 {
-    /**
+    private ExportToPDF exporter;
+
+	/**
      * Constructor.
      */
     public CreateLandscapePDF()
     {
-        super();
+    	exporter = new ExportToPDF();
+		String[] arr = exporter.getPlacesOverview(DayPart.MONDAY_MORNING, "ICT");
+		for (String s: arr) {
+			System.out.println(s);
+		}
+
     }
 
     /**
-     * creates a sample document with a landscape orientation and some text surrounded by a box.
+     * creates a sit place overview document with a landscape orientation.
      *
      * @param message The message to write in the file.
      * @param outfile The resulting PDF.
      *
      * @throws IOException If there is an error writing the data.
      */
-    public void doIt( String message, String  outfile ) throws IOException
+    public void createPDFDoc( String message, String  outfile ) throws IOException
     {
         try (PDDocument doc = new PDDocument())
         {
             PDFont font = PDType1Font.HELVETICA;
             PDPage page = new PDPage(PDRectangle.A4);
-            page.setRotation(90);
+            page.setRotation(90);// 0 = portrait, 90 = landscape
             doc.addPage(page);
             PDRectangle pageSize = page.getMediaBox();
             float pageWidth = pageSize.getWidth();
-            float fontSize = 12;
-            float stringWidth = font.getStringWidth( message )*fontSize/1000f;
-            float startX = 100;
-            float startY = 100;
+            float fontSize = 10;
+            float startX = 30;
+            float startY = 370;
 
             try (PDPageContentStream contentStream = new PDPageContentStream(doc, page, AppendMode.OVERWRITE, false))
             {
                 // add the rotation using the current transformation matrix
                 // including a translation of pageWidth to use the lower left corner as 0,0 reference
                 contentStream.transform(new Matrix(0, 1, -1, 0, pageWidth, 0));
+
                 contentStream.setFont( font, fontSize );
                 contentStream.beginText();
-                contentStream.newLineAtOffset(startX, startY);
-                contentStream.showText(message);
-                contentStream.newLineAtOffset(0, 100);
-                contentStream.showText(message);
-                contentStream.newLineAtOffset(100, 100);
-                contentStream.showText(message);
+
+
+                contentStream.newLineAtOffset(135, 560);
+                contentStream.showText("Maandag");
                 contentStream.endText();
-                
-                contentStream.moveTo(startX-2, startY-2);
-                contentStream.lineTo(startX-2, startY+200+fontSize);
+
+                contentStream.beginText();
+                contentStream.newLineAtOffset(30, 540);
+                contentStream.showText("plaats");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.newLineAtOffset(80, 540);
+                contentStream.showText("ochtend");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.newLineAtOffset(160, 540);
+                contentStream.showText("middag");
+                contentStream.endText();
+
+                contentStream.moveTo(startX-2, startY+160);
+                contentStream.lineTo(startX+200+2, startY+160);
                 contentStream.stroke();
-                
-                contentStream.moveTo(startX-2, startY+200+fontSize);
-                contentStream.lineTo(startX+100+stringWidth+2, startY+200+fontSize);
+
+                //line under plaats, ochtend, middag
+                contentStream.moveTo(startX-2+30, startY-2-20);
+                contentStream.lineTo(startX-2+30, startY+160);
                 contentStream.stroke();
-                
-                contentStream.moveTo(startX+100+stringWidth+2, startY+200+fontSize);
-                contentStream.lineTo(startX+100+stringWidth+2, startY-2);
+
+
+                for (int i = 1; i < 19; i++)
+                {
+                	if( i < 10)
+                	{
+                		contentStream.beginText();
+                		//contentStream.newLineAtOffset(36, 531-i*10);
+	                    contentStream.newLineAtOffset(36, 531-i*10);
+	                    contentStream.showText("  " + i);
+	                    contentStream.endText();
+                	}
+                	else
+                	{
+                		contentStream.beginText();
+	                    contentStream.newLineAtOffset(36, 531-i*10);
+	                    contentStream.showText("" + i);
+	                    contentStream.endText();
+                	}
+
+
+                    if(i < 18)
+                    {
+                    	contentStream.moveTo(startX-2, startY+160-i*10);
+                    	contentStream.lineTo(startX+26+2, startY+160-i*10);
+                    	contentStream.stroke();
+                    }
+
+				}// end for
+
+
+                //ochtend
+                contentStream.beginText();
+                contentStream.newLineAtOffset(65, 531-1*10);
+                contentStream.showText("Piet");
+                contentStream.endText();
+
+
+
+                //left
+                contentStream.moveTo(startX-2, startY-2-20);
+                contentStream.lineTo(startX-2, startY+200);
                 contentStream.stroke();
-                
-                contentStream.moveTo(startX+100+stringWidth+2, startY-2);
-                contentStream.lineTo(startX-2, startY-2);
+
+                //above
+                contentStream.moveTo(startX-2, startY+200);
+                contentStream.lineTo(startX+200+2, startY+200);
+                contentStream.stroke();
+
+                //right
+                contentStream.moveTo(startX+200+2, startY+200);
+                contentStream.lineTo(startX+200+2, startY-2-20);
+                contentStream.stroke();
+
+                contentStream.moveTo(startX+200+2, startY-2-20);
+                contentStream.lineTo(startX-2, startY-2-20);
                 contentStream.stroke();
             }
 
@@ -101,7 +174,7 @@ public class CreateLandscapePDF
 
     /**
      * This will create a PDF document with a landscape orientation and some text surrounded by a box.
-     * 
+     *
      * @param args Command line arguments.
      */
     public static void main(String[] args) throws IOException
@@ -109,19 +182,14 @@ public class CreateLandscapePDF
         CreateLandscapePDF app = new CreateLandscapePDF();
         if( args.length != 2 )
         {
-            app.usage();
+
         }
         else
         {
-            app.doIt( args[0], args[1] );
+            app.createPDFDoc( args[0], args[1] );
         }
+        System.exit(0);
     }
 
-    /**
-     * This will print out a message telling how to use this example.
-     */
-    private void usage()
-    {
-        System.err.println( "usage: " + this.getClass().getName() + " <Message> <output-file>" );
-    }
+
 }

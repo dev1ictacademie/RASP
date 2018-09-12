@@ -68,10 +68,10 @@ public class ExportToPDF {
 					if (student.getNamePrefix() != null && 
 							student.getNamePrefix().length() != 0) {
 						desc += " ";
-						desc += student.getNamePrefix();
+						//desc += student.getNamePrefix();
 					}
-					desc += " ";
-					desc += student.getLName();
+					//desc += " ";
+					//desc += student.getLName();
 					listA.add(desc);
 				}
 			}
@@ -103,7 +103,7 @@ public class ExportToPDF {
 	public static void main(String[] args) {
 		
 		ExportToPDF exporter = new ExportToPDF();
-		String[] arr = exporter.getPlacesOverview(DayPart.THURSDAY_AFTERNOON, "ICT");
+		String[] arr = exporter.getPlacesOverview(DayPart.MONDAY_MORNING, "ICT");
 		for (String s: arr) {
 			System.out.println(s);
 		}
