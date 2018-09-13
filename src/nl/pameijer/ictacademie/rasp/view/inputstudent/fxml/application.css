@@ -1,0 +1,21 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+ .btn-changeprofile {
+	-fx-background-color: #1C68AC;
+	-fx-font: 'sans-serif';
+
+	-fx-background-radius: 10;
+}
+.btn-changeprofile-clicked {
+	-fx-background-color: #1cabab;
+	-fx-font: 'sans-serif';
+
+	-fx-background-radius: 10;
+}
+
+ .table-row-cell:selected-row {
+
+        -fx-background-color: grey;
+
+    }
+
