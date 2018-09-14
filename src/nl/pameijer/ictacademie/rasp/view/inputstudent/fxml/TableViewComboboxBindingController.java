@@ -252,7 +252,7 @@ public class TableViewComboboxBindingController implements Initializable {
 							+ currentStudent.getNamePrefix() + " " + currentStudent.getLName());
 				}
 			}
-			btnChangeProfile.setVisible(false);
+			btnChangeProfile.setDisable(true);
 			btnSave.setVisible(true);
 			// disable selection in table
 			tableView.setSelectionModel(null);
@@ -285,7 +285,7 @@ public class TableViewComboboxBindingController implements Initializable {
 			cbFriAfternoon.valueProperty()
 					.addListener(myComboListener10 = new MyComboBoxListener(cbFriAfternoon.getId()));
 		} else {
-			btnChangeProfile.setVisible(true);
+			btnChangeProfile.setDisable(false);
 			lblStatusBar.textProperty().setValue("");
 			if (lblStatusBar.textProperty().isBound()) {
 				lblStatusBar.textProperty().unbind();
