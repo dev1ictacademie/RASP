@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import com.sun.rowset.RowSetFactoryImpl;
 
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -22,6 +23,7 @@ import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.model.Student;
 import nl.pameijer.ictacademie.rasp.view.inputstudent.TableDates;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 
 public class TableViewComboboxBindingController implements Initializable {
 
@@ -149,6 +151,8 @@ public class TableViewComboboxBindingController implements Initializable {
 		// fill table
 		tableView.setItems(model.getStudentList());
 
+
+
 		// set available places to comboboxes
 		cbMoMorning.setItems(model.getAvailablePlaces(weekDays[0], DayPart.MONDAY_MORNING));
 		cbMoAfternoon.setItems(model.getAvailablePlaces(weekDays[0], DayPart.MONDAY_AFTERNOON));
@@ -175,12 +179,26 @@ public class TableViewComboboxBindingController implements Initializable {
 				cbThuAfternoon.valueProperty().bind(observable.getValue().thursAfternoonProperty());
 				cbFriMorning.valueProperty().bind(observable.getValue().friMorningProperty());
 				cbFriAfternoon.valueProperty().bind(observable.getValue().friAfternoonProperty());
+
 			}
 
 		});
 		// save current selectionmodel
 		defaultSelectionModel = tableView.getSelectionModel();
 		btnSave.setVisible(false);
+		//selection of first row
+
+		Platform.runLater(new Runnable()
+		{
+		    @Override
+		    public void run()
+		    {
+		        tableView.requestFocus();
+		        tableView.getSelectionModel().select(0);
+		        tableView.getFocusModel().focus(0);
+		    }
+		});
+
 
 	}
 
