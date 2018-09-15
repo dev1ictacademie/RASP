@@ -4,17 +4,22 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+import com.sun.javafx.scene.control.skin.TableViewSkin;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import com.sun.rowset.RowSetFactoryImpl;
 
 import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Skin;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -99,11 +104,11 @@ public class TableViewComboboxBindingController implements Initializable {
 	private MyComboBoxListener myComboListener07;
 	private MyComboBoxListener myComboListener09;
 	private MyComboBoxListener myComboListener10;
+	private int currentRow;
+	private VirtualFlow flow;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		System.out.println("initializing ...");
-
 		// model
 		model = new Model();
 		model.loadDataWithScheduleAndID();
@@ -148,10 +153,8 @@ public class TableViewComboboxBindingController implements Initializable {
 		friMorning.setStyle(value);
 		friAfternoon.setStyle(value);
 
-		// fill table
+		// fill table with students objects
 		tableView.setItems(model.getStudentList());
-
-
 
 		// set available places to comboboxes
 		cbMoMorning.setItems(model.getAvailablePlaces(weekDays[0], DayPart.MONDAY_MORNING));
@@ -180,9 +183,15 @@ public class TableViewComboboxBindingController implements Initializable {
 				cbFriMorning.valueProperty().bind(observable.getValue().friMorningProperty());
 				cbFriAfternoon.valueProperty().bind(observable.getValue().friAfternoonProperty());
 
+			}else{
+				//keep selection on row
+				System.out.println("edit in change listener");
+				tableView.getSelectionModel().select(currentRow);
+				cbMoMorning.requestFocus();
 			}
 
 		});
+
 		// save current selectionmodel
 		defaultSelectionModel = tableView.getSelectionModel();
 		btnSave.setVisible(false);
@@ -227,7 +236,7 @@ public class TableViewComboboxBindingController implements Initializable {
 				+ currentStudent.getThursMorning() + " " + currentStudent.getThursAfternoon()+ " "
 				+ currentStudent.getFriMorning()+ " " + currentStudent.getFriAfternoon());
 
-		tableView.setSelectionModel(defaultSelectionModel);
+		//tableView.setSelectionModel(defaultSelectionModel);
 
 
 		changeProfile();// to set edit off
@@ -240,7 +249,11 @@ public class TableViewComboboxBindingController implements Initializable {
 		edit = !edit;
 		System.out.println("edit = " + edit);
 		System.out.println("Editing....");
+
 		if (edit) {
+			//set style for editing
+			tableView.
+	        setStyle(" -fx-selection-bar-non-focused: red;");//-fx-selection-bar: red;
 			// current student to statusbar
 			currentStudent = (Student) tableView.getSelectionModel().getSelectedItem();
 			if (currentStudent != null) {
@@ -254,8 +267,11 @@ public class TableViewComboboxBindingController implements Initializable {
 			}
 			btnChangeProfile.setDisable(true);
 			btnSave.setVisible(true);
-			// disable selection in table
-			tableView.setSelectionModel(null);
+
+			currentRow = tableView.getSelectionModel().getSelectedIndex();
+
+			// set focus to firstcombobox
+			cbMoMorning.requestFocus();
 
 			// unbind comboboxes
 			cbMoMorning.valueProperty().unbind();
@@ -285,6 +301,7 @@ public class TableViewComboboxBindingController implements Initializable {
 			cbFriAfternoon.valueProperty()
 					.addListener(myComboListener10 = new MyComboBoxListener(cbFriAfternoon.getId()));
 		} else {
+			tableView.setStyle(null);
 			btnChangeProfile.setDisable(false);
 			lblStatusBar.textProperty().setValue("");
 			if (lblStatusBar.textProperty().isBound()) {

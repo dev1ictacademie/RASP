@@ -2,26 +2,27 @@ package nl.pameijer.ictacademie.rasp.view.inputstudent;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 
 public class TableDates {
-	
+
 	static LocalDate now = LocalDate.now();
 
 	static LocalDate mostRecentMonday = getMostRecentMonday(now);
-	
+
 	static LocalDate[] thisWeekDates = new LocalDate[5];
-	
-	static String[] thisWeekStrings = new String[5];
+
+	public static String[] thisWeekStrings = new String[5];
 
 	static {
-		System.out.println("Hello, I am the static initializer block of TableDates and I have just been executed!");
+		//System.out.println("Hello, I am the static initializer block of TableDates and I have just been executed!");
 		for (int i = 0; i < 5; i++) {
 			thisWeekDates[i] = mostRecentMonday.plusDays(i);
 			thisWeekStrings[i] = formatDate(thisWeekDates[i]);
 		}
 	}
-	
+
 	/**
 	 * Get the most recent monday since date or if date itself is a monday
 	 * return it's own value.
@@ -31,22 +32,22 @@ public class TableDates {
 	static LocalDate getMostRecentMonday(LocalDate date) {
 		return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 	}
-	
+
 	/**
 	 * Change the currentWeek. That is, calculate all dates of weekdays
 	 * from a past or future week, assign them to the LocalDate array and
 	 * then also update the formatted String array with the new dates.
-	 * 
+	 *
 	 * @param n  the number of weeks to jump forward or backwards (use
 	 *           negative numbers to go backwards).
 	 */
-	static void changeWeek(int n) {
+	public static void changeWeek(int n) {
 		for (int i = 0; i < thisWeekDates.length; i++) {
 			thisWeekDates[i] = thisWeekDates[i].plusDays(n * 7);
 			thisWeekStrings[i] = formatDate(thisWeekDates[i]);
 		}
 	}
-	
+
 	/**
 	 * Format a LocalDate instance to a string representation.
 	 */
@@ -80,10 +81,13 @@ public class TableDates {
 		case DECEMBER: date += "Dec"; break;
 		default: throw new IllegalArgumentException();
 		}
+		//TODO year format only for this century
+		String yearFormat = String.valueOf(dateToFormat.getYear() - 2000);
+		date +="'" +yearFormat;
 
 		return date;
 	}
-	
+
 	/**
 	 * Get this week's dates.
 	 */
