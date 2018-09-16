@@ -14,12 +14,13 @@ public class StartApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
+
 		Model model = new Model();
 		Controller controller = new Controller(model);
-        
-		Scene scene = new Scene(controller.getView().asParent(), 1000, 400);
+
+		Scene scene = new Scene(controller.getView().asParent(), 1600, 600);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
 		primaryStage.setTitle("Aanwezigheidsoverzicht ICT Academie per maand" );
 	    primaryStage.setScene(scene);
 	    primaryStage.setResizable(true);

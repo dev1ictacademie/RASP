@@ -13,6 +13,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -22,6 +24,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -29,6 +32,7 @@ import javafx.scene.layout.VBox;
 import nl.pameijer.ictacademie.rasp.model.DayPart;
 import nl.pameijer.ictacademie.rasp.model.Student;
 import nl.pameijer.ictacademie.rasp.view.month.Controller.DayPartsListener;
+import nl.pameijer.ictacademie.rasp.view.month.Controller.KeyListener;
 import nl.pameijer.ictacademie.rasp.view.month.Controller.TextFocusListener;
 import sun.security.action.GetLongAction;
 
@@ -56,6 +60,7 @@ public class MonthInputView {
 	private TextField txt;
 	private DayPartsListener dayPartsListener;
 	private TextFocusListener textFocusListener;
+	private KeyListener keylistener;
 
 	public MonthInputView(DateModel dateModel) {
 		this.dateModel = dateModel;
@@ -112,6 +117,7 @@ public class MonthInputView {
 		// days header
 		setDaysHeader();
 		setSplitPanes();
+
 
 	}
 
@@ -225,7 +231,7 @@ public class MonthInputView {
 	 * @param grid
 	 */
 	public void fillDayParts(ObservableList<Student> students, GridPane grid) {
-		
+
 		String[] dayNames = dateModel.dayNameList();
 		for (int row = 0; row < students.size(); row++) {
 			// index is a counter for day parts from dayPartList in DateModel
@@ -252,17 +258,18 @@ public class MonthInputView {
 								" -fx-control-inner-background: #ECECEC;");
 					}
 
-					txt.setId("" + students.get(row).getId() + "-"
+					txt.setId(row +"-" + students.get(row).getId() + "-"
 							+ LocalDate.of(dateModel.getYear(), dateModel.getMonth(), col / 2 + 1) + "-"
 							+ (dateModel.getDayPartList().get(index)));
-					
+
 					txt.focusedProperty().addListener(textFocusListener);
 
 					index++;
-					
+
 					// add change listener class to dayparts text fields
 					txt.textProperty().addListener(dayPartsListener);
-
+					// add key listener
+					txt.setOnKeyPressed(keylistener);
 					grid.add(txt, col, row + 1);
 				}
 
@@ -270,9 +277,9 @@ public class MonthInputView {
 		}     // end outer for loop
 
 	}       // end method fillDayParts
-	
-	
-	
+
+
+
 	public GridPane getGridStudents() {
 		return gridStudents;
 	}
@@ -303,8 +310,11 @@ public class MonthInputView {
 	public void addDayPartsListener(DayPartsListener dayPartsListener) {
 		this.dayPartsListener = dayPartsListener;
 	}
-	
+
 	public void addTextFocusListener(TextFocusListener textFocusListener) {
 		this.textFocusListener = textFocusListener;
+	}
+	public void addKeyListener(KeyListener keylistener){
+		this.keylistener = keylistener;
 	}
 }
