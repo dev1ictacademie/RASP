@@ -16,6 +16,7 @@
  */
 package nl.pameijer.ictacademie.rasp.view.pdf;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -43,10 +44,6 @@ public class CreateLandscapePDF
     public CreateLandscapePDF()
     {
     	exporter = new ExportToPDF();
-		String[] arr = exporter.getPlacesOverview(DayPart.MONDAY_MORNING, "ICT");
-		for (String s: arr) {
-			System.out.println(s);
-		}
 
     }
 
@@ -58,7 +55,7 @@ public class CreateLandscapePDF
      *
      * @throws IOException If there is an error writing the data.
      */
-    public void createPDFDoc( String message, String  outfile ) throws IOException
+    public void createPDFDoc( String  outfile ) throws IOException
     {
         try (PDDocument doc = new PDDocument())
         {
@@ -68,9 +65,8 @@ public class CreateLandscapePDF
             doc.addPage(page);
             PDRectangle pageSize = page.getMediaBox();
             float pageWidth = pageSize.getWidth();
-            float fontSize = 10;
-            float startX = 30;
-            float startY = 370;
+            float fontSize = 10f;
+            Color backGroundColor = Color.WHITE;
 
             try (PDPageContentStream contentStream = new PDPageContentStream(doc, page, AppendMode.OVERWRITE, false))
             {
@@ -78,99 +74,239 @@ public class CreateLandscapePDF
                 // including a translation of pageWidth to use the lower left corner as 0,0 reference
                 contentStream.transform(new Matrix(0, 1, -1, 0, pageWidth, 0));
 
-                contentStream.setFont( font, fontSize );
-                contentStream.beginText();
+                // draw Monday overview
+                float startX = 40, startY = 360;
+                Color firstColor = new Color(154,205,50); Color secondColor = new Color(255,140,0);
+                drawFilledRectangles(contentStream, firstColor, secondColor, startX, startY, 30f, 10f);
+                drawDayOverview(contentStream, startX, startY, font, fontSize, "Maandag",
+                		exporter.getPlacesOverview(DayPart.MONDAY_MORNING, "ICT"),
+                		exporter.getPlacesOverview(DayPart.MONDAY_AFTERNOON, "ICT"), backGroundColor);
 
 
-                contentStream.newLineAtOffset(135, 560);
-                contentStream.showText("Maandag");
-                contentStream.endText();
-
-                contentStream.beginText();
-                contentStream.newLineAtOffset(30, 540);
-                contentStream.showText("plaats");
-                contentStream.endText();
-
-                contentStream.beginText();
-                contentStream.newLineAtOffset(80, 540);
-                contentStream.showText("ochtend");
-                contentStream.endText();
-
-                contentStream.beginText();
-                contentStream.newLineAtOffset(160, 540);
-                contentStream.showText("middag");
-                contentStream.endText();
-
-                contentStream.moveTo(startX-2, startY+160);
-                contentStream.lineTo(startX+200+2, startY+160);
-                contentStream.stroke();
-
-                //line under plaats, ochtend, middag
-                contentStream.moveTo(startX-2+30, startY-2-20);
-                contentStream.lineTo(startX-2+30, startY+160);
-                contentStream.stroke();
+                // draw Tuesday overview
+                startX += 250;
+                drawFilledRectangles(contentStream, firstColor, secondColor, startX, startY, 30f, 10f);
+                drawDayOverview(contentStream, startX, startY, font, fontSize, "Dinsdag",
+                		exporter.getPlacesOverview(DayPart.TUESDAY_MORNING, "ICT"),
+                		exporter.getPlacesOverview(DayPart.TUESDAY_AFTERNOON, "ICT"), backGroundColor);
 
 
-                for (int i = 1; i < 19; i++)
-                {
-                	if( i < 10)
-                	{
-                		contentStream.beginText();
-                		//contentStream.newLineAtOffset(36, 531-i*10);
-	                    contentStream.newLineAtOffset(36, 531-i*10);
-	                    contentStream.showText("  " + i);
-	                    contentStream.endText();
-                	}
-                	else
-                	{
-                		contentStream.beginText();
-	                    contentStream.newLineAtOffset(36, 531-i*10);
-	                    contentStream.showText("" + i);
-	                    contentStream.endText();
-                	}
+                // draw Wednesday overview
+                startX += 250;
+                drawFilledRectangles(contentStream, firstColor, secondColor, startX, startY, 30f, 10f);
+                drawDayOverview(contentStream, startX, startY, font, fontSize, "Woensdag",
+                		exporter.getPlacesOverview(DayPart.WEDNESDAY_MORNING, "ICT"),
+                		exporter.getPlacesOverview(DayPart.WEDNESDAY_AFTERNOON, "ICT"), backGroundColor);
 
 
-                    if(i < 18)
-                    {
-                    	contentStream.moveTo(startX-2, startY+160-i*10);
-                    	contentStream.lineTo(startX+26+2, startY+160-i*10);
-                    	contentStream.stroke();
-                    }
-
-				}// end for
+                // draw Thursday overview
+                startX = 40; startY -= 260;
+                drawFilledRectangles(contentStream, firstColor, secondColor, startX, startY, 30f, 10f);
+                drawDayOverview(contentStream, startX, startY, font, fontSize, "Donderdag",
+                		exporter.getPlacesOverview(DayPart.THURSDAY_MORNING, "ICT"),
+                		exporter.getPlacesOverview(DayPart.THURSDAY_AFTERNOON, "ICT"), backGroundColor);
 
 
-                //ochtend
-                contentStream.beginText();
-                contentStream.newLineAtOffset(65, 531-1*10);
-                contentStream.showText("Piet");
-                contentStream.endText();
+                // draw Friday overview
+                startX += 250;
+                drawFilledRectangles(contentStream, firstColor, secondColor, startX, startY, 30f, 10f);
+                drawDayOverview(contentStream, startX, startY, font, fontSize, "Vrijdag",
+                		exporter.getPlacesOverview(DayPart.FRIDAY_MORNING, "ICT"),
+                		exporter.getPlacesOverview(DayPart.FRIDAY_AFTERNOON, "ICT"), backGroundColor);
 
-
-
-                //left
-                contentStream.moveTo(startX-2, startY-2-20);
-                contentStream.lineTo(startX-2, startY+200);
-                contentStream.stroke();
-
-                //above
-                contentStream.moveTo(startX-2, startY+200);
-                contentStream.lineTo(startX+200+2, startY+200);
-                contentStream.stroke();
-
-                //right
-                contentStream.moveTo(startX+200+2, startY+200);
-                contentStream.lineTo(startX+200+2, startY-2-20);
-                contentStream.stroke();
-
-                contentStream.moveTo(startX+200+2, startY-2-20);
-                contentStream.lineTo(startX-2, startY-2-20);
-                contentStream.stroke();
             }
 
             doc.save( outfile );
         }
-    }
+
+    }// end method createPDFDoc
+
+    // Draw overview of one day
+    public void drawDayOverview( PDPageContentStream contentStream, float startX, float startY,
+    		PDFont font, float fontSize, String day, String[] morning, String[] afternoon, Color backGroundColor )
+    {
+    	try
+    	{
+    		// fill head of day overview with color
+    		Color headColor = new Color(102, 178, 255);
+    		contentStream.addRect( startX-2, startY+160, 204, 40);
+    		contentStream.setNonStrokingColor(headColor);
+            contentStream.fill();
+
+            // set text color back to black
+            contentStream.setNonStrokingColor(Color.BLACK);
+	        contentStream.setFont( font, fontSize );
+
+	        // place day name in surrounded box
+	        contentStream.beginText();
+	        contentStream.newLineAtOffset(startX+80, startY+190);
+	        contentStream.showText(day);
+	        contentStream.endText();
+
+	        contentStream.setFont( font, 8f );
+	        contentStream.beginText();
+	        contentStream.newLineAtOffset(startX, startY+170);
+	        contentStream.showText("plaats");
+	        contentStream.endText();
+
+	        contentStream.beginText();
+	        contentStream.newLineAtOffset(startX+40, startY+170);
+	        contentStream.showText("ochtend");
+	        contentStream.endText();
+
+	        contentStream.beginText();
+	        contentStream.newLineAtOffset(startX+125, startY+170);
+	        contentStream.showText("middag");
+	        contentStream.endText();
+
+	        // line under plaats, ochtend, middag
+	        contentStream.moveTo(startX-2, startY+160);
+	        contentStream.lineTo(startX+202, startY+160);
+	        contentStream.stroke();
+
+	        // line right of numbers column
+	        contentStream.moveTo(startX+28, startY-20);
+	        contentStream.lineTo(startX+28, startY+160);
+	        contentStream.stroke();
+
+	        // place numbers 1 to 18
+	        for (int i = 1; i < 19; i++)
+	        {
+	        	if( i < 10) // place numbers from 1 up to 9 include
+	        	{
+	        		contentStream.beginText();
+	                contentStream.newLineAtOffset(startX+6, startY+162-i*10);
+	                contentStream.showText("  " + i);
+	                contentStream.endText();
+	        	}
+	        	else //// place numbers from 10 up to 18 include
+	        	{
+	        		contentStream.beginText();
+	                contentStream.newLineAtOffset(startX+6, startY+162-i*10);
+	                contentStream.showText("" + i);
+	                contentStream.endText();
+	        	}
+
+	        	// place line between sit place numbers
+            	contentStream.moveTo(startX-2, startY+160-i*10);
+            	contentStream.lineTo(startX+28, startY+160-i*10);
+            	contentStream.stroke();
+
+			}// end for
+
+	        // fill names in columns
+	        for(int i = 0; i < 18; i++)
+	        {
+	        	font = PDType1Font.HELVETICA;
+	        	fontSize = 8;
+
+	        	contentStream.beginText();
+	        	contentStream.setFont(font, fontSize);
+		        contentStream.newLineAtOffset(startX+40, startY+152-i*10);
+		        contentStream.showText( getFirstName(morning[i], i) );
+		        contentStream.endText();
+
+		        contentStream.beginText();
+	        	contentStream.setFont(font, fontSize);
+		        contentStream.newLineAtOffset(startX+125, startY+152-i*10);
+		        contentStream.showText( getFirstName(afternoon[i], i) );
+		        contentStream.endText();
+
+		     }
+
+	        //left line
+            contentStream.moveTo(startX-2, startY-20.5f);
+            contentStream.lineTo(startX-2, startY+200.5f);
+            contentStream.stroke();
+
+            //top line
+            contentStream.moveTo(startX-2, startY+200);
+            contentStream.lineTo(startX+202, startY+200);
+            contentStream.stroke();
+
+            //right line
+            contentStream.moveTo(startX+202, startY+200.5f);
+            contentStream.lineTo(startX+202, startY-20.5f);
+            contentStream.stroke();
+
+            //bottom line
+            contentStream.moveTo(startX+202, startY-20);
+            contentStream.lineTo(startX-2, startY-20);
+            contentStream.stroke();
+    	}
+    	catch (Exception e)
+    	{
+			e.printStackTrace();
+		}
+
+	}// end method dayOverview
+
+    // Draw a filled rectangle placed in rectangles of sit place numbers
+    public void drawFilledRectangles(PDPageContentStream contentStream, Color firstColor, Color secondColor,
+    		float x, float y, float width, float height)
+    {
+    	for (int i = 0; i < 18; i++)
+    	{
+			try
+			{
+	        	if(i % 2 == 0) // even sit numbers
+	        	{
+	        		contentStream.addRect( x-2, y+150-i*10, width, height);
+	        		contentStream.setNonStrokingColor(firstColor);
+	                contentStream.fill();
+	        	}
+	        	else // odd sit numbers
+	        	{
+	        		contentStream.addRect( x-2, y+150-i*10, width, height);
+	        		contentStream.setNonStrokingColor(secondColor);
+	                contentStream.fill();
+	        	}
+			}
+			catch (Exception e)
+			{
+
+			}
+
+    	}// end for
+
+    }// end method drawRect
+
+    /**
+     * get the first name from array of students
+     * @param dayPart String
+     * @param i of loop
+     * @return
+     */
+    public String getFirstName(String dayPart, int i)
+    {
+    	String fName = "";
+
+    	try
+    	{
+    		if(i < 10) // sit places under ten
+    		{
+    			fName = dayPart.substring(2);
+    			if( !fName.isEmpty() )
+    			{
+    				return fName;
+    			}
+    		}
+        	else // sit places from ten and beyond
+        	{
+        		fName = dayPart.substring(3);
+        		if(!fName.isEmpty())
+        		{
+        			return fName;
+        		}
+        	}
+		}
+    	catch (Exception e)
+    	{
+    		// ignored
+		}
+
+		return "";
+	}// end method getFirstName
 
     /**
      * This will create a PDF document with a landscape orientation and some text surrounded by a box.
@@ -180,16 +316,9 @@ public class CreateLandscapePDF
     public static void main(String[] args) throws IOException
     {
         CreateLandscapePDF app = new CreateLandscapePDF();
-        if( args.length != 2 )
-        {
+        app.createPDFDoc( args[1] );
 
-        }
-        else
-        {
-            app.createPDFDoc( args[0], args[1] );
-        }
         System.exit(0);
-    }
+    }// end method main
 
-
-}
+}// end class CreateLandscapePDF
