@@ -77,7 +77,7 @@ public class CreateLandscapePDF
                 // draw Monday overview
                 float startX = 40, startY = 360;
                 Color firstColor = new Color(154,205,50); Color secondColor = new Color(255,140,0);
-                drawFilledRectangles(contentStream, firstColor, secondColor, startX, startY, 30f, 10f);
+                drawFilledRectangles(contentStream, startX, startY, 30f, 10f);
                 drawDayOverview(contentStream, startX, startY, font, fontSize, "Maandag",
                 		exporter.getPlacesOverview(DayPart.MONDAY_MORNING, "ICT"),
                 		exporter.getPlacesOverview(DayPart.MONDAY_AFTERNOON, "ICT"), backGroundColor);
@@ -85,7 +85,7 @@ public class CreateLandscapePDF
 
                 // draw Tuesday overview
                 startX += 250;
-                drawFilledRectangles(contentStream, firstColor, secondColor, startX, startY, 30f, 10f);
+                drawFilledRectangles(contentStream, startX, startY, 30f, 10f);
                 drawDayOverview(contentStream, startX, startY, font, fontSize, "Dinsdag",
                 		exporter.getPlacesOverview(DayPart.TUESDAY_MORNING, "ICT"),
                 		exporter.getPlacesOverview(DayPart.TUESDAY_AFTERNOON, "ICT"), backGroundColor);
@@ -93,7 +93,7 @@ public class CreateLandscapePDF
 
                 // draw Wednesday overview
                 startX += 250;
-                drawFilledRectangles(contentStream, firstColor, secondColor, startX, startY, 30f, 10f);
+                drawFilledRectangles(contentStream, startX, startY, 30f, 10f);
                 drawDayOverview(contentStream, startX, startY, font, fontSize, "Woensdag",
                 		exporter.getPlacesOverview(DayPart.WEDNESDAY_MORNING, "ICT"),
                 		exporter.getPlacesOverview(DayPart.WEDNESDAY_AFTERNOON, "ICT"), backGroundColor);
@@ -101,7 +101,7 @@ public class CreateLandscapePDF
 
                 // draw Thursday overview
                 startX = 40; startY -= 260;
-                drawFilledRectangles(contentStream, firstColor, secondColor, startX, startY, 30f, 10f);
+                drawFilledRectangles(contentStream, startX, startY, 30f, 10f);
                 drawDayOverview(contentStream, startX, startY, font, fontSize, "Donderdag",
                 		exporter.getPlacesOverview(DayPart.THURSDAY_MORNING, "ICT"),
                 		exporter.getPlacesOverview(DayPart.THURSDAY_AFTERNOON, "ICT"), backGroundColor);
@@ -109,7 +109,7 @@ public class CreateLandscapePDF
 
                 // draw Friday overview
                 startX += 250;
-                drawFilledRectangles(contentStream, firstColor, secondColor, startX, startY, 30f, 10f);
+                drawFilledRectangles(contentStream, startX, startY, 30f, 10f);
                 drawDayOverview(contentStream, startX, startY, font, fontSize, "Vrijdag",
                 		exporter.getPlacesOverview(DayPart.FRIDAY_MORNING, "ICT"),
                 		exporter.getPlacesOverview(DayPart.FRIDAY_AFTERNOON, "ICT"), backGroundColor);
@@ -128,7 +128,7 @@ public class CreateLandscapePDF
     	try
     	{
     		// fill head of day overview with color
-    		Color headColor = new Color(102, 178, 255);
+    		Color headColor = new Color(0,191,255);
     		contentStream.addRect( startX-2, startY+160, 204, 40);
     		contentStream.setNonStrokingColor(headColor);
             contentStream.fill();
@@ -242,23 +242,52 @@ public class CreateLandscapePDF
 	}// end method dayOverview
 
     // Draw a filled rectangle placed in rectangles of sit place numbers
-    public void drawFilledRectangles(PDPageContentStream contentStream, Color firstColor, Color secondColor,
+    public void drawFilledRectangles(PDPageContentStream contentStream,
     		float x, float y, float width, float height)
     {
+    	Color white = Color.WHITE;
+    	Color green = new Color(154,205,50);
+    	Color orange = new Color(255,140,0);
+    	Color blue = new Color(100,149,237);
+
     	for (int i = 0; i < 18; i++)
     	{
 			try
 			{
-	        	if(i % 2 == 0) // even sit numbers
+				if(i == 0)
+				{
+					contentStream.addRect( x-2, y+150-i*10, width, height);
+	        		contentStream.setNonStrokingColor(white);
+	                contentStream.fill();
+				}
+				else if(i > 0 & i < 6)
 	        	{
 	        		contentStream.addRect( x-2, y+150-i*10, width, height);
-	        		contentStream.setNonStrokingColor(firstColor);
+	        		contentStream.setNonStrokingColor(green);
 	                contentStream.fill();
 	        	}
-	        	else // odd sit numbers
+	        	else if(i > 5 & i < 10)
 	        	{
 	        		contentStream.addRect( x-2, y+150-i*10, width, height);
-	        		contentStream.setNonStrokingColor(secondColor);
+	        		contentStream.setNonStrokingColor(orange);
+	                contentStream.fill();
+	        	}
+	        	else if(i == 10)
+	        	{
+	        		contentStream.addRect( x-2, y+150-i*10, width, height);
+	        		contentStream.setNonStrokingColor(white);
+	                contentStream.fill();
+	        	}
+	        	else if(i == 11)
+	        	{
+	        		contentStream.addRect( x-2, y+150-i*10, width, height);
+	        		contentStream.setNonStrokingColor(orange);
+	                contentStream.fill();
+	        	}
+	        	else
+	        	{
+	        		contentStream.addRect( x-2, y+150-i*10, width, height);
+	        		contentStream.setNonStrokingColor(blue);
 	                contentStream.fill();
 	        	}
 			}
