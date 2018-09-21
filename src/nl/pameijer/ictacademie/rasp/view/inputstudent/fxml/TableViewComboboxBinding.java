@@ -13,7 +13,7 @@ public class TableViewComboboxBinding extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-
+		primaryStage.setTitle("Aanwezigheidsprofiel");
 		Pane myPane = (Pane) FXMLLoader.load(getClass().getResource("TableViewComboboxBinding.fxml"));
 		Scene myScene = new Scene(myPane);
 		primaryStage.setOnCloseRequest(e -> System.exit(0));
