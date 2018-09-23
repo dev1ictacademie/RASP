@@ -1,12 +1,14 @@
 package nl.pameijer.ictacademie.rasp.view.inputstudent.fxml;
 
+import java.util.ArrayList;
+
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * Convert TableDates to properties
  */
 public class TableDatesProperties {
-
 
 	private SimpleStringProperty mon = new SimpleStringProperty();
 	private SimpleStringProperty tue = new SimpleStringProperty();
@@ -74,6 +76,13 @@ public class TableDatesProperties {
 		this.friProperty().set(fri);
 	}
 
-
-
+	public ArrayList<SimpleStringProperty> getDateProperties() {
+		ArrayList<SimpleStringProperty> list = new ArrayList<>();
+		list.add(mon);
+		list.add(tue);
+		list.add(wed);
+		list.add(thu);
+		list.add(fri);
+		return list;
+	}
 }

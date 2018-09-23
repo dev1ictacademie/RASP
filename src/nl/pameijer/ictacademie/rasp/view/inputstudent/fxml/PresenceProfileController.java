@@ -2,14 +2,17 @@ package nl.pameijer.ictacademie.rasp.view.inputstudent.fxml;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
@@ -99,19 +102,20 @@ public class PresenceProfileController implements Initializable {
 	@FXML
 	private Label lblStatusBar;
 
+	@FXML
+	private DatePicker datePicker;
+
 	// Fields
 	private Model model;
 	private Student currentStudent;
 	private TableDatesProperties tableDatesProperties;
 	private Boolean edit = false;
-	private DayPartComboBoxListener myComboListener01, myComboListener02, myComboListener03, myComboListener04,
-			myComboListener05, myComboListener06, myComboListener08, myComboListener07, myComboListener09,
-			myComboListener10;
 	private int currentRow;
+	private ArrayList<DayPartComboBoxListener> listeners;
 
 	/**
-	 * Initialize fields set date,column headers, columns, alignment of
-	 * columns, fill TableView, set items ComboBoxes.
+	 * Initialize fields set date,column headers, columns, alignment of columns,
+	 * fill TableView, set items ComboBoxes.
 	 *
 	 */
 	@Override
@@ -122,7 +126,9 @@ public class PresenceProfileController implements Initializable {
 
 		// set weektime
 		LocalDate weekDays[] = TableDates.getThisWeekDates();
+		//object to hold dates in properties
 		tableDatesProperties = new TableDatesProperties();
+		//
 		setDates();
 
 		// binding column-name with corresponding date
@@ -179,16 +185,10 @@ public class PresenceProfileController implements Initializable {
 		tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if (!edit) {
 				// binding tabelview to comboboxes of current student
-				cbMoMorning.valueProperty().bind(observable.getValue().monMorningProperty());
-				cbMoAfternoon.valueProperty().bind(observable.getValue().monAfternoonProperty());
-				cbTueMorning.valueProperty().bind(observable.getValue().tuesMorningProperty());
-				cbTueAfternoon.valueProperty().bind(observable.getValue().tuesAfternoonProperty());
-				cbWedMorning.valueProperty().bind(observable.getValue().wedMorningProperty());
-				cbWedAfternoon.valueProperty().bind(observable.getValue().wedAfternoonProperty());
-				cbThuMorning.valueProperty().bind(observable.getValue().thursMorningProperty());
-				cbThuAfternoon.valueProperty().bind(observable.getValue().thursAfternoonProperty());
-				cbFriMorning.valueProperty().bind(observable.getValue().friMorningProperty());
-				cbFriAfternoon.valueProperty().bind(observable.getValue().friAfternoonProperty());
+				for (int i = 0; i < getComboBoxes().size(); i++) {
+
+					getComboBoxes().get(i).valueProperty().bind((observable.getValue().getDaypartProperties().get(i)));
+				}
 
 			} else {
 				// keep selection on row
@@ -213,6 +213,36 @@ public class PresenceProfileController implements Initializable {
 
 	}
 
+	/**
+	 * Get a ArrayList of ComboBoxes for all dayparts
+	 *
+	 * @return ArrayList<ComboBox>
+	 */
+
+	public ArrayList<ComboBox> getComboBoxes() {
+		ArrayList<ComboBox> list = new ArrayList<>();
+		list.add(cbMoMorning);
+		list.add(cbMoAfternoon);
+		list.add(cbTueMorning);
+		list.add(cbTueAfternoon);
+		list.add(cbWedMorning);
+		list.add(cbWedAfternoon);
+		list.add(cbThuMorning);
+		list.add(cbThuAfternoon);
+		list.add(cbFriMorning);
+		list.add(cbFriAfternoon);
+
+		return list;
+	}
+
+	/**
+	 * OnAction method for choosing date
+	 */
+	@FXML
+	public void onDate(){
+		System.out.println("Date changed! to " + datePicker.getValue());
+		TableDates.getThisWeekDates();
+	}
 	/**
 	 * OnAction method of next week button
 	 */
@@ -280,38 +310,18 @@ public class PresenceProfileController implements Initializable {
 			cbMoMorning.requestFocus();
 
 			// unbind comboboxes
-			cbMoMorning.valueProperty().unbind();
-			cbMoAfternoon.valueProperty().unbind();
-			cbTueMorning.valueProperty().unbind();
-			cbTueAfternoon.valueProperty().unbind();
-			cbWedMorning.valueProperty().unbind();
-			cbWedAfternoon.valueProperty().unbind();
-			cbThuMorning.valueProperty().unbind();
-			cbThuAfternoon.valueProperty().unbind();
-			cbFriMorning.valueProperty().unbind();
-			cbFriAfternoon.valueProperty().unbind();
+			for (ComboBox<String> cb : getComboBoxes()) {
+				cb.valueProperty().unbind();
+			}
+			// add listeners to combobox and add listeners to list for remove
+			// option
+			listeners = new ArrayList<>();
+			for (ComboBox<String> cb : getComboBoxes()) {
+				DayPartComboBoxListener listener = new DayPartComboBoxListener(cb.getId());
+				cb.valueProperty().addListener(listener);
+				listeners.add(listener);
+			}
 
-			// add changelistener to comboboxes
-			cbMoMorning.valueProperty()
-					.addListener(myComboListener01 = new DayPartComboBoxListener(cbMoMorning.getId()));
-			cbMoAfternoon.valueProperty()
-					.addListener(myComboListener02 = new DayPartComboBoxListener(cbMoAfternoon.getId()));
-			cbTueMorning.valueProperty()
-					.addListener(myComboListener03 = new DayPartComboBoxListener(cbTueMorning.getId()));
-			cbTueAfternoon.valueProperty()
-					.addListener(myComboListener04 = new DayPartComboBoxListener(cbTueAfternoon.getId()));
-			cbWedMorning.valueProperty()
-					.addListener(myComboListener05 = new DayPartComboBoxListener(cbWedMorning.getId()));
-			cbWedAfternoon.valueProperty()
-					.addListener(myComboListener06 = new DayPartComboBoxListener(cbWedAfternoon.getId()));
-			cbThuMorning.valueProperty()
-					.addListener(myComboListener07 = new DayPartComboBoxListener(cbThuMorning.getId()));
-			cbThuAfternoon.valueProperty()
-					.addListener(myComboListener08 = new DayPartComboBoxListener(cbThuAfternoon.getId()));
-			cbFriMorning.valueProperty()
-					.addListener(myComboListener09 = new DayPartComboBoxListener(cbFriMorning.getId()));
-			cbFriAfternoon.valueProperty()
-					.addListener(myComboListener10 = new DayPartComboBoxListener(cbFriAfternoon.getId()));
 		} else {
 			System.out.println("View mode");
 			tableView.setStyle(null);
@@ -322,29 +332,26 @@ public class PresenceProfileController implements Initializable {
 			}
 
 			// remove listeners
-			cbMoMorning.valueProperty().removeListener(myComboListener01);
-			cbMoAfternoon.valueProperty().removeListener(myComboListener02);
-			cbTueMorning.valueProperty().removeListener(myComboListener03);
-			cbTueAfternoon.valueProperty().removeListener(myComboListener04);
-			cbWedMorning.valueProperty().removeListener(myComboListener05);
-			cbWedAfternoon.valueProperty().removeListener(myComboListener06);
-			cbThuMorning.valueProperty().removeListener(myComboListener07);
-			cbThuAfternoon.valueProperty().removeListener(myComboListener08);
-			cbFriMorning.valueProperty().removeListener(myComboListener09);
-			cbFriAfternoon.valueProperty().removeListener(myComboListener10);
+			for (DayPartComboBoxListener listener : listeners) {
+				for (int i = 0; i < getComboBoxes().size(); i++) {
+					getComboBoxes().get(i).valueProperty().removeListener(listener);
+				}
+
+			}
 
 		}
+
 	}
 
 	/**
-	 * Update day tablecolumns with date after the week is changed
+	 * Update day table view with date and dayparts after the week is changed
 	 */
 	public void setDates() {
-		tableDatesProperties.setMon(TableDates.thisWeekStrings[0]);
-		tableDatesProperties.setTue(TableDates.thisWeekStrings[1]);
-		tableDatesProperties.setWed(TableDates.thisWeekStrings[2]);
-		tableDatesProperties.setThu(TableDates.thisWeekStrings[3]);
-		tableDatesProperties.setFri(TableDates.thisWeekStrings[4]);
+		//convert dates to the properties
+		for (int i = 0; i < tableDatesProperties.getDateProperties().size(); i++) {
+			tableDatesProperties.getDateProperties().get(i).set(TableDates.thisWeekStrings[i]);
+		}
+		//update student with the dates for current week
 		for (Student student : model.getStudentList()) {
 			student.setDayPartProperties(TableDates.getThisWeekDates());
 		}
