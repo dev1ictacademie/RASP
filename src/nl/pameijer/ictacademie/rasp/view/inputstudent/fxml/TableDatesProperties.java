@@ -1,77 +1,79 @@
 package nl.pameijer.ictacademie.rasp.view.inputstudent.fxml;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
+/**
+ * Convert TableDates to properties
+ */
 public class TableDatesProperties {
-	/**
-	 * Convert TableDates to properties
-	 */
 
-	private SimpleStringProperty day1 = new SimpleStringProperty();
-	private SimpleStringProperty day2 = new SimpleStringProperty();
-	private SimpleStringProperty day3 = new SimpleStringProperty();
-	private SimpleStringProperty day4 = new SimpleStringProperty();
-	private SimpleStringProperty day5 = new SimpleStringProperty();
 
-	public final SimpleStringProperty day1Property() {
-		return this.day1;
+	private SimpleStringProperty mon = new SimpleStringProperty();
+	private SimpleStringProperty tue = new SimpleStringProperty();
+	private SimpleStringProperty wed = new SimpleStringProperty();
+	private SimpleStringProperty thu = new SimpleStringProperty();
+	private SimpleStringProperty fri = new SimpleStringProperty();
+
+	public SimpleStringProperty monProperty() {
+		return this.mon;
 	}
 
-	public final String getDay1() {
-		return this.day1Property().get();
+	public String getMon() {
+		return this.monProperty().get();
 	}
 
-	public final void setDay1(final String day1) {
-		this.day1Property().set(day1);
+	public void setMon(final String mon) {
+		this.monProperty().set(mon);
 	}
 
-	public final SimpleStringProperty day2Property() {
-		return this.day2;
+	public SimpleStringProperty tueProperty() {
+		return this.tue;
 	}
 
-	public final String getDay2() {
-		return this.day2Property().get();
+	public String getTue() {
+		return this.tueProperty().get();
 	}
 
-	public final void setDay2(final String day2) {
-		this.day2Property().set(day2);
+	public void setTue(final String tue) {
+		this.tueProperty().set(tue);
 	}
 
-	public final SimpleStringProperty day3Property() {
-		return this.day3;
+	public SimpleStringProperty wedProperty() {
+		return this.wed;
 	}
 
-	public final String getDay3() {
-		return this.day3Property().get();
+	public String getWed() {
+		return this.wedProperty().get();
 	}
 
-	public final void setDay3(final String day3) {
-		this.day3Property().set(day3);
+	public void setWed(final String wed) {
+		this.wedProperty().set(wed);
 	}
 
-	public final SimpleStringProperty day4Property() {
-		return this.day4;
+	public SimpleStringProperty thuProperty() {
+		return this.thu;
 	}
 
-	public final String getDay4() {
-		return this.day4Property().get();
+	public String getThu() {
+		return this.thuProperty().get();
 	}
 
-	public final void setDay4(final String day4) {
-		this.day4Property().set(day4);
+	public void setThu(final String thu) {
+		this.thuProperty().set(thu);
 	}
 
-	public final SimpleStringProperty day5Property() {
-		return this.day5;
+	public SimpleStringProperty friProperty() {
+		return this.fri;
 	}
 
-	public final String getDay5() {
-		return this.day5Property().get();
+	public String getFri() {
+		return this.friProperty().get();
 	}
 
-	public final void setDay5(final String day5) {
-		this.day5Property().set(day5);
+	public void setFri(final String fri) {
+		this.friProperty().set(fri);
 	}
+
+
 
 }
