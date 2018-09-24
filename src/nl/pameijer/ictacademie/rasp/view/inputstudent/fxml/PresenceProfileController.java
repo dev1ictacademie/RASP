@@ -219,8 +219,8 @@ public class PresenceProfileController implements Initializable {
 	 * @return ArrayList<ComboBox>
 	 */
 
-	public ArrayList<ComboBox> getComboBoxes() {
-		ArrayList<ComboBox> list = new ArrayList<>();
+	public ArrayList<ComboBox<String>> getComboBoxes() {
+		ArrayList<ComboBox<String>> list = new ArrayList<>();
 		list.add(cbMoMorning);
 		list.add(cbMoAfternoon);
 		list.add(cbTueMorning);
@@ -240,8 +240,8 @@ public class PresenceProfileController implements Initializable {
 	 */
 	@FXML
 	public void onDate(){
-		System.out.println("Date changed! to " + datePicker.getValue());
-		TableDates.getThisWeekDates();
+		LocalDate[] weekdays = TableDates.getThisWeekDates(datePicker.getValue());
+		setDates();
 	}
 	/**
 	 * OnAction method of next week button
@@ -249,7 +249,7 @@ public class PresenceProfileController implements Initializable {
 	public void nextWeek() {
 		TableDates.changeWeek(1);
 		setDates();
-
+		datePicker.getEditor().clear();
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class PresenceProfileController implements Initializable {
 	public void lastWeek() {
 		TableDates.changeWeek(-1);
 		setDates();
-
+		datePicker.getEditor().clear();
 	}
 
 	/**
@@ -282,7 +282,7 @@ public class PresenceProfileController implements Initializable {
 	 * OnAction method for change profile button
 	 */
 	public void changeProfile() {
-		// TODO split method in two separate methods on for editing mode and one
+		// TODO split method in two separate methods one for editing mode and one
 		// for view mode
 		edit = !edit;
 		if (edit) {
@@ -338,7 +338,7 @@ public class PresenceProfileController implements Initializable {
 				}
 
 			}
-
+			tableView.requestFocus();
 		}
 
 	}

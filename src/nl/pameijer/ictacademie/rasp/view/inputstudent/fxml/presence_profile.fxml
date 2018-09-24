@@ -25,6 +25,7 @@
          </font>
       </Label>
       <Label fx:id="lblStatusBar" layoutX="23.0" layoutY="643.0" prefHeight="16.0" prefWidth="278.0" />
+      <DatePicker fx:id="datePicker" layoutX="97.0" layoutY="111.0" onAction="#onDate" />
       <TableView fx:id="tableView" layoutX="14.0" layoutY="216.0" prefHeight="411.0" prefWidth="1172.0">
         <columns>
           <TableColumn fx:id="firstname" prefWidth="108.0" text="Voornaam" />
@@ -81,6 +82,5 @@
       <ComboBox fx:id="cbFriAfternoon" layoutX="1085.0" layoutY="133.0" prefWidth="100.0" />
       <Button fx:id="btnSave" layoutX="1114.0" layoutY="638.0" mnemonicParsing="false" onAction="#save" text="Opslaan" />
       <Label layoutX="14.0" layoutY="116.0" text="Kies datum" />
-      <DatePicker fx:id="datePicker" layoutX="97.0" layoutY="111.0" onAction="#onDate" />
    </children>
 </AnchorPane>
