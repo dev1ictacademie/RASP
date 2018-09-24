@@ -34,14 +34,14 @@ import nl.pameijer.ictacademie.rasp.view.tools.ExportToPDF;
 /**
  * This create a page with a landscape orientation.
  */
-public class CreateLandscapePDF
+public class OverviewSitplacesPDF
 {
     private ExportToPDF exporter;
 
 	/**
      * Constructor.
      */
-    public CreateLandscapePDF()
+    public OverviewSitplacesPDF()
     {
     	exporter = new ExportToPDF();
 
@@ -76,7 +76,7 @@ public class CreateLandscapePDF
 
                 // draw Monday overview
                 float startX = 40, startY = 360;
-                Color firstColor = new Color(154,205,50); Color secondColor = new Color(255,140,0);
+
                 drawFilledRectangles(contentStream, startX, startY, 30f, 10f);
                 drawDayOverview(contentStream, startX, startY, font, fontSize, "Maandag",
                 		exporter.getPlacesOverview(DayPart.MONDAY_MORNING, "ICT"),
@@ -117,7 +117,7 @@ public class CreateLandscapePDF
             }
 
             doc.save( outfile );
-        }
+        }// end try catch
 
     }// end method createPDFDoc
 
@@ -345,7 +345,7 @@ public class CreateLandscapePDF
      */
     public static void main(String[] args) throws IOException
     {
-        CreateLandscapePDF app = new CreateLandscapePDF();
+        OverviewSitplacesPDF app = new OverviewSitplacesPDF();
         app.createPDFDoc( args[1] );
 
         System.exit(0);
