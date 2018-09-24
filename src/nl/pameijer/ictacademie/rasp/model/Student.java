@@ -28,33 +28,33 @@ public class Student {
 	// The students's schedule(s)
 	private ArrayList<Schedule> schedules = new ArrayList<>();
 
-
-	public Student(){}
+	public Student() {
+	}
 
 	/**
 	 * Student constructor
 	 */
-	public Student(String fName , String lName, String namePrefix, String id) {
+	public Student(String fName, String lName, String namePrefix, String id) {
 		setFName(fName);
 		setLName(lName);
 		setNamePrefix(namePrefix);
 		setId(id);
-		
+
 	}
 
-
 	/**
-	 * Set all DayPart properties of a student. Needs to be set for each
-	 * student after they have been constructed and were added to the list.
+	 * Set all DayPart properties of a student. Needs to be set for each student
+	 * after they have been constructed and were added to the list.
 	 *
 	 * These properties are used by the TableView from InputStudentSchedule
 	 * class to show the correct places for a certain date and day part.
 	 *
-	 * As such these properties might be different each week and they should
-	 * be set again if a 'week-change' is initiated in the week overview.
+	 * As such these properties might be different each week and they should be
+	 * set again if a 'week-change' is initiated in the week overview.
 	 *
-	 * @param  weekDates  This should always be an array with length 5
-	 *                    and have a Monday as first day!
+	 * @param weekDates
+	 *            This should always be an array with length 5 and have a Monday
+	 *            as first day!
 	 */
 	public void setDayPartProperties(LocalDate[] weekDates) {
 
@@ -63,7 +63,7 @@ public class Student {
 
 		int i = 0;
 
-		for (LocalDate date: weekDates) {
+		for (LocalDate date : weekDates) {
 
 			if (getActiveSchedule(date) == null) {
 
@@ -111,15 +111,17 @@ public class Student {
 
 	/**
 	 * Get the schedule that is active at a certain date.
-	 * @param   date   The date to get the schedule for which is then active.
-	 * @return  The schedule which is active at that date. Will return null if
-	 *          there is no active schedule at that date.
+	 *
+	 * @param date
+	 *            The date to get the schedule for which is then active.
+	 * @return The schedule which is active at that date. Will return null if
+	 *         there is no active schedule at that date.
 	 */
 	public Schedule getActiveSchedule(LocalDate date) {
 
 		Schedule activeSchedule = null;
 
-		for (Schedule schedule: schedules) {
+		for (Schedule schedule : schedules) {
 			if (schedule.isDateWithinSchedule(date)) {
 				activeSchedule = schedule;
 				break;
@@ -131,18 +133,20 @@ public class Student {
 
 	/**
 	 * Is this student expected at a certain date and day part?
-	 * @param   date    the applicable date
-	 * @param   dayPart the applicable dayPart
-	 * @return  true if student is expected to be attending at this date and
-	 *          dayPart, false if not
+	 *
+	 * @param date
+	 *            the applicable date
+	 * @param dayPart
+	 *            the applicable dayPart
+	 * @return true if student is expected to be attending at this date and
+	 *         dayPart, false if not
 	 */
 	public boolean isExpected(LocalDate date, DayPart dayPart) {
 
 		boolean isExpected = false;
 
-		for (Schedule schedule: schedules) {
-			if (schedule.isDateWithinSchedule(date) &&
-					schedule.isDayPartInSchedule(dayPart)) {
+		for (Schedule schedule : schedules) {
+			if (schedule.isDateWithinSchedule(date) && schedule.isDayPartInSchedule(dayPart)) {
 				isExpected = true;
 			}
 		}
@@ -163,12 +167,11 @@ public class Student {
 		return this.getId().equals(ID);
 	}
 
-
 	/**
 	 * Assign an EXISTING schedule to a student (add it to the schedules list).
 	 *
-	 * This is the method that should be used when a schedule is constructed
-	 * and when the ending date of previous schedule should not be modified.
+	 * This is the method that should be used when a schedule is constructed and
+	 * when the ending date of previous schedule should not be modified.
 	 *
 	 * This is, for example, the case when the application starts and data is
 	 * read from persistent memory (database) and schedule-objects are created
@@ -178,7 +181,6 @@ public class Student {
 		schedules.add(schedule);
 	}
 
-
 	/**
 	 * Assign a NEW schedule to a student (add it to the schedules list).
 	 *
@@ -187,10 +189,10 @@ public class Student {
 	 * for the very first time. In this case the end date of the previous
 	 * schedule should be modified.
 	 *
-	 * If the ending date of the previous schedule is after the starting
-	 * date of this schedule or is the same, set the ending date of the
-	 * previous schedule to the date preceding the starting date of
-	 * this schedule, excluding dates which fall in weekends.
+	 * If the ending date of the previous schedule is after the starting date of
+	 * this schedule or is the same, set the ending date of the previous
+	 * schedule to the date preceding the starting date of this schedule,
+	 * excluding dates which fall in weekends.
 	 */
 	public void addNewSchedule(Schedule schedule) {
 
@@ -199,8 +201,8 @@ public class Student {
 			Schedule previousSchedule = schedules.get(schedules.size() - 1);
 
 			if (!schedule.getStartDate().isAfter(previousSchedule.getStartDate())) {
-				throw new IllegalArgumentException("StartDate of new schedule " +
-						"should be after startDate of previous schedule!");
+				throw new IllegalArgumentException(
+						"StartDate of new schedule " + "should be after startDate of previous schedule!");
 			}
 
 			if (schedule.getStartDate().isBefore(previousSchedule.getEndDate())) {
@@ -209,7 +211,11 @@ public class Student {
 
 				do {
 					newEndingDate = newEndingDate.minusDays(1);
-				} while ( ! newEndingDate.isBefore(schedule.getStartDate()) // <--- This check not necessary???
+				} while (!newEndingDate.isBefore(schedule.getStartDate()) // <---
+																			// This
+																			// check
+																			// not
+																			// necessary???
 						|| newEndingDate.getDayOfWeek() == DayOfWeek.SATURDAY
 						|| newEndingDate.getDayOfWeek() == DayOfWeek.SUNDAY);
 
@@ -219,7 +225,6 @@ public class Student {
 
 		schedules.add(schedule);
 	}
-
 
 	// First Name
 	public final StringProperty fNameProperty() {
@@ -234,7 +239,6 @@ public class Student {
 		this.fNameProperty().set(fName);
 	}
 
-
 	// Last Name
 	public final StringProperty lNameProperty() {
 		return this.lName;
@@ -248,9 +252,8 @@ public class Student {
 		this.lNameProperty().set(lName);
 	}
 
-
 	// Name Prefix
-	public final StringProperty namePrefixProperty()	{
+	public final StringProperty namePrefixProperty() {
 		return this.namePrefix;
 	}
 
@@ -261,7 +264,6 @@ public class Student {
 	public final void setNamePrefix(final String namePrefix) {
 		this.namePrefixProperty().set(namePrefix);
 	}
-
 
 	// ID
 	public final StringProperty idProperty() {
@@ -276,10 +278,7 @@ public class Student {
 		this.idProperty().set(id);
 	}
 
-
-
 	// DayPart properties //
-
 
 	// Monday Morning
 	public final StringProperty monMorningProperty() {
@@ -294,7 +293,6 @@ public class Student {
 		this.monMorningProperty().set(monMorning);
 	}
 
-
 	// Monday Afternoon
 	public final StringProperty monAfternoonProperty() {
 		return this.monAfternoon;
@@ -308,8 +306,7 @@ public class Student {
 		this.monAfternoonProperty().set(monAfternoon);
 	}
 
-
-    // Tuesday Morning
+	// Tuesday Morning
 	public final StringProperty tuesMorningProperty() {
 		return this.tuesMorning;
 	}
@@ -321,7 +318,6 @@ public class Student {
 	public final void setTuesMorning(final String tuesMorning) {
 		this.tuesMorningProperty().set(tuesMorning);
 	}
-
 
 	// Tuesday Afternoon
 	public final StringProperty tuesAfternoonProperty() {
@@ -336,8 +332,7 @@ public class Student {
 		this.tuesAfternoonProperty().set(tuesAfternoon);
 	}
 
-
-    // Wednesday Morning
+	// Wednesday Morning
 	public final StringProperty wedMorningProperty() {
 		return this.wedMorning;
 	}
@@ -350,8 +345,7 @@ public class Student {
 		this.wedMorningProperty().set(wedMorning);
 	}
 
-
-    // Wednesday Afternoon
+	// Wednesday Afternoon
 	public final StringProperty wedAfternoonProperty() {
 		return this.wedAfternoon;
 	}
@@ -363,7 +357,6 @@ public class Student {
 	public final void setWedAfternoon(final String wedAfternoon) {
 		this.wedAfternoonProperty().set(wedAfternoon);
 	}
-
 
 	// Thursday Morning
 	public final StringProperty thursMorningProperty() {
@@ -378,7 +371,6 @@ public class Student {
 		this.thursMorningProperty().set(thursMorning);
 	}
 
-
 	// Thursday Afternoon
 	public final StringProperty thursAfternoonProperty() {
 		return this.thursAfternoon;
@@ -391,7 +383,6 @@ public class Student {
 	public final void setThursAfternoon(final String thursAfternoon) {
 		this.thursAfternoonProperty().set(thursAfternoon);
 	}
-
 
 	// Friday Morning
 	public final StringProperty friMorningProperty() {
@@ -406,8 +397,7 @@ public class Student {
 		this.friMorningProperty().set(friMorning);
 	}
 
-
-    // Friday Afternoon
+	// Friday Afternoon
 	public final StringProperty friAfternoonProperty() {
 		return this.friAfternoon;
 	}
@@ -418,6 +408,29 @@ public class Student {
 
 	public final void setFriAfternoon(final String friAfternoon) {
 		this.friAfternoonProperty().set(friAfternoon);
+	}
+
+	/**
+	 * Get a list of Daypart properties
+	 * @return ArrayList of Daypart properties
+	 */
+	public ArrayList<StringProperty> getDaypartProperties() {
+
+		ArrayList<StringProperty> list = new ArrayList<>();
+
+		list.add(monMorning);
+		list.add(monAfternoon);
+		list.add(tuesMorning);
+		list.add(tuesAfternoon);
+		list.add(wedMorning);
+		list.add(wedAfternoon);
+		list.add(thursMorning);
+		list.add(thursAfternoon);
+		list.add(friMorning);
+		list.add(friAfternoon);
+
+		return list;
+
 	}
 
 }

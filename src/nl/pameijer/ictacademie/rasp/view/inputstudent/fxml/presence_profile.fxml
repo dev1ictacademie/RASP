@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="600.0" minWidth="1200.0" prefHeight="680.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.pameijer.ictacademie.rasp.view.inputstudent.fxml.PresenceProfileController">
+   <children>
+      <Label layoutX="645.0" layoutY="69.0" text="Maandag" />
+      <Label layoutX="578.0" layoutY="101.0" text="Ochtend" />
+      <Label layoutX="583.0" layoutY="138.0" text="Middag" />
+      <Label layoutX="756.0" layoutY="70.0" text="Dinsdag" />
+      <Label layoutX="866.0" layoutY="70.0" text="Woensdag" />
+      <Label layoutX="976.0" layoutY="70.0" text="Donderdag" />
+      <Label layoutX="1086.0" layoutY="70.0" text="Vrijdag" />
+      <Label layoutX="14.0" layoutY="23.0" text="Aanwezigheidsprofiel">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblStatusBar" layoutX="23.0" layoutY="643.0" prefHeight="16.0" prefWidth="278.0" />
+      <DatePicker fx:id="datePicker" layoutX="97.0" layoutY="111.0" onAction="#onDate" />
+      <TableView fx:id="tableView" layoutX="14.0" layoutY="216.0" prefHeight="411.0" prefWidth="1172.0">
+        <columns>
+          <TableColumn fx:id="firstname" prefWidth="108.0" text="Voornaam" />
+          <TableColumn fx:id="namePrefix" prefWidth="93.0" text="Tussenv." />
+            <TableColumn fx:id="lastname" prefWidth="209.0" text="Achternaam" />
+            <TableColumn fx:id="mondayCol" prefWidth="170.0" text="Maandag">
+               <columns>
+                  <TableColumn fx:id="moMorning" prefWidth="75.0" text="O" />
+                  <TableColumn fx:id="moAfternoon" prefWidth="75.0" text="M" />
+               </columns>
+            </TableColumn>
+            <TableColumn fx:id="tuesdayCol" prefWidth="75.0" text="Dinsdag">
+               <columns>
+                  <TableColumn fx:id="tueMorning" prefWidth="75.0" text="O" />
+                  <TableColumn fx:id="tueAfternoon" prefWidth="75.0" text="M" />
+               </columns>
+            </TableColumn>
+            <TableColumn fx:id="wednesdayCol" prefWidth="75.0" text="Woensdag">
+               <columns>
+                  <TableColumn fx:id="wedMorning" prefWidth="75.0" text="O" />
+                  <TableColumn fx:id="wedAfternoon" prefWidth="75.0" text="M" />
+               </columns>
+            </TableColumn>
+            <TableColumn fx:id="thursdayCol" prefWidth="75.0" text="Donderdag">
+               <columns>
+                  <TableColumn fx:id="thMorning" prefWidth="75.0" text="O" />
+                  <TableColumn fx:id="thAfternoon" prefWidth="75.0" text="M" />
+               </columns>
+            </TableColumn>
+            <TableColumn fx:id="fridayCol" prefWidth="75.0" text="Vrijdag">
+               <columns>
+                  <TableColumn fx:id="friMorning" prefWidth="75.0" text="O" />
+                  <TableColumn fx:id="friAfternoon" prefWidth="75.0" text="M" />
+               </columns>
+            </TableColumn>
+        </columns>
+      </TableView>
+      <Button fx:id="btnChangeProfile" layoutX="383.0" layoutY="109.0" mnemonicParsing="false" onAction="#changeProfile" prefHeight="30.0" prefWidth="150.0" text="Wijzig profiel" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Button>
+      <Button layoutX="14.0" layoutY="176.0" mnemonicParsing="false" onAction="#lastWeek" prefHeight="26.0" prefWidth="150.0" text="Vorige week" />
+      <Button layoutX="1036.0" layoutY="176.0" mnemonicParsing="false" onAction="#nextWeek" prefHeight="26.0" prefWidth="150.0" text="Volgende week" />
+      <ComboBox fx:id="cbMoMorning" layoutX="645.0" layoutY="95.0" prefWidth="100.0" />
+      <ComboBox fx:id="cbMoAfternoon" layoutX="645.0" layoutY="133.0" prefWidth="100.0" />
+      <ComboBox fx:id="cbTueMorning" layoutX="755.0" layoutY="95.0" prefWidth="100.0" />
+      <ComboBox fx:id="cbTueAfternoon" layoutX="755.0" layoutY="133.0" prefWidth="100.0" />
+      <ComboBox fx:id="cbWedMorning" layoutX="865.0" layoutY="95.0" prefWidth="100.0" />
+      <ComboBox fx:id="cbWedAfternoon" layoutX="865.0" layoutY="133.0" prefWidth="100.0" />
+      <ComboBox fx:id="cbThuMorning" layoutX="975.0" layoutY="95.0" prefWidth="100.0" />
+      <ComboBox fx:id="cbThuAfternoon" layoutX="975.0" layoutY="133.0" prefWidth="100.0" />
+      <ComboBox fx:id="cbFriMorning" layoutX="1085.0" layoutY="95.0" prefWidth="100.0" />
+      <ComboBox fx:id="cbFriAfternoon" layoutX="1085.0" layoutY="133.0" prefWidth="100.0" />
+      <Button fx:id="btnSave" layoutX="1114.0" layoutY="638.0" mnemonicParsing="false" onAction="#save" text="Opslaan" />
+      <Label layoutX="14.0" layoutY="116.0" text="Kies datum" />
+   </children>
+</AnchorPane>
