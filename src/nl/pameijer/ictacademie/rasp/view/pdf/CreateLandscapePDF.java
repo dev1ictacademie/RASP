@@ -128,13 +128,13 @@ public class CreateLandscapePDF
     	try
     	{
     		// fill head of day overview with color
-    		Color headColor = new Color(0,191,255);
+    		Color headColor = new Color(30,144,255);
     		contentStream.addRect( startX-2, startY+160, 204, 40);
     		contentStream.setNonStrokingColor(headColor);
             contentStream.fill();
 
-            // set text color back to black
-            contentStream.setNonStrokingColor(Color.BLACK);
+            // set text color white
+            contentStream.setNonStrokingColor(Color.WHITE);
 	        contentStream.setFont( font, fontSize );
 
 	        // place day name in surrounded box
@@ -159,6 +159,7 @@ public class CreateLandscapePDF
 	        contentStream.showText("middag");
 	        contentStream.endText();
 
+	        contentStream.setNonStrokingColor(Color.BLACK);
 	        // line under plaats, ochtend, middag
 	        contentStream.moveTo(startX-2, startY+160);
 	        contentStream.lineTo(startX+202, startY+160);
