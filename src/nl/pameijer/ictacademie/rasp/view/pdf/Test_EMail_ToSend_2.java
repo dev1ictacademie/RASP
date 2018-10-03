@@ -1,14 +1,12 @@
 package nl.pameijer.ictacademie.rasp.view.pdf;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
-import javax.mail.Authenticator;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -21,74 +19,64 @@ public class Test_EMail_ToSend_2
 
 	public static void main(String[] args)
 	{
-		try
-		{
-			final String fromEmail = "yyyyyyyyyy"; //requires valid gmail id
-	        final String password = "xxxxxxxxxx"; // correct password for gmail id
-	        final String toEmail = "yyyyyyyyyyyy"; // can be any email id
+		//https://stackoverflow.com/questions/18075323/how-to-attach-generated-pdf-file-mail-in-java
+	 	String SMTP_HOST_NAME = "smtp.gmail.com";
+	    String SMTP_PORT = "587";
 
-	        System.out.println("TLSEmail Start");
-            Properties props = new Properties();
-            props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
-            props.put("mail.smtp.port", "587"); //TLS Port
-            props.put("mail.smtp.auth", "true"); //enable authentication
-            props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
-
-		    Authenticator auth = new Authenticator()
-		    {
-                //override the getPasswordAuthentication method
-                protected PasswordAuthentication getPasswordAuthentication()
-                {
-                    return new PasswordAuthentication(toEmail, password);
-                }
-            };
-
-            Session session = Session.getInstance(props, auth);
-            System.out.println("Mail Check 2");
-
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(fromEmail));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
-
-            message.setSubject("Zit plaatsen overzicht");
-            message.setText("");
-
-            System.out.println("Mail Check 3");
+	    //add here from address, to address, password
 
 
+	    String subject="Textmsg";
+	    String fileAttachment = "OverviewSitplaces.pdf";
 
-            // creates message part
-            MimeBodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent(message, "text/html");
+	      Properties props = new Properties();
 
-            // creates multi-part
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(messageBodyPart);
+	      props.put("mail.smtp.host", SMTP_HOST_NAME);
+	      props.put("mail.smtp.auth", "true");
+	      props.put("mail.debug", "true");
+	      props.put("mail.smtp.port", SMTP_PORT );
+	      props.put("mail.smtp.starttls.enable", "true");
 
+	      Session session = Session.getInstance(props,new javax.mail.Authenticator()
+	        {protected javax.mail.PasswordAuthentication
+	            getPasswordAuthentication()
+	        {return new javax.mail.PasswordAuthentication(SMTP_FROM_ADDRESS, PASS_WORD);}});
 
-            // adds attachment
+	      try
+	      {
 
-            Multipart multipart_1 = new MimeMultipart();
-            MimeBodyPart messageBodyPart_1 = new MimeBodyPart();
+		      Message msg = new MimeMessage(session);
 
-            multipart.addBodyPart(messageBodyPart);
+	          msg.setFrom(new InternetAddress(SMTP_FROM_ADDRESS));
+	          // create the message part
+	          MimeBodyPart messageBodyPart =
+	            new MimeBodyPart();
+	          //fill message
+	          messageBodyPart.setText("Test mail one");
+	          Multipart multipart = new MimeMultipart();
+	          multipart.addBodyPart(messageBodyPart);
+	          // Part two is attachment
+	          messageBodyPart = new MimeBodyPart();
+	          DataSource source =
+	            new FileDataSource(fileAttachment);
+	          messageBodyPart.setDataHandler(
+	            new DataHandler(source));
+	          messageBodyPart.setFileName(fileAttachment);
+	          multipart.addBodyPart(messageBodyPart);
+	          // Put parts in message
+	          msg.setContent(multipart);
 
-            MimeBodyPart attachmentBodyPart = new MimeBodyPart();
-            attachmentBodyPart.attachFile(new File("application/pdf"));
-            multipart.addBodyPart(attachmentBodyPart);
+	          msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(SMTP_TO_ADDRESS));
 
-			message.setContent(multipart);
+	          msg.setSubject(subject);
+	          // msg.setContent(content, "text/plain");
 
-            Transport.send(message);
+	          Transport.send(msg);
 
-            System.out.println("Mail Sent");
-
-		 }
-		 catch (MessagingException | IOException mex)
-		 {
-			 System.out.println("Mail fail");
-			 mex.printStackTrace();
-		 }
-
+          }
+          catch(Exception e)
+          {
+              e.printStackTrace();
+          }
 	}
 }
