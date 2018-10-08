@@ -23,23 +23,20 @@ public class EMailAndAttachment
 {
 	/**
 	 * Sending an e-mail with attachment.
-	 * @param emailAddress
-	 * @param password
 	 * @param locationAttachment
-	 * @param subject
 	 */
-	public void send( String emailAddress, String password, String locationAttachment, String subject )
+	public void send(String locationAttachment )
 	{
 		//https://stackoverflow.com/questions/18075323/how-to-attach-generated-pdf-file-mail-in-java
 	 	String SMTP_HOST_NAME = "smtp.gmail.com";
 	    String SMTP_PORT = "587";
 
 	    //add here from email address, to email address, password
-	    String SMTP_FROM_ADDRESS = emailAddress;
-	    String SMTP_TO_ADDRESS = emailAddress;
-	    String PASS_WORD = password;
+	    String SMTP_FROM_ADDRESS = Account.EMAIL;
+	    String SMTP_TO_ADDRESS = Account.EMAIL;
+	    String PASS_WORD = Account.PASSWORD;
 
-	    String strSubject = subject;
+	    String strSubject = "Bezetting";
 	    String fileAttachment = locationAttachment;
 
 	    Properties props = new Properties();

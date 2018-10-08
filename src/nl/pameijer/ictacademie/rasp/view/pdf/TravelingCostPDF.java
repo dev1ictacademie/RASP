@@ -34,96 +34,136 @@ import nl.pameijer.ictacademie.rasp.view.tools.ExportToPDF;
 /**
  * This create a page with a landscape orientation.
  */
-public class OverviewSitplacesPDF
+public class TravelingCostPDF
 {
     private ExportToPDF exporter;
 
 	/**
      * Constructor.
      */
-    public OverviewSitplacesPDF()
+    public TravelingCostPDF()
     {
     	exporter = new ExportToPDF();
 
     }
 
     /**
-     * creates a sit place overview document with a landscape orientation.
+     * creates a sit place overview document with a portrait orientation.
      *
-     * @param message The message to write in the file.
      * @param outfile The resulting PDF.
-     *
-     * @throws IOException If there is an error writing the data.
      */
     public void createPDFDoc( String  outfile ) throws IOException
     {
-        try (PDDocument doc = new PDDocument())
-        {
-            PDFont font = PDType1Font.HELVETICA;
-            PDPage page = new PDPage(PDRectangle.A4);
-            page.setRotation(90);
-            doc.addPage(page);
-            PDRectangle pageSize = page.getMediaBox();
-            float pageWidth = pageSize.getWidth();
-            float fontSize = 10f;
-            Color backGroundColor = Color.WHITE;
+    	 try (PDDocument doc = new PDDocument())
+         {
+             PDPage page = new PDPage();
+             doc.addPage(page);
 
-            try (PDPageContentStream contentStream = new PDPageContentStream(doc, page, AppendMode.OVERWRITE, false))
-            {
-                // add the rotation using the current transformation matrix
-                // including a translation of pageWidth to use the lower left corner as 0,0 reference
-                contentStream.transform(new Matrix(0, 1, -1, 0, pageWidth, 0));
+             try (PDPageContentStream contents = new PDPageContentStream(doc, page))
+             {
+                 headText(contents, MockDataTravelingCost.getMonth(), MockDataTravelingCost.getYear());
+                 drawTable(contents);
 
-                // draw Monday overview
-                float startX = 40, startY = 360;
+             }
 
-                drawFilledRectangles(contentStream, startX, startY, 30f, 10f);
-                drawDayOverview(contentStream, startX, startY, font, fontSize, "Maandag",
-                		exporter.getPlacesOverview(DayPart.MONDAY_MORNING, "ICT"),
-                		exporter.getPlacesOverview(DayPart.MONDAY_AFTERNOON, "ICT"), backGroundColor);
-
-
-                // draw Tuesday overview
-                startX += 250;
-                drawFilledRectangles(contentStream, startX, startY, 30f, 10f);
-                drawDayOverview(contentStream, startX, startY, font, fontSize, "Dinsdag",
-                		exporter.getPlacesOverview(DayPart.TUESDAY_MORNING, "ICT"),
-                		exporter.getPlacesOverview(DayPart.TUESDAY_AFTERNOON, "ICT"), backGroundColor);
-
-
-                // draw Wednesday overview
-                startX += 250;
-                drawFilledRectangles(contentStream, startX, startY, 30f, 10f);
-                drawDayOverview(contentStream, startX, startY, font, fontSize, "Woensdag",
-                		exporter.getPlacesOverview(DayPart.WEDNESDAY_MORNING, "ICT"),
-                		exporter.getPlacesOverview(DayPart.WEDNESDAY_AFTERNOON, "ICT"), backGroundColor);
-
-
-                // draw Thursday overview
-                startX = 40; startY -= 260;
-                drawFilledRectangles(contentStream, startX, startY, 30f, 10f);
-                drawDayOverview(contentStream, startX, startY, font, fontSize, "Donderdag",
-                		exporter.getPlacesOverview(DayPart.THURSDAY_MORNING, "ICT"),
-                		exporter.getPlacesOverview(DayPart.THURSDAY_AFTERNOON, "ICT"), backGroundColor);
-
-
-                // draw Friday overview
-                startX += 250;
-                drawFilledRectangles(contentStream, startX, startY, 30f, 10f);
-                drawDayOverview(contentStream, startX, startY, font, fontSize, "Vrijdag",
-                		exporter.getPlacesOverview(DayPart.FRIDAY_MORNING, "ICT"),
-                		exporter.getPlacesOverview(DayPart.FRIDAY_AFTERNOON, "ICT"), backGroundColor);
-
-            }
-
-            doc.save( outfile );
-        }// end try catch
+             doc.save(outfile);
+         }
 
     }// end method createPDFDoc
 
+    /**
+     * places the head text
+     * @param month
+     * @param year
+     */
+    public void headText( PDPageContentStream contents, String month, String year )
+    {
+    	PDFont font = PDType1Font.HELVETICA_BOLD;
+
+    	try
+    	{
+    		contents.beginText();
+            contents.setFont(font, 12);
+            contents.newLineAtOffset(50, 740);
+            contents.showText("Uit te betalen dagdeel- en reiskostenvergoedingen");
+            contents.endText();
+
+            contents.beginText();
+            contents.setFont(font, 12);
+            contents.newLineAtOffset(50, 725);
+            contents.showText("Locatie:          Werkt Centrum -ICT Academie");
+            contents.endText();
+
+            contents.beginText();
+            contents.setFont(font, 12);
+            contents.newLineAtOffset(50, 710);
+            contents.showText("Kostenplaats:     8000024");
+            contents.endText();
+            contents.beginText();
+            contents.setFont(font, 12);
+            contents.newLineAtOffset(50, 695);
+            contents.showText("Kostensoort:      46231 - vergoedingen deelnemers");
+            contents.endText();
+
+            contents.beginText();
+            contents.setFont(font, 12);
+            contents.newLineAtOffset(50, 680);
+            contents.showText("Periode:          " + month + " " + year);
+            contents.endText();
+
+		}
+    	catch (Exception e)
+    	{
+
+		}
+
+	}// end headText
+
+
+    public void drawTable( PDPageContentStream contentStream)
+    {
+    	float startX = 50.0f;
+    	float startY = 650.0f;
+
+    	try
+    	{
+    		for (int i = 0; i < 10; i++)
+    		{
+    			//left line
+                contentStream.moveTo(startX-2, startY-10.5f);
+                //contentStream.lineTo(startX-2, startY+20.5f);
+                contentStream.stroke();
+
+                //right line
+                contentStream.moveTo(startX+20, startY+20.5f);
+                //contentStream.lineTo(startX+20, startY-20.5f);
+                contentStream.stroke();
+			}
+
+    		//top line
+            contentStream.moveTo(startX-2, startY+20);
+            contentStream.lineTo(startX+520, startY+20);
+            contentStream.stroke();
+
+            //bottom line
+            contentStream.moveTo(startX-2, startY+20);
+            contentStream.lineTo(startX, startY+20);
+            contentStream.stroke();
+
+
+		}
+    	catch (Exception e)
+    	{
+
+		}
+
+	}// end drawTable
+
+
+
     // Draw overview of one day
     public void drawDayOverview( PDPageContentStream contentStream, float startX, float startY,
-    		PDFont font, float fontSize, String day, String[] morning, String[] afternoon, Color backGroundColor )
+    		PDFont font, float fontSize, String[] morning, String[] afternoon, Color backGroundColor )
     {
     	try
     	{
@@ -140,7 +180,7 @@ public class OverviewSitplacesPDF
 	        // place day name in surrounded box
 	        contentStream.beginText();
 	        contentStream.newLineAtOffset(startX+80, startY+190);
-	        contentStream.showText(day);
+	        contentStream.showText("Uit te betalen dagdeel- en reiskostenvergoedingen");
 	        contentStream.endText();
 
 	        contentStream.setFont( font, 8f );
@@ -345,7 +385,7 @@ public class OverviewSitplacesPDF
      */
     public static void main(String[] args) throws IOException
     {
-        OverviewSitplacesPDF app = new OverviewSitplacesPDF();
+        TravelingCostPDF app = new TravelingCostPDF();
         app.createPDFDoc( args[1] );
 
         System.exit(0);
