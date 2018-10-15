@@ -17,6 +17,7 @@
 package nl.pameijer.ictacademie.rasp.view.pdf;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -56,13 +57,15 @@ public class TravelingCostPDF
     {
     	 try (PDDocument doc = new PDDocument())
          {
+    		 float fontSize = 10f;
              PDPage page = new PDPage();
              doc.addPage(page);
 
              try (PDPageContentStream contents = new PDPageContentStream(doc, page))
              {
-                 headText(contents, MockDataTravelingCost.getMonth(), MockDataTravelingCost.getYear());
-                 drawTable(contents);
+                 headText(contents, MockDataTravelingCost.getMonths(), MockDataTravelingCost.getYears());
+                 drawHeaderTable(contents, fontSize);
+                 //drawTable(contents);
 
              }
 
@@ -91,24 +94,24 @@ public class TravelingCostPDF
             contents.beginText();
             contents.setFont(font, 12);
             contents.newLineAtOffset(50, 725);
-            contents.showText("Locatie:          Werkt Centrum -ICT Academie");
+            contents.showText("Locatie:                Werkt Centrum -ICT Academie");
             contents.endText();
 
             contents.beginText();
             contents.setFont(font, 12);
             contents.newLineAtOffset(50, 710);
-            contents.showText("Kostenplaats:     8000024");
+            contents.showText("Kostenplaats:      8000024");
             contents.endText();
             contents.beginText();
             contents.setFont(font, 12);
             contents.newLineAtOffset(50, 695);
-            contents.showText("Kostensoort:      46231 - vergoedingen deelnemers");
+            contents.showText("Kostensoort:       46231 - vergoedingen deelnemers");
             contents.endText();
 
             contents.beginText();
             contents.setFont(font, 12);
             contents.newLineAtOffset(50, 680);
-            contents.showText("Periode:          " + month + " " + year);
+            contents.showText("Periode:               " + month + " " + year);
             contents.endText();
 
 		}
@@ -120,34 +123,123 @@ public class TravelingCostPDF
 	}// end headText
 
 
-    public void drawTable( PDPageContentStream contentStream)
+    public void drawHeaderTable( PDPageContentStream contentStream, Float fontSize )
     {
     	float startX = 50.0f;
-    	float startY = 650.0f;
+    	float startY = 640.0f;
 
     	try
     	{
-    		for (int i = 0; i < 10; i++)
-    		{
-    			//left line
-                contentStream.moveTo(startX-2, startY-10.5f);
-                //contentStream.lineTo(startX-2, startY+20.5f);
-                contentStream.stroke();
+            // set background color
+            Color blue = new Color(100,149,237);
+            contentStream.addRect( startX-1.5f, startY-9.5f, startX+471, 29);
+    		contentStream.setNonStrokingColor(blue);
+            contentStream.fill();
 
-                //right line
-                contentStream.moveTo(startX+20, startY+20.5f);
-                //contentStream.lineTo(startX+20, startY-20.5f);
-                contentStream.stroke();
-			}
+            PDFont font = PDType1Font.HELVETICA_BOLD;
+
+            contentStream.setNonStrokingColor(Color.WHITE);// set text color
+	        contentStream.setFont( font, fontSize );
+			contentStream.setFont(font, 12);
+
+			contentStream.beginText();
+            contentStream.newLineAtOffset(startX+5, startY);
+            contentStream.showText("Naam Plancare");
+            contentStream.endText();
+
+            contentStream.beginText();
+            contentStream.newLineAtOffset(startX+110, startY);
+            contentStream.showText("Plancare ID");
+            contentStream.endText();
+
+            contentStream.beginText();
+            contentStream.newLineAtOffset(startX+210, startY);
+            contentStream.showText("Totaal uitbetalen");
+            contentStream.endText();
+            
+            contentStream.beginText();
+            contentStream.newLineAtOffset(startX+390, startY);
+            contentStream.showText("IBAN");
+            contentStream.endText();
+
+            // vertical lines
+            contentStream.moveTo(startX-2, startY+20.4f);// begin point
+            contentStream.lineTo(startX-2, startY-10.0f);// end point
+            contentStream.stroke();
+
+            contentStream.moveTo(startX+100.0f, startY+20.0f);// name column
+            contentStream.lineTo(startX+100.0f, startY-10.0f);
+            contentStream.stroke();
+
+            contentStream.moveTo(startX+100.0f, startY+20.0f);// name column
+            contentStream.lineTo(startX+100.0f, startY-10.0f);
+            contentStream.stroke();
+
+            contentStream.moveTo(startX+200.0f, startY+20.0f);// ID column
+            contentStream.lineTo(startX+200.0f, startY-10.0f);
+            contentStream.stroke();
+
+            contentStream.moveTo(startX+310.0f, startY+20.0f);// total € column
+            contentStream.lineTo(startX+310.0f, startY-10.0f);
+            contentStream.stroke();
+
+
+            //between horizontal line
+            contentStream.moveTo(startX-2, startY-10.0f);
+            contentStream.lineTo(startX+520, startY-10.0f);
+            contentStream.stroke();
+
+            //right vertical line
+            contentStream.moveTo(startX+520, startY+20.4f);
+            contentStream.lineTo(startX+520, startY-10.0f);
+            contentStream.stroke();
 
     		//top line
             contentStream.moveTo(startX-2, startY+20);
             contentStream.lineTo(startX+520, startY+20);
             contentStream.stroke();
 
-            //bottom line
+		}
+    	catch (Exception e)
+    	{
+
+		}
+	}// end method drawHeaderTable
+
+
+    public void drawTable( PDPageContentStream contentStream )
+    {
+    	float startX = 50.0f;
+    	float startY = 640.0f;
+
+    	try
+    	{
+    		for (int i = 1; i < 9; i++)
+    		{
+    			//left vertical line
+                contentStream.moveTo(startX-2, startY+20.4f);// begin point
+                contentStream.lineTo(startX-2, startY-20.0f*i);// end point
+                contentStream.stroke();
+
+                //vertical lines to make columns
+                contentStream.moveTo(startX+100.0f, startY+20.0f);
+                contentStream.lineTo(startX+100.0f, startY-20.0f*i);
+                contentStream.stroke();
+
+                //between horizontal line
+                contentStream.moveTo(startX-2, startY-20.0f*i);
+                contentStream.lineTo(startX+520, startY-20.0f*i);
+                contentStream.stroke();
+
+                //right vertical line
+                contentStream.moveTo(startX+520, startY+20.4f);
+                contentStream.lineTo(startX+520, startY-20.0f*i);
+                contentStream.stroke();
+			}
+
+    		//top line
             contentStream.moveTo(startX-2, startY+20);
-            contentStream.lineTo(startX, startY+20);
+            contentStream.lineTo(startX+520, startY+20);
             contentStream.stroke();
 
 
@@ -161,185 +253,12 @@ public class TravelingCostPDF
 
 
 
-    // Draw overview of one day
-    public void drawDayOverview( PDPageContentStream contentStream, float startX, float startY,
-    		PDFont font, float fontSize, String[] morning, String[] afternoon, Color backGroundColor )
-    {
-    	try
-    	{
-    		// fill head of day overview with color
-    		Color headColor = new Color(30,144,255);
-    		contentStream.addRect( startX-2, startY+160, 204, 40);
-    		contentStream.setNonStrokingColor(headColor);
-            contentStream.fill();
 
-            // set text color white
-            contentStream.setNonStrokingColor(Color.WHITE);
-	        contentStream.setFont( font, fontSize );
 
-	        // place day name in surrounded box
-	        contentStream.beginText();
-	        contentStream.newLineAtOffset(startX+80, startY+190);
-	        contentStream.showText("Uit te betalen dagdeel- en reiskostenvergoedingen");
-	        contentStream.endText();
 
-	        contentStream.setFont( font, 8f );
-	        contentStream.beginText();
-	        contentStream.newLineAtOffset(startX, startY+170);
-	        contentStream.showText("plaats");
-	        contentStream.endText();
 
-	        contentStream.beginText();
-	        contentStream.newLineAtOffset(startX+40, startY+170);
-	        contentStream.showText("ochtend");
-	        contentStream.endText();
 
-	        contentStream.beginText();
-	        contentStream.newLineAtOffset(startX+125, startY+170);
-	        contentStream.showText("middag");
-	        contentStream.endText();
 
-	        contentStream.setNonStrokingColor(Color.BLACK);
-	        // line under plaats, ochtend, middag
-	        contentStream.moveTo(startX-2, startY+160);
-	        contentStream.lineTo(startX+202, startY+160);
-	        contentStream.stroke();
-
-	        // line right of numbers column
-	        contentStream.moveTo(startX+28, startY-20);
-	        contentStream.lineTo(startX+28, startY+160);
-	        contentStream.stroke();
-
-	        // place numbers 1 to 18
-	        for (int i = 1; i < 19; i++)
-	        {
-	        	if( i < 10) // place numbers from 1 up to 9 include
-	        	{
-	        		contentStream.beginText();
-	                contentStream.newLineAtOffset(startX+6, startY+162-i*10);
-	                contentStream.showText("  " + i);
-	                contentStream.endText();
-	        	}
-	        	else //// place numbers from 10 up to 18 include
-	        	{
-	        		contentStream.beginText();
-	                contentStream.newLineAtOffset(startX+6, startY+162-i*10);
-	                contentStream.showText("" + i);
-	                contentStream.endText();
-	        	}
-
-	        	// place line between sit place numbers
-            	contentStream.moveTo(startX-2, startY+160-i*10);
-            	contentStream.lineTo(startX+28, startY+160-i*10);
-            	contentStream.stroke();
-
-			}// end for
-
-	        // fill names in columns
-	        for(int i = 0; i < 18; i++)
-	        {
-	        	font = PDType1Font.HELVETICA;
-	        	fontSize = 8;
-
-	        	contentStream.beginText();
-	        	contentStream.setFont(font, fontSize);
-		        contentStream.newLineAtOffset(startX+40, startY+152-i*10);
-		        contentStream.showText( getFirstName(morning[i], i) );
-		        contentStream.endText();
-
-		        contentStream.beginText();
-	        	contentStream.setFont(font, fontSize);
-		        contentStream.newLineAtOffset(startX+125, startY+152-i*10);
-		        contentStream.showText( getFirstName(afternoon[i], i) );
-		        contentStream.endText();
-
-		     }
-
-	        //left line
-            contentStream.moveTo(startX-2, startY-20.5f);
-            contentStream.lineTo(startX-2, startY+200.5f);
-            contentStream.stroke();
-
-            //top line
-            contentStream.moveTo(startX-2, startY+200);
-            contentStream.lineTo(startX+202, startY+200);
-            contentStream.stroke();
-
-            //right line
-            contentStream.moveTo(startX+202, startY+200.5f);
-            contentStream.lineTo(startX+202, startY-20.5f);
-            contentStream.stroke();
-
-            //bottom line
-            contentStream.moveTo(startX+202, startY-20);
-            contentStream.lineTo(startX-2, startY-20);
-            contentStream.stroke();
-    	}
-    	catch (Exception e)
-    	{
-			e.printStackTrace();
-		}
-
-	}// end method dayOverview
-
-    // Draw a filled rectangle placed in rectangles of sit place numbers
-    public void drawFilledRectangles(PDPageContentStream contentStream,
-    		float x, float y, float width, float height)
-    {
-    	Color white = Color.WHITE;
-    	Color green = new Color(154,205,50);
-    	Color orange = new Color(255,140,0);
-    	Color blue = new Color(100,149,237);
-
-    	for (int i = 0; i < 18; i++)
-    	{
-			try
-			{
-				if(i == 0)
-				{
-					contentStream.addRect( x-2, y+150-i*10, width, height);
-	        		contentStream.setNonStrokingColor(white);
-	                contentStream.fill();
-				}
-				else if(i > 0 & i < 6)
-	        	{
-	        		contentStream.addRect( x-2, y+150-i*10, width, height);
-	        		contentStream.setNonStrokingColor(green);
-	                contentStream.fill();
-	        	}
-	        	else if(i > 5 & i < 10)
-	        	{
-	        		contentStream.addRect( x-2, y+150-i*10, width, height);
-	        		contentStream.setNonStrokingColor(orange);
-	                contentStream.fill();
-	        	}
-	        	else if(i == 10)
-	        	{
-	        		contentStream.addRect( x-2, y+150-i*10, width, height);
-	        		contentStream.setNonStrokingColor(white);
-	                contentStream.fill();
-	        	}
-	        	else if(i == 11)
-	        	{
-	        		contentStream.addRect( x-2, y+150-i*10, width, height);
-	        		contentStream.setNonStrokingColor(orange);
-	                contentStream.fill();
-	        	}
-	        	else
-	        	{
-	        		contentStream.addRect( x-2, y+150-i*10, width, height);
-	        		contentStream.setNonStrokingColor(blue);
-	                contentStream.fill();
-	        	}
-			}
-			catch (Exception e)
-			{
-
-			}
-
-    	}// end for
-
-    }// end method drawRect
 
     /**
      * get the first name from array of students
