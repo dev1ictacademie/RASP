@@ -32,8 +32,8 @@ public class EMailAndAttachment
 	    String SMTP_PORT = "587";
 
 	    //add here from email address, to email address, password
-	    String SMTP_FROM_ADDRESS = Account.EMAIL;
-	    String SMTP_TO_ADDRESS = Account.EMAIL;
+	    String SMTP_FROM_ADDRESS = Account.EMAIL_ADDRESS;
+	    String SMTP_TO_ADDRESS = Account.EMAIL_ADDRESS;
 	    String PASS_WORD = Account.PASSWORD;
 
 	    String strSubject = "Bezetting";

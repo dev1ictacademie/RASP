@@ -37,6 +37,9 @@ import nl.pameijer.ictacademie.rasp.view.tools.ExportToPDF;
  */
 public class TravelingCostPDF
 {
+	float startX = 50.0f;
+	float startY = 640.0f;
+
     private ExportToPDF exporter;
 
 	/**
@@ -65,7 +68,8 @@ public class TravelingCostPDF
              {
                  headText(contents, MockDataTravelingCost.getMonths(), MockDataTravelingCost.getYears());
                  drawHeaderTable(contents, fontSize);
-                 //drawTable(contents);
+                 drawContentTable(contents, MockDataTravelingCost.getNames(), MockDataTravelingCost.getId(),
+                		 					MockDataTravelingCost.getTotal(),  MockDataTravelingCost.getIban());
 
              }
 
@@ -125,9 +129,6 @@ public class TravelingCostPDF
 
     public void drawHeaderTable( PDPageContentStream contentStream, Float fontSize )
     {
-    	float startX = 50.0f;
-    	float startY = 640.0f;
-
     	try
     	{
             // set background color
@@ -138,45 +139,41 @@ public class TravelingCostPDF
 
             PDFont font = PDType1Font.HELVETICA_BOLD;
 
-            contentStream.setNonStrokingColor(Color.WHITE);// set text color
+            contentStream.setNonStrokingColor(Color.WHITE);// set text color to white
 	        contentStream.setFont( font, fontSize );
 			contentStream.setFont(font, 12);
 
 			contentStream.beginText();
-            contentStream.newLineAtOffset(startX+5, startY);
+            contentStream.newLineAtOffset(startX+37, startY);
             contentStream.showText("Naam Plancare");
             contentStream.endText();
 
             contentStream.beginText();
-            contentStream.newLineAtOffset(startX+110, startY);
+            contentStream.newLineAtOffset(startX+167, startY);
             contentStream.showText("Plancare ID");
             contentStream.endText();
 
             contentStream.beginText();
-            contentStream.newLineAtOffset(startX+210, startY);
-            contentStream.showText("Totaal uitbetalen");
+            contentStream.newLineAtOffset(startX+250, startY);
+            contentStream.showText("Totaal");
             contentStream.endText();
-            
+
             contentStream.beginText();
             contentStream.newLineAtOffset(startX+390, startY);
             contentStream.showText("IBAN");
             contentStream.endText();
 
             // vertical lines
-            contentStream.moveTo(startX-2, startY+20.4f);// begin point
-            contentStream.lineTo(startX-2, startY-10.0f);// end point
+            contentStream.moveTo(startX-2, startY+20.4f);
+            contentStream.lineTo(startX-2, startY-10.0f);
             contentStream.stroke();
 
-            contentStream.moveTo(startX+100.0f, startY+20.0f);// name column
-            contentStream.lineTo(startX+100.0f, startY-10.0f);
+            contentStream.moveTo(startX+160.0f, startY+20.0f);// name column
+            contentStream.lineTo(startX+160.0f, startY-10.0f);
             contentStream.stroke();
 
-            contentStream.moveTo(startX+100.0f, startY+20.0f);// name column
-            contentStream.lineTo(startX+100.0f, startY-10.0f);
-            contentStream.stroke();
-
-            contentStream.moveTo(startX+200.0f, startY+20.0f);// ID column
-            contentStream.lineTo(startX+200.0f, startY-10.0f);
+            contentStream.moveTo(startX+240.0f, startY+20.0f);// ID column
+            contentStream.lineTo(startX+240.0f, startY-10.0f);
             contentStream.stroke();
 
             contentStream.moveTo(startX+310.0f, startY+20.0f);// total € column
@@ -184,7 +181,7 @@ public class TravelingCostPDF
             contentStream.stroke();
 
 
-            //between horizontal line
+            //bottom horizontal line
             contentStream.moveTo(startX-2, startY-10.0f);
             contentStream.lineTo(startX+520, startY-10.0f);
             contentStream.stroke();
@@ -207,41 +204,75 @@ public class TravelingCostPDF
 	}// end method drawHeaderTable
 
 
-    public void drawTable( PDPageContentStream contentStream )
+    public void drawContentTable( PDPageContentStream contentStream, String[] name, String[] id,
+    							  String[] total, String[] iban )
     {
-    	float startX = 50.0f;
-    	float startY = 640.0f;
-
+    	startY -= 10.0f;
     	try
     	{
-    		for (int i = 1; i < 9; i++)
+    		//left vertical line
+            contentStream.moveTo(startX-2, startY+20.4f);
+            contentStream.lineTo(startX-2, startY-20.0f*name.length);
+            contentStream.stroke();
+
+            //vertical lines to make columns
+            contentStream.moveTo(startX+160.0f, startY+20.0f);// name column
+            contentStream.lineTo(startX+160.0f, startY-20.0f*name.length);
+            contentStream.stroke();
+
+            contentStream.moveTo(startX+240.0f, startY+20.0f);// ID column
+            contentStream.lineTo(startX+240.0f, startY-20.0f*name.length);
+            contentStream.stroke();
+
+            contentStream.moveTo(startX+310.0f, startY+20.0f);// total € column
+            contentStream.lineTo(startX+310.0f, startY-20.0f*name.length);
+            contentStream.stroke();
+
+            //right vertical line
+            contentStream.moveTo(startX+520, startY+20.4f);
+            contentStream.lineTo(startX+520, startY-20.0f*name.length);
+            contentStream.stroke();
+
+            contentStream.setNonStrokingColor(Color.BLACK);// set text color to black
+
+            //
+    		for (int i = 1; i < name.length+1; i++)
     		{
-    			//left vertical line
-                contentStream.moveTo(startX-2, startY+20.4f);// begin point
-                contentStream.lineTo(startX-2, startY-20.0f*i);// end point
-                contentStream.stroke();
+    			// fill name column
+    			contentStream.beginText();
+                contentStream.newLineAtOffset(startX+5, startY-20.0f*i+5);
+                contentStream.showText(name[i-1]);
+                contentStream.endText();
 
-                //vertical lines to make columns
-                contentStream.moveTo(startX+100.0f, startY+20.0f);
-                contentStream.lineTo(startX+100.0f, startY-20.0f*i);
-                contentStream.stroke();
+                // fill id column
+                contentStream.beginText();
+                contentStream.newLineAtOffset(startX+165, startY-20.0f*i+5);
+                contentStream.showText(id[i-1]);
+                contentStream.endText();
 
-                //between horizontal line
+                // fill total column
+                contentStream.beginText();
+                contentStream.newLineAtOffset(startX+245, startY-20.0f*i+5);
+                contentStream.showText("€ "+total[i-1]);
+                contentStream.endText();
+
+                // fill iban column
+                contentStream.beginText();
+                contentStream.newLineAtOffset(startX+315, startY-20.0f*i+5);
+                contentStream.showText(iban[i-1]);
+                contentStream.endText();
+
+    			//between row horizontal line
                 contentStream.moveTo(startX-2, startY-20.0f*i);
                 contentStream.lineTo(startX+520, startY-20.0f*i);
                 contentStream.stroke();
 
-                //right vertical line
-                contentStream.moveTo(startX+520, startY+20.4f);
-                contentStream.lineTo(startX+520, startY-20.0f*i);
-                contentStream.stroke();
 			}
 
-    		//top line
-            contentStream.moveTo(startX-2, startY+20);
-            contentStream.lineTo(startX+520, startY+20);
+    		//bottom horizontal line
+            contentStream.moveTo(startX-2, startY-20.0f*name.length);
+            contentStream.lineTo(startX+520, startY-20.0f*name.length);
             contentStream.stroke();
-
 
 		}
     	catch (Exception e)
@@ -249,14 +280,7 @@ public class TravelingCostPDF
 
 		}
 
-	}// end drawTable
-
-
-
-
-
-
-
+	}// end drawContentTable
 
 
 

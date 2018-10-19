@@ -18,9 +18,9 @@ public class Test_EMail_ToSend
 	{
 		try
 		{
-			final String fromEmail = "YYYYYY"; //requires valid gmail id
-	        final String password = "XXXXXX"; // correct password for gmail id
-	        final String toEmail = "YYYYYY"; // can be any email id
+			final String fromEmail = Account.EMAIL_ADDRESS; //requires valid gmail id
+	        final String password = Account.PASSWORD; // correct password for gmail id
+	        final String toEmail = Account.EMAIL_ADDRESS; // can be any email id
 
 	        System.out.println("TLSEmail Start");
             Properties props = new Properties();
