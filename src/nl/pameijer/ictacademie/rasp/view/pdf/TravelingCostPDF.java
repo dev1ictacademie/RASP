@@ -208,7 +208,9 @@ public class TravelingCostPDF
 	}// end method drawHeaderTable
 
     /**
-     * draws the content of table
+     * Draws the content and lines of the table. Parameter name is used to determine
+     * the number of rows in the table and must not be empty. 
+     * The name is shortened to 28 characters include spaces.
      * @param contentStream
      * @param name
      * @param id
@@ -218,6 +220,7 @@ public class TravelingCostPDF
     public void drawContentTable( PDPageContentStream contentStream, String[] name, String[] id,
     							  String[] total, String[] iban )
     {
+
     	startY -= 10.0f;
     	try
     	{
@@ -246,52 +249,84 @@ public class TravelingCostPDF
 
             contentStream.setNonStrokingColor(Color.BLACK);// set text color to black
 
-            //
-    		for (int i = 1; i < name.length+1; i++)
+            int j = 1;
+            // loop through names array to fill the rows
+    		for (int i = 0; i < name.length; i++)
     		{
     			// fill name column
-    			if(name[i-1].length() > 24)
+    			if(name[i].length() > 24)
     			{
     				StringBuilder sb = new StringBuilder();
-    				sb.append(name[i-1]).delete(28, sb.length());
+    				sb.append(name[i]).delete(28, sb.length());
     				contentStream.beginText();
-                    contentStream.newLineAtOffset(startX+5, startY-20.0f*i+5);
+                    contentStream.newLineAtOffset(startX+5, startY-20.0f*j+5);
                     contentStream.showText(sb.toString());
                     contentStream.endText();
     			}
     			else
     			{
     				contentStream.beginText();
-    				contentStream.newLineAtOffset(startX+5, startY-20.0f*i+5);
-    				contentStream.showText(name[i-1]);
+    				contentStream.newLineAtOffset(startX+5, startY-20.0f*j+5);
+    				contentStream.showText(name[i]);
     				contentStream.endText();
     			}
 
-
                 // fill id column
-                contentStream.beginText();
-                contentStream.newLineAtOffset(startX+195, startY-20.0f*i+5);
-                contentStream.showText(id[i-1]);
-                contentStream.endText();
+    			if(i < id.length)
+    			{
+
+	                contentStream.beginText();
+	                contentStream.newLineAtOffset(startX+195, startY-20.0f*j+5);
+	                contentStream.showText(id[i]);
+	                contentStream.endText();
+    			}
+    			else
+    			{
+    				contentStream.beginText();
+	                contentStream.newLineAtOffset(startX+195, startY-20.0f*j+5);
+	                contentStream.showText("0");
+	                contentStream.endText();
+    			}
 
                 // fill total column
-                contentStream.beginText();
-                contentStream.newLineAtOffset(startX+275, startY-20.0f*i+5);
-                contentStream.showText("€ "+total[i-1]);
-                contentStream.endText();
+    			if(i < total.length)
+    			{
+	                contentStream.beginText();
+	                contentStream.newLineAtOffset(startX+275, startY-20.0f*j+5);
+	                contentStream.showText("€ "+total[i]);
+	                contentStream.endText();
+    			}
+    			else
+    			{
+    				contentStream.beginText();
+	                contentStream.newLineAtOffset(startX+275, startY-20.0f*j+5);
+	                contentStream.showText("0");
+	                contentStream.endText();
+    			}
 
                 // fill iban column
-                contentStream.beginText();
-                contentStream.newLineAtOffset(startX+345, startY-20.0f*i+5);
-                contentStream.showText(iban[i-1]);
-                contentStream.endText();
+    			if(i < iban.length)
+    			{
+	                contentStream.beginText();
+	                contentStream.newLineAtOffset(startX+345, startY-20.0f*j+5);
+	                contentStream.showText(iban[i]);
+	                contentStream.endText();
+    			}
+    			else
+    			{
+    				contentStream.beginText();
+	                contentStream.newLineAtOffset(startX+345, startY-20.0f*j+5);
+	                contentStream.showText("0");
+	                contentStream.endText();
+    			}
 
     			//between row horizontal line
-                contentStream.moveTo(startX-2, startY-20.0f*i);
-                contentStream.lineTo(startX+520, startY-20.0f*i);
+                contentStream.moveTo(startX-2, startY-20.0f*j);
+                contentStream.lineTo(startX+520, startY-20.0f*j);
                 contentStream.stroke();
 
-			}
+                j++;
+			} // end for
 
     		//bottom horizontal line
             contentStream.moveTo(startX-2, startY-20.0f*name.length);
@@ -305,8 +340,6 @@ public class TravelingCostPDF
 		}
 
 	}// end drawContentTable
-
-
 
     /**
      * get the first name from array of students

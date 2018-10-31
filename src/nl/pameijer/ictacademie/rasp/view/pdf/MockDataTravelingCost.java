@@ -5,10 +5,10 @@ public class MockDataTravelingCost
 {
 	static String[] month = {"januari", "februari", "maart", "april", "mei", "juni"};
 	static String[] year = {"2015", "2016", "2017", "2018", "2019"};
-	static String[] name = {"Donald Duck", "Peters Hendriks van Leeuwen Vermeulen", "Katrien Duck", "Billie Turf"};
-	static String[] id = {"3165", "500", "1455", "15"};
-	static String[] total = {"31,65", "50,00", "145,55", "6,40"};
-	static String[] iban = {"NL30 INGB 0001234567", "NL48 RABO 9876543210", "NL48 ABN 9876543210", "NL30 INGB 0007659991"};
+	static String[] name = {"Donald Duck", "Peters Hendriks Van Bergenhenegouwen", "Katrien Duck", "Billie Turf"};
+	static String[] id = {"3165", "500", "1455"};
+	static String[] total = {"31,65", "50,00", "145,55"};
+	static String[] iban = {"NL30 INGB 0001234567", "NL48 RABO 9876543210", "NL48 ABN 9876543210"};
 
 	public static String getMonths()
 	{
