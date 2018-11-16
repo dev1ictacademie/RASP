@@ -13,6 +13,13 @@ public class Student {
 	private final StringProperty lName = new SimpleStringProperty();
 	private final StringProperty namePrefix = new SimpleStringProperty();
 	private final StringProperty id = new SimpleStringProperty();
+	
+    private final StringProperty postalCode = new SimpleStringProperty("");
+    private final StringProperty email = new SimpleStringProperty("");
+    private final StringProperty bank = new SimpleStringProperty("");
+    private final StringProperty phonePrimary = new SimpleStringProperty("");
+    private final StringProperty phoneSecondary = new SimpleStringProperty("");
+    private final StringProperty phoneRelation = new SimpleStringProperty("");
 
 	private final StringProperty monMorning = new SimpleStringProperty();
 	private final StringProperty monAfternoon = new SimpleStringProperty();
@@ -433,4 +440,76 @@ public class Student {
 
 	}
 
+	
+	public String getPostalCode() {
+        return postalCode.get();
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode.set(postalCode);
+    }
+
+    public StringProperty postalCodeProperty() {
+        return postalCode;
+    }
+    
+    public String getEmail() {
+        return email.get();
+    }
+
+    public void setEmail(String email) {
+        this.email.set(email);
+    }
+
+    public StringProperty emailProperty() {
+        return email;
+    }
+    
+    public String getBank() {
+        return bank.get();
+    }
+
+    public void setBank(String bank) {
+        this.bank.set(bank);
+    }
+
+    public StringProperty bankProperty() {
+        return bank;
+    }
+    
+    public String getPhonePrimary() {
+        return phonePrimary.get();
+    }
+
+    public void setPhonePrimary(String phonePrimary) {
+        this.phonePrimary.set(phonePrimary);
+    }
+
+    public StringProperty phonePrimaryProperty() {
+        return phonePrimary;
+    }
+    
+    public String getPhoneSecondary() {
+        return phoneSecondary.get();
+    }
+
+    public void setPhoneSecondary(String phoneSecondary) {
+        this.phoneSecondary.set(phoneSecondary);
+    }
+
+    public StringProperty phoneSecondaryProperty() {
+        return phoneSecondary;
+    }
+    
+    public String getPhoneRelation() {
+        return phoneRelation.get();
+    }
+
+    public void setPhoneRelation(String phoneRelation) {
+        this.phoneRelation.set(phoneRelation);
+    }
+
+    public StringProperty phoneRelationProperty() {
+        return phoneRelation;
+    }
 }
