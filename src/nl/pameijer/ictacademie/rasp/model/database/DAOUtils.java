@@ -69,7 +69,6 @@ public class DAOUtils implements DAO {
 		return row;
 	}
 
-
 	// PesistencyLayer.contructSchedules
 
 	public String[][] createSchedules2DArray() {
@@ -95,85 +94,83 @@ public class DAOUtils implements DAO {
 					+ "AND i.roomID = l.roomID " + "AND m.language = 'nl' " + "AND i.roomID = n.roomID "
 					+ "AND p.language = 'nl' " + "AND o.locationID = q.locationID " + "AND r.language = 'nl'");
 
+			
+			final String PREFIX = "ICT_";
+			int numberOfStudents = createStudent2DArray().length;
+			array = new String[numberOfStudents-1][13];
 			ResultSet rs = statement.executeQuery(sql);
 
-			rs.last();// moves cursor to last row
-			// add number of rows and items in a row to array
-			System.out.println("numberofrows: "  + rs.getRow());
-			array = new String[rs.getRow()][13];
-			rs.beforeFirst(); // set cursor back to start
+			// rs.beforeFirst(); // set cursor back to start
 			String ID = null;
 			int r = -1;
 			while (rs.next()) {
 
-					if (!(rs.getString("registrantID").equals(ID))) {
-						ID = rs.getString("registrantID");
-						System.out.println(ID);
-						r++;
-					}
-					array[r][0] = rs.getString("registrantID");
-					array[r][1] = rs.getString("actuationDate");
-					array[r][2] = rs.getString("closingDate");
-
-					//System.out.println(rs.getString("weekday"));
-					switch (Integer.parseInt(rs.getString("weekday"))) {
-					case 1:
-						System.out.println("maandag");
-						if (rs.getString("timeUnit").equals("ochtend")) {
-							System.out.println("ochtend");
-							array[r][3] = rs.getString("spot");
-						} else {
-							System.out.println("middag");
-							array[r][4] = rs.getString("spot");
-						}
-						break;
-					case 2:
-						System.out.println("dinsdag");
-						if (rs.getString("timeUnit").equals("ochtend")) {
-							System.out.println("ochtend");
-							array[r][5] = rs.getString("spot");
-						} else {
-							System.out.println("middag");
-							array[r][6] = rs.getString("spot");
-						}
-						break;
-					case 3:
-						System.out.println("woensdag");
-						if (rs.getString("timeUnit").equals("ochtend")) {
-							System.out.println("ochtend");
-							array[r][7] = rs.getString("spot");
-						} else {
-							System.out.println("middag");
-							array[r][8] = rs.getString("spot");
-						}
-						break;
-					case 4:
-						System.out.println("donderdag");
-						if (rs.getString("timeUnit").equals("ochtend")) {
-							System.out.println("ochtend");
-							array[r][9] = rs.getString("spot");
-						} else {
-							System.out.println("middag");
-							array[r][10] = rs.getString("spot");
-						}
-						break;
-					case 5:
-						System.out.println("vrijdag");
-						if (rs.getString("timeUnit").equals("ochtend")) {
-							System.out.println("ochtend");
-							array[r][11] = rs.getString("spot");
-						} else {
-							System.out.println("middag");
-							array[r][12] = rs.getString("spot");
-						}
-						break;
-					}
-					//System.out.println(Arrays.toString(array[r]));
+				if (!(rs.getString("registrantID").equals(ID))) {
+					ID = rs.getString("registrantID");
+					//System.out.println(ID);
+					r++;
 				}
-				
+				array[r][0] = rs.getString("registrantID");
+				array[r][1] = rs.getString("actuationDate");
+				array[r][2] = rs.getString("closingDate");
 
+				// System.out.println(rs.getString("weekday"));
+				switch (Integer.parseInt(rs.getString("weekday"))) {
+				case 1:
+					//System.out.println("maandag");
+					if (rs.getString("timeUnit").equals("ochtend")) {
+						//System.out.println("ochtend");
+						array[r][3] = PREFIX + rs.getString("spot");
+					} else {
+						//System.out.println("middag");
+						array[r][4] = PREFIX +  rs.getString("spot");
+					}
+					break;
+				case 2:
+					//System.out.println("dinsdag");
+					if (rs.getString("timeUnit").equals("ochtend")) {
+						//System.out.println("ochtend");
+						array[r][5] = PREFIX + rs.getString("spot");
+					} else {
+						//System.out.println("middag");
+						array[r][6] = PREFIX + rs.getString("spot");
+					}
+					break;
+				case 3:
+					//System.out.println("woensdag");
+					if (rs.getString("timeUnit").equals("ochtend")) {
+						//System.out.println("ochtend");
+						array[r][7] = PREFIX + rs.getString("spot");
+					} else {
+						//System.out.println("middag");
+						array[r][8] = PREFIX + rs.getString("spot");
+					}
+					break;
+				case 4:
+					//System.out.println("donderdag");
+					if (rs.getString("timeUnit").equals("ochtend")) {
+						//System.out.println("ochtend");
+						array[r][9] = PREFIX + rs.getString("spot");
+					} else {
+						//System.out.println("middag");
+						array[r][10] = PREFIX + rs.getString("spot");
+					}
+					break;
+				case 5:
+					//System.out.println("vrijdag");
+					if (rs.getString("timeUnit").equals("ochtend")) {
+						//System.out.println("ochtend");
+						array[r][11] = PREFIX + rs.getString("spot");
+					} else {
+						//System.out.println("middag");
+						array[r][12] = PREFIX + rs.getString("spot");
+					}
+					break;
+				}
+				// System.out.println(Arrays.toString(array[r]));
+			}
 
-			//System.out.println(Arrays.deepToString(array));
+			// System.out.println(Arrays.deepToString(array));
 
 			rs.close();
 
@@ -265,6 +262,8 @@ public class DAOUtils implements DAO {
 			rs.close();
 
 		} catch (SQLException ex) {
+
+			System.out.println("SQL probleem" + ex);
 		}
 
 		return array;
@@ -286,6 +285,7 @@ public class DAOUtils implements DAO {
 		}
 		return list;
 	}
+
 	public void closeConnection() {
 		try {
 			connection.close();
@@ -305,33 +305,30 @@ public class DAOUtils implements DAO {
 		 * +s.getFName() + " " + s.getNamePrefix()+ " - " + s.getLName()); } }
 		 */
 
-		/*String[][] array = dbUtils.createStudent2DArray();
+		/*
+		 * String[][] array = dbUtils.createStudent2DArray();
+		 * 
+		 * for (int i = 0; i < array.length; i++) { for (int j = 0; j <
+		 * array[i].length; j++) { System.out.println(array[i][j]);
+		 * 
+		 * }
+		 * 
+		 * }
+		 */
 
-		for (int i = 0; i < array.length; i++) {
-			for (int j = 0; j < array[i].length; j++) {
-				System.out.println(array[i][j]);
+		// dbUtils.printOccupation();
+		String[][] schedules = dbUtils.createSchedules2DArray();
 
-			}
-
-		}*/
-		
-		
-		//dbUtils.printOccupation();
-		String[][] schedules  = dbUtils.createSchedules2DArray();
-		
-		System.out.println("Lengte schedules " +schedules.length);
-		//System.out.println(Arrays.deepToString(schedules));
-		
-		/*for (int i = 0; i < schedules.length; i++) {
+		for (int i = 0; i < schedules.length; i++) {
 			for (int j = 0; j < schedules[i].length; j++) {
-				//System.out.println(array[i][j]);
+				System.out.print(" " + schedules[i][j]);
 
 			}
-			
-		}*/
-		
+			System.out.println("");
+		}
+
 		dbUtils.closeConnection();
 
 	}
 
-}
+} 

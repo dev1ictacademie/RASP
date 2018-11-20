@@ -116,8 +116,10 @@ public class Model {
 
 		//studentList.setAll(PersistencyLayer.constructStudentList(PersistencyLayer.studentsMockArray));
 		DAOUtils dao = new DAOUtils();
+		dao.setConnectionDatabase();
 		studentList.setAll(PersistencyLayer.constructStudentList(dao.createStudent2DArray()));
-		PersistencyLayer.constructSchedules(PersistencyLayer.schedulesMockArray, studentList);
+		String[][] schedules = dao.createSchedules2DArray();
+		PersistencyLayer.constructSchedules(schedules, studentList);
 
 		for (Student student: getStudentList()) {
 			Collections.sort(student.getSchedules());
