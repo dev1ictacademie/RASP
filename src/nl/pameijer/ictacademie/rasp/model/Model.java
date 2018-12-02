@@ -10,6 +10,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import nl.pameijer.ictacademie.rasp.model.database.DAOUtils;
 import nl.pameijer.ictacademie.rasp.persistencylayer.PersistencyLayer;
 import nl.pameijer.ictacademie.rasp.view.inputstudent.TableDates;
 import nl.pameijer.ictacademie.rasp.time.TimeGuard;
@@ -113,9 +114,12 @@ public class Model {
 	 */
 	public void loadDataWithScheduleAndID() {
 
-		studentList.setAll(PersistencyLayer.constructStudentList(PersistencyLayer.studentsMockArray));
-
-		PersistencyLayer.constructSchedules(PersistencyLayer.schedulesMockArray, studentList);
+		//studentList.setAll(PersistencyLayer.constructStudentList(PersistencyLayer.studentsMockArray));
+		DAOUtils dao = new DAOUtils();
+		dao.setConnectionDatabase();
+		studentList.setAll(PersistencyLayer.constructStudentList(dao.createStudent2DArray()));
+		String[][] schedules = dao.createSchedules2DArray();
+		PersistencyLayer.constructSchedules(schedules, studentList);
 
 		for (Student student: getStudentList()) {
 			Collections.sort(student.getSchedules());
