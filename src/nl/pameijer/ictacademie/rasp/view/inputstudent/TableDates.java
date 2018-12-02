@@ -13,11 +13,14 @@ public class TableDates {
 
 	static LocalDate[] thisWeekDates = new LocalDate[5];
 
+
 	public static String[] thisWeekStrings = new String[5];
 
+
+
+
 	static {
-		// System.out.println("Hello, I am the static initializer block of
-		// TableDates and I have just been executed!");
+
 		for (int i = 0; i < 5; i++) {
 			thisWeekDates[i] = mostRecentMonday.plusDays(i);
 			thisWeekStrings[i] = formatDate(thisWeekDates[i]);
@@ -35,14 +38,13 @@ public class TableDates {
 		return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 	}
 
-	/**
-	 * Change the currentWeek. That is, calculate all dates of weekdays from a
-	 * past or future week, assign them to the LocalDate array and then also
-	 * update the formatted String array with the new dates.
+	/*
+	 * Change the currentWeek. That is, calculate all dates of weekdays
+	 * from a past or future week, assign them to the LocalDate array and
+	 * then also update the formatted String array with the new dates.
 	 *
-	 * @param n
-	 *            the number of weeks to jump forward or backwards (use negative
-	 *            numbers to go backwards).
+	 * @param n  the number of weeks to jump forward or backwards (use
+	 *           negative numbers to go backwards).
 	 */
 	public static void changeWeek(int n) {
 		for (int i = 0; i < thisWeekDates.length; i++) {
