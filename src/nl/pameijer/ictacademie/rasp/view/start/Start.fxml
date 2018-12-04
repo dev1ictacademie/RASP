@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.pameijer.ictacademie.rasp.view.start.StartController">
+   <center>
+      <VBox fillWidth="false" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="RASP">
+               <font>
+                  <Font size="80.0" />
+               </font></Label>
+            <TilePane alignment="TOP_RIGHT" hgap="10.0" prefColumns="7" prefRows="7" prefTileHeight="150.0" prefTileWidth="150.0" vgap="10.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Dag" />
+                  <Button mnemonicParsing="false" style="-fx-background-color: #0055d4;" text="Week" />
+                  <Button mnemonicParsing="false" style="-fx-background-color: #0044aa;" text="Maand" />
+                  <Button mnemonicParsing="false" onAction="#launchInputStudent" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #5599ff;" text="Input Student" />
+                  <Button mnemonicParsing="false" style="-fx-background-color: #0044aa;" text="Bezetting" />
+                  <Button mnemonicParsing="false" style="-fx-background-color: #002255;" text="Aanwezigheidsprofiel" />
+                  <Button mnemonicParsing="false" style="-fx-background-color: #214478;" text="Reiskosten" />
+                  <Button mnemonicParsing="false" style="-fx-background-color: #0066ff;" text="Absentie" />
+                  <Button mnemonicParsing="false" style="-fx-background-color: #214478;" text="Vakantiedagen" />
+                  <Button mnemonicParsing="false" text="Statistieken" />
+               </children>
+            </TilePane>
+         </children>
+      </VBox>
+   </center>
+   <padding>
+      <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+   </padding>
+</BorderPane>
