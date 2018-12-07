@@ -22,7 +22,8 @@ public class Model {
 	private final ObservableList<Student> studentList = FXCollections.observableArrayList();
 
 	private final ObjectProperty<Student> currentStudent = new SimpleObjectProperty<>(null);
-
+	private boolean enableDatabase = false;
+	
 	public Model() {
 		timeGuardian.start();
 	}
@@ -112,15 +113,22 @@ public class Model {
 	 *  3) Sort the schedules from a student's schedule-list to guarantee chronological order
 	 *  4) Set the dayPartProperties for the students so that correct places are shown in weekView
 	 */
-	public void loadDataWithScheduleAndID() {
-
-		//studentList.setAll(PersistencyLayer.constructStudentList(PersistencyLayer.studentsMockArray));
-		DAOUtils dao = new DAOUtils();
-		dao.setConnectionDatabase();
-		studentList.setAll(PersistencyLayer.constructStudentList(dao.createStudent2DArray()));
-		String[][] schedules = dao.createSchedules2DArray();
-		//String[][] schedules = PersistencyLayer.schedulesMockArray;
-		PersistencyLayer.constructSchedules(schedules, studentList);
+	public void loadDataWithScheduleAndID() 
+	{
+		if(enableDatabase)
+		{
+			DAOUtils dao = new DAOUtils();
+			dao.setConnectionDatabase();
+			studentList.setAll(PersistencyLayer.constructStudentList(dao.createStudent2DArray()));
+			String[][] schedules = dao.createSchedules2DArray();
+		}
+		else
+		{
+			studentList.setAll(PersistencyLayer.constructStudentList(PersistencyLayer.studentsMockArray));
+			String[][] schedules = PersistencyLayer.schedulesMockArray;
+			PersistencyLayer.constructSchedules(schedules, studentList);
+		}
+		
 
 		for (Student student: getStudentList()) {
 			Collections.sort(student.getSchedules());
@@ -129,6 +137,15 @@ public class Model {
 
 	}
 
+	/**
+	 * 
+	 * @param enableDatabase
+	 */
+			
+	public void setDatabaseEnabled(boolean enableDatabase) 
+	{
+		this.enableDatabase = enableDatabase;
+	}
 
 	public void saveDayPart(String id, String text) {
 		// TODO split id into studentid, date, daypart and the value from text
