@@ -114,12 +114,12 @@ public class Model {
 	 */
 	public void loadDataWithScheduleAndID() {
 
-		//studentList.setAll(PersistencyLayer.constructStudentList(PersistencyLayer.studentsMockArray));
-		DAOUtils dao = new DAOUtils();
+		studentList.setAll(PersistencyLayer.constructStudentList(PersistencyLayer.studentsMockArray));
+		/*DAOUtils dao = new DAOUtils();
 		dao.setConnectionDatabase();
 		studentList.setAll(PersistencyLayer.constructStudentList(dao.createStudent2DArray()));
-		String[][] schedules = dao.createSchedules2DArray();
-		//String[][] schedules = PersistencyLayer.schedulesMockArray;
+		String[][] schedules = dao.createSchedules2DArray();*/
+		String[][] schedules = PersistencyLayer.schedulesMockArray;
 		PersistencyLayer.constructSchedules(schedules, studentList);
 
 		for (Student student: getStudentList()) {

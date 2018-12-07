@@ -16,7 +16,7 @@ public class PresenceProfile extends Application {
 		primaryStage.setTitle("Aanwezigheidsprofiel");
 		Pane myPane = (Pane) FXMLLoader.load(getClass().getResource("presence_profile.fxml"));
 		Scene myScene = new Scene(myPane);
-		primaryStage.setOnCloseRequest(e -> System.exit(0));
+		//primaryStage.setOnCloseRequest(e -> System.exit(0));
 		primaryStage.setScene(myScene);
 		primaryStage.show();
 

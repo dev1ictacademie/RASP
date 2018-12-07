@@ -1,10 +1,17 @@
 package nl.pameijer.ictacademie.rasp.view.start;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+import nl.pameijer.ictacademie.rasp.model.Model;
+import nl.pameijer.ictacademie.rasp.view.month.Controller;
 
 public class StartController {
 	private static Stage inputStudent;
+	private static Stage monthView;
+	private static Stage presenceProfile;
+	private static Stage occupationPDF;
 	
 	@FXML
 	private void launchInputStudent() {
@@ -16,4 +23,51 @@ public class StartController {
 			inputStudent.toFront();
 		}
 	}
+	
+	@FXML
+	private void monthView(){
+		if (monthView == null) {
+			monthView = new Stage();
+			try {
+				new nl.pameijer.ictacademie.rasp.view.month.StartApp().start(monthView);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			monthView.show();
+			monthView.toFront();
+		}
+		
+	}
+	@FXML
+	private void presenceProfile(){
+		if(presenceProfile== null){
+			presenceProfile = new Stage();
+			try {
+				new nl.pameijer.ictacademie.rasp.view.inputstudent.fxml.PresenceProfile().start(presenceProfile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			presenceProfile.show();
+			presenceProfile.toFront();
+		}
+		
+	}
+	@FXML
+	private void occupationPDF(){
+		if(occupationPDF== null){
+			occupationPDF = new Stage();
+			
+				new nl.pameijer.ictacademie.rasp.view.pdf.StartSendPDFView().start(occupationPDF);
+			
+		}else {
+			occupationPDF.show();
+			occupationPDF.toFront();
+		}
+		
+	}
+	
 }
