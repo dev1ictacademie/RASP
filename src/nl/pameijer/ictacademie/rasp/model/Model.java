@@ -23,7 +23,7 @@ public class Model {
 
 	private final ObjectProperty<Student> currentStudent = new SimpleObjectProperty<>(null);
 	private boolean enableDatabase = false;
-	
+
 	public Model() {
 		timeGuardian.start();
 	}
@@ -113,7 +113,7 @@ public class Model {
 	 *  3) Sort the schedules from a student's schedule-list to guarantee chronological order
 	 *  4) Set the dayPartProperties for the students so that correct places are shown in weekView
 	 */
-	public void loadDataWithScheduleAndID() 
+	public void loadDataWithScheduleAndID()
 	{
 		if(enableDatabase)
 		{
@@ -128,7 +128,7 @@ public class Model {
 			String[][] schedules = PersistencyLayer.schedulesMockArray;
 			PersistencyLayer.constructSchedules(schedules, studentList);
 		}
-		
+
 
 		for (Student student: getStudentList()) {
 			Collections.sort(student.getSchedules());
@@ -138,11 +138,11 @@ public class Model {
 	}
 
 	/**
-	 * 
+	 * Set to database or mock array
 	 * @param enableDatabase
 	 */
-			
-	public void setDatabaseEnabled(boolean enableDatabase) 
+
+	public void setDatabaseEnabled(boolean enableDatabase)
 	{
 		this.enableDatabase = enableDatabase;
 	}
