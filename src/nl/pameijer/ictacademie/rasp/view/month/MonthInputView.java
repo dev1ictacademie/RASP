@@ -269,7 +269,7 @@ public class MonthInputView {
 					// add change listener class to dayparts text fields
 					txt.textProperty().addListener(dayPartsListener);
 					// add key listener
-					txt.setOnKeyPressed(keylistener);
+					//txt.setOnKeyPressed(keylistener);
 					grid.add(txt, col, row + 1);
 				}
 

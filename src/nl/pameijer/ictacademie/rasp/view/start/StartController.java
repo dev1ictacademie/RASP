@@ -65,7 +65,7 @@ public class StartController {
 			
 		}else {
 			occupationPDF.show();
-			occupationPDF.toFront();
+			occupationPDF.toBack();
 		}
 		
 	}
