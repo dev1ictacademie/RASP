@@ -24,7 +24,7 @@
                   <Button mnemonicParsing="false" onAction="#launchInputStudent" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #5599ff;" text="Input Student" />
                   <Button mnemonicParsing="false" onAction="#occupationPDF" style="-fx-background-color: #0044aa;" text="Bezetting" />
                   <Button mnemonicParsing="false" onAction="#presenceProfile" style="-fx-background-color: #002255;" text="Aanwezigheidsprofiel" />
-                  <Button mnemonicParsing="false" style="-fx-background-color: #214478;" text="Reiskosten" />
+                  <Button mnemonicParsing="false" onAction="#onTravelCost" style="-fx-background-color: #214478;" text="Reiskosten" />
                   <Button mnemonicParsing="false" style="-fx-background-color: #0066ff;" text="Absentie" />
                   <Button mnemonicParsing="false" style="-fx-background-color: #214478;" text="Vakantiedagen" />
                   <Button mnemonicParsing="false" text="Statistieken" />

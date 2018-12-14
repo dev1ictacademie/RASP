@@ -66,10 +66,10 @@ public class TravelingCostPDF
 
              try (PDPageContentStream contents = new PDPageContentStream(doc, page))
              {
-                 headText(contents, MockDataTravelingCost.getMonths(), MockDataTravelingCost.getYears());
+                 headText(contents, TravelingCostView.getMonth(), TravelingCostView.getYear());
                  drawHeaderTable(contents, fontSize);
-                 drawContentTable(contents, MockDataTravelingCost.getNames(), MockDataTravelingCost.getId(),
-                		 					MockDataTravelingCost.getTotal(),  MockDataTravelingCost.getIban());
+                 drawContentTable(contents, TravelingCostView.getNames(), TravelingCostView.getId(),
+                		 					TravelingCostView.getTotal(), TravelingCostView.getIban());
 
              }
 
@@ -209,7 +209,7 @@ public class TravelingCostPDF
 
     /**
      * Draws the content and lines of the table. Parameter name is used to determine
-     * the number of rows in the table and must not be empty. 
+     * the number of rows in the table and must not be empty.
      * The name is shortened to 28 characters include spaces.
      * @param contentStream
      * @param name

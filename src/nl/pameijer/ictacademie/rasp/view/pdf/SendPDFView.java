@@ -59,7 +59,7 @@ public class SendPDFView
 		// add closing event handler for frame
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>()
 		{
-	          public void handle(WindowEvent we)
+	          public void handle(WindowEvent event)
 	          {
 	        	  System.exit(0);
 	          }
@@ -67,8 +67,7 @@ public class SendPDFView
 
 		// Observable list that contains E-mail addresses
 		eMailList = FXCollections.observableArrayList(
-				"kies hier een e-mail adres",
-				"yyyyyyyyy"
+				"kies hier een e-mail adres"
 				);
 
 		// create combobox that contains email addresses

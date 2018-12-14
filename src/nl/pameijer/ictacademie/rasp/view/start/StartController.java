@@ -6,13 +6,15 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import nl.pameijer.ictacademie.rasp.model.Model;
 import nl.pameijer.ictacademie.rasp.view.month.Controller;
+import nl.pameijer.ictacademie.rasp.view.pdf.TravelingCostView;
 
 public class StartController {
 	private static Stage inputStudent;
 	private static Stage monthView;
 	private static Stage presenceProfile;
 	private static Stage occupationPDF;
-	
+	private static Stage travelingcost;
+
 	@FXML
 	private void launchInputStudent() {
 		if (inputStudent == null) {
@@ -23,7 +25,7 @@ public class StartController {
 			inputStudent.toFront();
 		}
 	}
-	
+
 	@FXML
 	private void monthView(){
 		if (monthView == null) {
@@ -38,7 +40,7 @@ public class StartController {
 			monthView.show();
 			monthView.toFront();
 		}
-		
+
 	}
 	@FXML
 	private void presenceProfile(){
@@ -54,20 +56,28 @@ public class StartController {
 			presenceProfile.show();
 			presenceProfile.toFront();
 		}
-		
+
 	}
 	@FXML
 	private void occupationPDF(){
 		if(occupationPDF== null){
 			occupationPDF = new Stage();
-			
+
 				new nl.pameijer.ictacademie.rasp.view.pdf.StartSendPDFView().start(occupationPDF);
-			
+
 		}else {
 			occupationPDF.show();
 			occupationPDF.toBack();
 		}
-		
+
 	}
-	
-}
+
+	@FXML
+	private void onTravelCost() {
+		if(travelingcost == null){
+			travelingcost = new Stage();
+			new nl.pameijer.ictacademie.rasp.view.pdf.TravelingCostView().start(travelingcost);
+		}
+	}
+
+}// end class StartController
