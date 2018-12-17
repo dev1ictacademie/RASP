@@ -282,10 +282,10 @@ public class TravelingCostPDF
     			}
     			else
     			{
-    				contentStream.beginText();
-	                contentStream.newLineAtOffset(startX+195, startY-20.0f*j+5);
-	                contentStream.showText("0");
-	                contentStream.endText();
+//    				contentStream.beginText();
+//	                contentStream.newLineAtOffset(startX+195, startY-20.0f*j+5);
+//	                contentStream.showText("0");
+//	                contentStream.endText();
     			}
 
                 // fill total column
@@ -298,10 +298,10 @@ public class TravelingCostPDF
     			}
     			else
     			{
-    				contentStream.beginText();
-	                contentStream.newLineAtOffset(startX+275, startY-20.0f*j+5);
-	                contentStream.showText("0");
-	                contentStream.endText();
+//    				contentStream.beginText();
+//	                contentStream.newLineAtOffset(startX+275, startY-20.0f*j+5);
+//	                contentStream.showText("0");
+//	                contentStream.endText();
     			}
 
                 // fill iban column
@@ -314,10 +314,10 @@ public class TravelingCostPDF
     			}
     			else
     			{
-    				contentStream.beginText();
-	                contentStream.newLineAtOffset(startX+345, startY-20.0f*j+5);
-	                contentStream.showText("0");
-	                contentStream.endText();
+//    				contentStream.beginText();
+//	                contentStream.newLineAtOffset(startX+345, startY-20.0f*j+5);
+//	                contentStream.showText("0");
+//	                contentStream.endText();
     			}
 
     			//between row horizontal line
@@ -341,42 +341,6 @@ public class TravelingCostPDF
 
 	}// end drawContentTable
 
-    /**
-     * get the first name from array of students
-     * @param dayPart String
-     * @param i of loop
-     * @return
-     */
-    public String getFirstName(String dayPart, int i)
-    {
-    	String fName = "";
-
-    	try
-    	{
-    		if(i < 10) // sit places under ten
-    		{
-    			fName = dayPart.substring(2);
-    			if( !fName.isEmpty() )
-    			{
-    				return fName;
-    			}
-    		}
-        	else // sit places from ten and beyond
-        	{
-        		fName = dayPart.substring(3);
-        		if(!fName.isEmpty())
-        		{
-        			return fName;
-        		}
-        	}
-		}
-    	catch (Exception e)
-    	{
-    		// ignored
-		}
-
-		return "";
-	}// end method getFirstName
 
     /**
      * This will create a PDF document with a landscape orientation and some text surrounded by a box.
@@ -386,7 +350,9 @@ public class TravelingCostPDF
     public static void main(String[] args) throws IOException
     {
         TravelingCostPDF app = new TravelingCostPDF();
-        app.createPDFDoc( args[1] );
+        app.createPDFDoc( args[1] );// set name of document in run configurations...
+        	//Program arguments: "TravelingCost" TravelingCost.pdf
+        	//VM arguments: -Dsun.java2d.cmm=sun.java2d.cmm.kcms.KcmsServiceProvider
 
         System.exit(0);
     }// end method main

@@ -13,7 +13,7 @@ public class StartController {
 	private static Stage monthView;
 	private static Stage presenceProfile;
 	private static Stage occupationPDF;
-	private static Stage travelingcost;
+	private static Stage travelingCost;
 
 	@FXML
 	private void launchInputStudent() {
@@ -74,9 +74,9 @@ public class StartController {
 
 	@FXML
 	private void onTravelCost() {
-		if(travelingcost == null){
-			travelingcost = new Stage();
-			new nl.pameijer.ictacademie.rasp.view.pdf.TravelingCostView().start(travelingcost);
+		if(travelingCost == null){
+			travelingCost = new Stage();
+			new nl.pameijer.ictacademie.rasp.view.pdf.TravelingCostView().start(travelingCost);
 		}
 	}
 

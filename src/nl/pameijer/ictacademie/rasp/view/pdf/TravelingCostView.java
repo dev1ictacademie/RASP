@@ -3,6 +3,8 @@ package nl.pameijer.ictacademie.rasp.view.pdf;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import com.sun.tracing.dtrace.ArgsAttributes;
+
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -24,7 +26,7 @@ public class TravelingCostView extends Application
 	private DatePicker datePicker;
 	private VBox vBox;
 	private Button btnMakePDF;
-	private static String month;;
+	private static String month;
 	private static String year;
 	private ObservableList<Student> students;
 	private static String[] name;
@@ -41,9 +43,10 @@ public class TravelingCostView extends Application
 		vBox.setPadding(insets);
 		datePicker = new DatePicker();
 		datePicker.setValue(LocalDate.now());
-		
+
 		btnMakePDF = new Button("Maak pdf");
-		
+
+
 
 		Model model = new Model();
 		model.setDatabaseEnabled(false);
@@ -55,6 +58,13 @@ public class TravelingCostView extends Application
 			name[i] = students.get(i).getFName() + " " + students.get(i).getLName();
 		}
 
+
+		btnMakePDF.setOnAction(e -> { TravelingCostPDF travelingscost = new TravelingCostPDF();
+		try {
+			travelingscost.createPDFDoc("TravelingCost.pdf");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} });
 
 		stage.setTitle("Travelings cost pdf");
 		stage.setMinWidth(400.0);
