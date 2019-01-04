@@ -181,4 +181,16 @@ public class Model {
 
 		return highest.toString();
 	}
+
+	/**
+	 *
+	 * @param date
+	 * @param student
+	 * @return
+	 */
+	public String getTravelAmount(LocalDate date, Student student) {
+
+
+		return "";
+	}
 }

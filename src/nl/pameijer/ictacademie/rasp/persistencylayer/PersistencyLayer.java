@@ -11,15 +11,15 @@ import nl.pameijer.ictacademie.rasp.model.Schedule;
 import nl.pameijer.ictacademie.rasp.model.Student;
 
 public class PersistencyLayer {
-	
+
 	/* Arrays needed at application start to be delivered by the database:
 
        - Array with students
        - Array with schedules
-       
+
      */
-		
-	/* 
+
+	/*
 	 * A student from this array has a studentID, a last name, a first name
 	 * and a last name prefix.
 	 */
@@ -36,16 +36,17 @@ public class PersistencyLayer {
 			{"247", "Gomez", "Esperanza", null},
 			{"263", "Davidson", "Charlie", null}
 	};
-	
+
+
 	/*
-	 * A schedule from this array has a studentID (indicating which student 
+	 * A schedule from this array has a studentID (indicating which student
 	 * this schedule belongs to), a starting date, an end date,
      * a place value for monday morning, a place value for monday afternoon,
-	 * a place value for tuesday morning, a place value for tuesday afternoon, 
-	 * a place value for wednesday morning, a place value for wednesday afternoon, 
-	 * a place value for thursday morning, a place value for thursday afternoon, 
+	 * a place value for tuesday morning, a place value for tuesday afternoon,
+	 * a place value for wednesday morning, a place value for wednesday afternoon,
+	 * a place value for thursday morning, a place value for thursday afternoon,
 	 * a place value for friday morning and a place value for friday afternoon.
-	 */ 
+	 */
 	public static String[][] schedulesMockArray = {
 			{"119", "2018-02-06", "9999-12-31", "ICT_6", "ICT_6", null, null, "ICT_1", "ICT_1", null, null, null, null},
 			{"162", "2018-04-19", "2018-05-31", null, null, "ICT_8", "ICT_12", null, null, "ICT_14", "ICT_14", null, null},
@@ -65,12 +66,12 @@ public class PersistencyLayer {
 			{"247", "2018-06-14", "9999-12-31", null, "ICT_8", null, null, null, null, null, null, "ICT_3", "ICT_3"},
 			{"263", "2017-10-24", "9999-12-31", null, null, "ICT_2", "ICT_2", null, null, "ICT_15", "ICT_15", null, null}
 	};
-	
+
 	/**
 	 * Construct a list of students based on input from a two-dimensional array
 	 * of strings.
-	 * 
-	 * @param arr       The two-dimensional array of strings describing a 
+	 *
+	 * @param arr       The two-dimensional array of strings describing a
 	 *                  number of students.
 	 */
 	public static List<Student> constructStudentList(String[][] arr) {
@@ -86,16 +87,16 @@ public class PersistencyLayer {
 		}
 		return studentList;
 	}
-	
+
 	/**
-	 * Construct any number of schedules based on input from a two-dimensional 
+	 * Construct any number of schedules based on input from a two-dimensional
 	 * array of strings (and assign them to the appropriate student).
-	 * 
-	 * @param arr       The two-dimensional array of strings describing a 
+	 *
+	 * @param arr       The two-dimensional array of strings describing a
 	 *                  number of schedules.
-	 *             
+	 *
 	 * @param students  The list with Student objects to whom the schedules
-	 *                  need to be assigned.       
+	 *                  need to be assigned.
 	 */
 	public static void constructSchedules(String[][] arr, List<Student> students) {
 		for (String[] entry: arr) {
@@ -107,53 +108,53 @@ public class PersistencyLayer {
             }
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	/* All code below (including the main-method) is test code and eventually no longer needed! */
-	
-	
-	/* Student list made based on studentsMockArray for testing */ 
+
+
+	/* Student list made based on studentsMockArray for testing */
 	static List<Student> testList = constructStudentList(studentsMockArray);
-	
-	
+
+
 	public static void main(String[] args) {
-		
+
 		// test the studentList by printing the student's properties
 		for (Student stu: testList) {
-			System.out.println(stu.getId() + " " + stu.getLName() + " " + 
+			System.out.println(stu.getId() + " " + stu.getLName() + " " +
 		                       stu.getFName() + " " + stu.getNamePrefix());
 		}
-		
+
 		System.out.println();
-		
+
 		// test the constructSchedules method by using the schedulesMockArray
 		// to create schedules and assign them to the students from the testList
 		constructSchedules(schedulesMockArray, testList);
-		
-		
-		// test the construction and assignment of the schedules above by 
+
+
+		// test the construction and assignment of the schedules above by
 		// printing out the student's ID, name and his or her schedule(s)
 		for (Student stu: testList) {
-			System.out.print(stu.getId() + " " + stu.getLName() + " " + 
+			System.out.print(stu.getId() + " " + stu.getLName() + " " +
 					stu.getFName() + " " + stu.getNamePrefix() +
 					schedules_String(stu) + "\n");
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Test method. Create and return a string describing all schedules
-	 * a student has. 
+	 * a student has.
 	 */
 	public static String schedules_String(Student stu) {
 
 		String desc = "";
 
 		for (Schedule schedule: stu.getSchedules()) {
-			
+
 			desc = desc + " " + schedule.getStartDate() + " " + schedule.getEndDate();
 
 			HashMap<DayPart, Place> map = schedule.getMap();
@@ -162,7 +163,7 @@ public class PersistencyLayer {
 						entry.getValue().toString() + ",";
 			}
 			desc = desc + "   ";
-			
+
 		}
 		return desc;
 	}

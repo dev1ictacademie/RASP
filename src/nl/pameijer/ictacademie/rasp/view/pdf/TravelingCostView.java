@@ -30,9 +30,9 @@ public class TravelingCostView extends Application
 	private static String year;
 	private ObservableList<Student> students;
 	private static String[] name;
-	private static String[] id = {"3165", "500", "1455"};
-	private static String[] total = {"31,65", "50,00", "145,55"};
-	private static String[] iban = {"NL30 INGB 0001234567", "NL48 RABO 9876543210", "NL48 ABN 9876543210"};
+	private static String[] id;
+	private static String[] total;
+	private static String[] iban;
 
 
 	@Override
@@ -46,25 +46,31 @@ public class TravelingCostView extends Application
 
 		btnMakePDF = new Button("Maak pdf");
 
-
-
 		Model model = new Model();
 		model.setDatabaseEnabled(false);
 		model.loadDataWithScheduleAndID();
 		students = model.getStudentList();
 		name = new String[students.size()];
+		id = new String[students.size()];
+		total = new String[students.size()];
+		iban = new String[students.size()];
 
 		for (int i = 0; i < students.size(); i++) {
 			name[i] = students.get(i).getFName() + " " + students.get(i).getLName();
+			id[i] = students.get(i).getId();
+			total[i] = model.getTravelAmount(datePicker.getValue(), students.get(i));
+			iban[i] = students.get(i).getBank();
 		}
 
 
 		btnMakePDF.setOnAction(e -> { TravelingCostPDF travelingscost = new TravelingCostPDF();
 		try {
+			//VM arguments: -Dsun.java2d.cmm=sun.java2d.cmm.kcms.KcmsServiceProvider
 			travelingscost.createPDFDoc("TravelingCost.pdf");
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		} });
+			}
+		});
 
 		stage.setTitle("Travelings cost pdf");
 		stage.setMinWidth(400.0);
