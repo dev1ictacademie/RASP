@@ -78,6 +78,10 @@ public class StartController {
 			travelingCost = new Stage();
 			new nl.pameijer.ictacademie.rasp.view.pdf.TravelingCostView().start(travelingCost);
 		}
+		else
+		{
+			travelingCost.show();
+		}
 	}
 
 }// end class StartController

@@ -25,6 +25,7 @@ public class DAOUtils implements DAO {
 			statement = connection.createStatement();
 			System.out.println("Database connection !");
 
+			
 		} catch (Exception connectException) {
 			connectException.printStackTrace();
 			System.out.println("no connection");

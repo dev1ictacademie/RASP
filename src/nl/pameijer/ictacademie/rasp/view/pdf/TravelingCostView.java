@@ -82,7 +82,8 @@ public class TravelingCostView extends Application
 
 			@Override
 			public void handle(WindowEvent event) {
-				System.exit(0);
+				//System.exit(0);
+				stage.hide();
 			}
 		});
 

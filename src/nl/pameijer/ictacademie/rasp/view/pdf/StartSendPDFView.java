@@ -16,7 +16,6 @@ public class StartSendPDFView extends Application {
 
 			SendPDFView view = new SendPDFView();
 
-			System.exit(0);
 		}
 		catch(Exception e)
 		{

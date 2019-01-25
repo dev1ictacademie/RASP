@@ -61,7 +61,7 @@ public class SendPDFView
 		{
 	          public void handle(WindowEvent event)
 	          {
-	        	  System.exit(0);
+	        	  //stage.close();
 	          }
 		});
 
@@ -200,7 +200,7 @@ public class SendPDFView
 	      }
 
 
-		stage.close();
+		//stage.close();
 
 	}// end method send
 
